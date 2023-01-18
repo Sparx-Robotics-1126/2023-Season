@@ -10,7 +10,8 @@ import frc.drives.DrivesSensorInterface;
 import frc.drives.DrivesSensors;
 
 import frc.sensors.Limelight;
-
+import edu.wpi.first.hal.HAL;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -53,14 +54,11 @@ public class Robot extends RobotBase
         
         //Initialize sensors.
         drivesSensors = new DrivesSensors();
-
-        
     
         limelight = new Limelight();
         
         //Initialize Subsystems.
         drives = new Drives(drivesSensors);
-
         
         //Initialize Controllers.
         teleopControls = new TeleoperatedController();
@@ -69,7 +67,6 @@ public class Robot extends RobotBase
 
         //Start subsystem threads.
         new Thread(drives).start();
-
     }
 
     private void disabledStarted()
@@ -128,11 +125,11 @@ public class Robot extends RobotBase
     public void startCompetition() 
     {
         System.out.println("******** ROBOT INIT ********");
-
+        DriverStationJNI.observeUserProgramStarting();
         robotInit();
 
         System.out.println("************ ENGAGING MAIN LOOP ************");
-
+System.out.println("Robot disabled " + isDisabled() + " State: " + state);
         while (true)
         {
             if (!isDisabled())
@@ -141,22 +138,26 @@ public class Robot extends RobotBase
                 {
                     System.out.println("********** AUTONOMOUS STARTED ************");
                     autoStarted();
+                    DriverStationJNI.observeUserProgramAutonomous();
                 }
                 else if (isTeleop() && state != RobotState.TELE)
                 {
                     teleopStarted();
                     System.out.println("********** TELEOPERATED STARTED ************");
+                    DriverStationJNI.observeUserProgramTeleop();
                 }
                 else if (isTest() && state != RobotState.TEST)
                 {
                     System.out.println("********** TEST STARTED ************");
                     testStarted();
+                    DriverStationJNI.observeUserProgramTest();
                 }
             }
             else if (state != RobotState.STANDBY)
             {
                 System.out.println("********** ROBOT DISABLED ************");
                 disabledStarted();        
+                DriverStationJNI.observeUserProgramDisabled();
             }
 
             SmartDashboard.updateValues();
