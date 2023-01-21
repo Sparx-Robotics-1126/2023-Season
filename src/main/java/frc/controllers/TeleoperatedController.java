@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TeleoperatedController extends Controller 
 {
 	private Joystick driverJoystick;
-  private Joystick operatorJoystick;
+  //private Joystick operatorJoystick;
 
   private Axis driverLeftAxisY;
   private Axis driverLeftAxisX;
@@ -19,7 +19,7 @@ public class TeleoperatedController extends Controller
 
   static 
   {
-    SmartDashboard.putBoolean("USE_BOTH_JOYSTICKS", true);
+    SmartDashboard.putBoolean("USE_BOTH_JOYSTICKS", false);
   }
 	
 	/**
@@ -29,7 +29,7 @@ public class TeleoperatedController extends Controller
   public TeleoperatedController()
   {
     driverJoystick = new Joystick(0);
-    operatorJoystick = new Joystick(1);
+    //operatorJoystick = new Joystick(1);
 
     //DRIVES
     driverLeftAxisY = new Axis(driverJoystick, ControllerMappings.XBOX_LEFT_Y, true);

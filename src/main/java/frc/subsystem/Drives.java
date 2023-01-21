@@ -57,7 +57,10 @@ public class Drives extends Subsystem
         CANSparkMax leftMotorSlave = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
         configureMotor(leftMotorMaster, leftMotorSlave);
 
-        driveSensors.addEncoders(leftMotorMaster.getEncoder(), rightMotorMaster.getEncoder());
+var leftEncoder = leftMotorMaster.getEncoder();
+var rightEncoder =  rightMotorMaster.getEncoder();
+
+        driveSensors.addEncoders(leftEncoder,rightEncoder);
         drivesSensors = driveSensors;
     }
 
