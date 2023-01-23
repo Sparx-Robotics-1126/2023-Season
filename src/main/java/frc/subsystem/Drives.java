@@ -5,7 +5,7 @@ import frc.robot.IO;
 import frc.drives.DrivesCommand;
 import frc.drives.DrivesOutput;
 import frc.drives.DrivesSensorInterface;
-
+import frc.drives.DrivesSensors;
 import frc.drives.commands.DriveBackwards;
 import frc.drives.commands.DriveForward;
 import frc.drives.commands.DriverControlled;
@@ -40,28 +40,30 @@ public class Drives extends Subsystem
     private DrivesSensorInterface drivesSensors;
 
     //Put motor initialization here.
-    private CANSparkMax rightMotorMaster;
-    private CANSparkMax leftMotorMaster;
+    public CANSparkMax RightMotorMaster;
+    public CANSparkMax LeftMotorMaster;
 
     /**
      * Main initializer for the drives subsystem. Called in Robot.java.
      * @param driveSensors The sensors to use for the drives subsystem.
      */
-    public Drives(DrivesSensorInterface driveSensors) 
+    public Drives() 
     {
-        rightMotorMaster = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+         //Initialize sensors.
+        drivesSensors = new DrivesSensors();
+        
+        RightMotorMaster = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
         CANSparkMax rightMotorSlave = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
-        configureMotor(rightMotorMaster, rightMotorSlave);
+        configureMotor(RightMotorMaster, rightMotorSlave);
 
-        leftMotorMaster = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+        LeftMotorMaster = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
         CANSparkMax leftMotorSlave = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
-        configureMotor(leftMotorMaster, leftMotorSlave);
+        configureMotor(LeftMotorMaster, leftMotorSlave);
 
-var leftEncoder = leftMotorMaster.getEncoder();
-var rightEncoder =  rightMotorMaster.getEncoder();
+        var leftEncoder = LeftMotorMaster.getEncoder();
+        var rightEncoder =  RightMotorMaster.getEncoder();
 
-        driveSensors.addEncoders(leftEncoder,rightEncoder);
-        drivesSensors = driveSensors;
+        drivesSensors.addEncoders(leftEncoder,rightEncoder);
     }
 
     /**
@@ -99,20 +101,20 @@ var rightEncoder =  rightMotorMaster.getEncoder();
     @Override
     void execute() 
     {
-        if (drivesCommand != null) 
-        {
-            DrivesOutput output = drivesCommand.execute();
+        // if (drivesCommand != null) 
+        // {
+        //     DrivesOutput output = drivesCommand.execute();
             
-            leftMotorMaster.set(output.getLeftMotor());
-            rightMotorMaster.set(-output.getRightMotor());
+        //     leftMotorMaster.set(output.getLeftMotor());
+        //     rightMotorMaster.set(-output.getRightMotor());
 
-            if (output.isDone()) 
-            {
-                leftMotorMaster.set(0);
-                rightMotorMaster.set(0);
-                drivesCommand = null;
-            }
-        }
+        //     if (output.isDone()) 
+        //     {
+        //         leftMotorMaster.set(0);
+        //         rightMotorMaster.set(0);
+        //         drivesCommand = null;
+        //     }
+        // }
     }
 
     /**

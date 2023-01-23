@@ -1,117 +1,40 @@
 package frc.robot;
 
-import frc.controllers.Controller;
-import frc.controllers.ControllerMappings;
-import frc.controllers.TeleoperatedController;
-import frc.controllers.AutonomousController;
-import frc.controllers.Axis;
-import frc.controllers.TestController;
-import frc.drives.DrivesSensorInterface;
-import frc.drives.DrivesSensors;
+
 import frc.subsystem.Drives;
 import frc.sensors.Limelight;
 import edu.wpi.first.wpilibj.TimedRobot;
-
-
-
-// import edu.wpi.first.wpilibj.Encoder;
-// import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-// import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via specialized Controllers.
  */
 public class Robot extends TimedRobot
 {
- //Sensors.
-    private DrivesSensorInterface drivesSensors;
   private DifferentialDrive m_myRobot;
   private final XboxController m_driverController = new XboxController(0);
-
-  private Axis driverLeftAxisY;
-  private Axis driverLeftAxisX;
-	private Axis driverRightAxis;
-  private Axis driverRightTrigger;
-
-  // private static final int leftDeviceID = 1; 
-  // private static final int rightDeviceID = 2;
-  private CANSparkMax m_leftMotorMaster;
-  private CANSparkMax m_rightMotorMaster; 
-
-    /**
-     * The maximum amount of current in amps that should be permitted during motor operation.
-     */
-    private static final int MAX_CURRENT = 25;
  
-    /**
-     * The ideal voltage that the motors should attempt to match.
-     */
-    private static final double NOMINAL_VOLTAGE = 12;
-  // private CANSparkMax m_leftMotorSlave;
-  // private CANSparkMax m_rightMotorSlave; 
-
-    //Possible controllers.
-    // private TeleoperatedController teleopControls;
-    // private AutonomousController autoControls;
-    // private TestController testControls;
+  private final Timer m_timer = new Timer();
     
-    //The robot subsystems.
-    // private static Drives drives;
-
-    //The acting Controller of the robot.
-    // private Controller currentController;
-
-   
-
-    // private static Limelight limelight;
-
-    //Keeps track of the current state of the robot.
-    //private RobotState state;
 
     @Override
     public void robotInit()
     {
-   
+      //Initialize Subsystems.
+      var drives = new Drives();
 
-        
-        //Initialize sensors.
-        drivesSensors = new DrivesSensors();
+      m_myRobot = new DifferentialDrive(drives.LeftMotorMaster, drives.RightMotorMaster);
 
-        m_rightMotorMaster = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-        CANSparkMax rightMotorSlave = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
-        // m_rightMotorMaster.setInverted(true);
-        configureMotor(m_rightMotorMaster, rightMotorSlave);
-
-        m_leftMotorMaster = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-        CANSparkMax leftMotorSlave = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
-        configureMotor(m_leftMotorMaster, leftMotorSlave);
-
-var leftEncoder = m_leftMotorMaster.getEncoder();
-var rightEncoder =  m_rightMotorMaster.getEncoder();
-
-drivesSensors.addEncoders(leftEncoder,rightEncoder);
-
-m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
-
-
-//define as driver and operator
-        // drivesSensors = driveSensors;
-
-    
         // limelight = new Limelight();
-        
-        //Initialize Subsystems.
-        // drives = new Drives(drivesSensors);
-        
+      
         // //Initialize Controllers.
         // teleopControls = new TeleoperatedController();
         // autoControls = new AutonomousController();
@@ -120,24 +43,7 @@ m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
         //Start subsystem threads.
         // new Thread(drives).start();
     }
-    private static void configureMotor(CANSparkMax master, CANSparkMax... slaves) 
-    {
-        master.restoreFactoryDefaults();
-        master.set(0);
-        master.setIdleMode(IdleMode.kCoast);
-        master.enableVoltageCompensation(NOMINAL_VOLTAGE);
-        master.setSmartCurrentLimit(MAX_CURRENT);
-        master.setOpenLoopRampRate(1);
-
-        for (CANSparkMax slave : slaves) 
-        {
-            slave.restoreFactoryDefaults();
-            slave.follow(master);
-            slave.setIdleMode(IdleMode.kCoast);
-            slave.setSmartCurrentLimit(MAX_CURRENT);
-            slave.setOpenLoopRampRate(1);
-        }
-    }
+  
     @Override
     public void robotPeriodic() {
        // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -167,15 +73,15 @@ m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // switch (m_autoSelected) {
-    //   case kCustomAuto:
-    //     // Put custom auto code here
-    //     break;
-    //   case kDefaultAuto:
-    //   default:
-    //     // Put default auto code here
-    //     break;
-    // }
+  // Drive for 2 seconds
+  if (m_timer.get() < 2.0) {
+    System.out.println("Moving forward");
+    // Drive forwards half speed, make sure to turn input squaring off
+    m_myRobot.tankDrive(0.5, 0.5, false);
+  } else {
+    System.out.println("Moving stopped");;
+    m_myRobot.stopMotor(); // stop robot
+  }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -187,47 +93,12 @@ m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
     // this line or comment it out.
    
     System.out.println("********** TELEOPERATED STARTED ************");
-    // teleopStarted();
-    // currentController = teleopControls;
-
-    // m_driverJoyStick = new Joystick(0);
-    //operatorJoystick = new Joystick(1);
-
-    // //DRIVES
-    // driverLeftAxisY = new Axis(m_driverJoyStick, ControllerMappings.XBOX_LEFT_Y, true);
-    // driverLeftAxisX = new Axis(m_driverJoyStick, ControllerMappings.XBOX_LEFT_X, true);
-    // driverRightAxis = new Axis(m_driverJoyStick, ControllerMappings.XBOX_RIGHT_Y, true);
-    // driverRightTrigger = new Axis(m_driverJoyStick, ControllerMappings.XBOX_R2, true);
-
-
-    // double leftAxisY = driverLeftAxisY.get();
-    // double leftAxisX = driverLeftAxisX.get() * 0.5;
-
-    // if (Math.abs(leftAxisY) >= 0.15 && leftAxisY < 0)
-    //   leftAxisX = -leftAxisX;
-
-    // // Robot.getDrives().setJoysticks(leftAxisY - leftAxisX, leftAxisY + leftAxisX);
-
-    //  //Trigger Sensitivity Control
-    //  if (driverRightTrigger.get() <= -0.8)
-    //  {
-    //    driverLeftAxisX.setSensitivity(0.4);
-    //    driverLeftAxisY.setSensitivity(0.4);
-    //    driverRightAxis.setSensitivity(0.4);
-    //  }
-    //  else
-    //  {
-    //    driverLeftAxisX.setSensitivity(1);
-    //    driverLeftAxisY.setSensitivity(1);
-    //    driverRightAxis.setSensitivity(1);
-    //  }
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_myRobot.tankDrive(m_driverController.getLeftY(), -m_driverController.getRightY());
-    // m_myRobot.tankDrive(-m_driverJoyStick.getZ(), -m_driverJoyStick.getX());
+    teleopStarted();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -274,6 +145,8 @@ m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
     {
     	// currentController = autoControls;
         // state = RobotState.AUTO;
+        m_timer.reset();
+        m_timer.start();
     }
 
     /**
@@ -281,9 +154,19 @@ m_myRobot = new DifferentialDrive(m_leftMotorMaster, m_rightMotorMaster);
      */
     private void teleopStarted()
     {
-    	// drives.startDriverControlled();
-    	// currentController = teleopControls;
-    	// state = RobotState.TELE;
+      double sensitivity =0.0;
+
+      if (m_driverController.getRightBumperPressed()){
+        
+        sensitivity = 0.5;
+        System.out.println("sensitivity set: " + sensitivity);
+      }
+      if (m_driverController.getRightBumperReleased()){
+        sensitivity = 0.0;
+        System.out.println("sensitivity set: " + sensitivity);
+      }
+    
+      m_myRobot.tankDrive(m_driverController.getLeftY() * sensitivity, -m_driverController.getRightY()*sensitivity);
     }
 
     /**
