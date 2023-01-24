@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,39 +19,67 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.drives.DrivesSensorInterface;
 import frc.robot.Constants;
+import frc.robot.IO;
 import frc.robot.Constants.DriveConstants;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 
 public class DriveSubsystem extends SubsystemBase  {
-    private final MotorControllerGroup m_leftMotors =
-      new MotorControllerGroup(
-          new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless),
-          new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless));
 
-          // The motors on the right side of the drive.
-  private final MotorControllerGroup m_rightMotors =
-  new MotorControllerGroup(
-      new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless),
-      new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless));
+    /**
+     * The maximum amount of current in amps that should be permitted during motor operation.
+     */
+    private static final int MAX_CURRENT = 25;
+ 
+    /**
+     * The ideal voltage that the motors should attempt to match.
+     */
+    private static final double NOMINAL_VOLTAGE = 12;
+
+  private DrivesSensorInterface drivesSensors;
+
+  //Put motor initialization here.
+  private final CANSparkMax m_rightMotors = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+  CANSparkMax rightMotorSlave = new CANSparkMax(IO.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+  
+  private final CANSparkMax m_leftMotors = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+  CANSparkMax leftMotorSlave = new CANSparkMax(IO.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);;
+  
+  //   private final MotorControllerGroup m_leftMotors =
+  //     new MotorControllerGroup(
+  //         new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless),
+  //         new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless));
+
+  //         // The motors on the right side of the drive.
+  // private final MotorControllerGroup m_rightMotors =
+  // new MotorControllerGroup(
+  //     new CANSparkMax(DriveConstants.kRightMotor1Port, MotorType.kBrushless),
+  //     new CANSparkMax(DriveConstants.kRightMotor2Port, MotorType.kBrushless));
 
         // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  // The left-side drive encoder
-  private final Encoder m_leftEncoder =
-      new Encoder(
-        DriveConstants.kRightEncoderPorts[0],
-          DriveConstants.kLeftEncoderPorts[1],
-          DriveConstants.kLeftEncoderReversed);
+// The left-side drive encoder
+  private final RelativeEncoder m_leftEncoder = m_leftMotors.getEncoder();
+  // // The right-side drive encoder
+  private final RelativeEncoder m_rightEncoder =m_rightMotors.getEncoder();
 
-  // The right-side drive encoder
-  private final Encoder m_rightEncoder =
-      new Encoder(
-          DriveConstants.kRightEncoderPorts[0],
-          DriveConstants.kRightEncoderPorts[1],
-          DriveConstants.kRightEncoderReversed);
+
+  // The left-side drive encoder
+  // private final Encoder m_leftEncoder =
+  //     new Encoder(
+  //       DriveConstants.kRightEncoderPorts[0],
+  //         DriveConstants.kLeftEncoderPorts[1],
+  //         DriveConstants.kLeftEncoderReversed);
+
+  // // The right-side drive encoder
+  // private final Encoder m_rightEncoder =
+  //     new Encoder(
+  //         DriveConstants.kRightEncoderPorts[0],
+  //         DriveConstants.kRightEncoderPorts[1],
+  //         DriveConstants.kRightEncoderReversed);
 
            // The gyro sensor
   private final Gyro m_gyro = new Pigeon2(10);
@@ -59,26 +88,53 @@ public class DriveSubsystem extends SubsystemBase  {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+
+    configureMotor(m_rightMotors, rightMotorSlave);
+    configureMotor(m_leftMotors, leftMotorSlave);
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightMotors.setInverted(true);
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
-    resetEncoders();
+    // resetEncoders();
     m_odometry =
         new DifferentialDriveOdometry(
-            m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+            m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
   }
+
+  /**
+     * Configures motors to follow one controller.
+     * @param master The controller to follow.
+     * @param slaves The controllers that should follow master.
+     */
+    private static void configureMotor(CANSparkMax master, CANSparkMax... slaves) 
+    {
+        master.restoreFactoryDefaults();
+        master.set(0);
+        master.setIdleMode(IdleMode.kCoast);
+        master.enableVoltageCompensation(NOMINAL_VOLTAGE);
+        master.setSmartCurrentLimit(MAX_CURRENT);
+        master.setOpenLoopRampRate(1);
+
+        for (CANSparkMax slave : slaves) 
+        {
+            slave.restoreFactoryDefaults();
+            slave.follow(master);
+            slave.setIdleMode(IdleMode.kCoast);
+            slave.setSmartCurrentLimit(MAX_CURRENT);
+            slave.setOpenLoopRampRate(1);
+        }
+    }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+        m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
   }
 
   /**
@@ -95,20 +151,20 @@ public class DriveSubsystem extends SubsystemBase  {
    *
    * @return The current wheel speeds.
    */
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
-  }
+  // public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  //   return new DifferentialDriveWheelSpeeds(m_leftEncoder.get(), m_rightEncoder.getRate());
+  // }
 
     /**
    * Resets the odometry to the specified pose.
    *
    * @param pose The pose to which to set the odometry.
    */
-  public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    m_odometry.resetPosition(
-        m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
-  }
+  // public void resetOdometry(Pose2d pose) {
+  //   resetEncoders();
+  //   m_odometry.resetPosition(
+  //       m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance(), pose);
+  // }
 
   /**
    * Drives the robot using arcade controls.
@@ -134,8 +190,8 @@ public class DriveSubsystem extends SubsystemBase  {
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    // m_leftEncoder.reset();
+    // m_rightEncoder.reset();
   }
 
   /**
@@ -144,7 +200,7 @@ public class DriveSubsystem extends SubsystemBase  {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
   }
 
   /**
@@ -152,7 +208,7 @@ public class DriveSubsystem extends SubsystemBase  {
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
+  public RelativeEncoder getLeftEncoder() {
     return m_leftEncoder;
   }
 
@@ -161,7 +217,7 @@ public class DriveSubsystem extends SubsystemBase  {
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
+  public RelativeEncoder getRightEncoder() {
     return m_rightEncoder;
   }
 

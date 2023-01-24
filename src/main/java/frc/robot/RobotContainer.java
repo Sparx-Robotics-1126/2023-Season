@@ -63,8 +63,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
      new JoystickButton(m_driverController, Button.kRightBumper.value)
-.onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
+.onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)))
 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
+new JoystickButton(m_driverController, Button.kA.value).onTrue(new InstantCommand(() -> 
+InitPigeon()));
+
+
+  }
+
+  private void InitPigeon(){
+    m_pigeon2subsystem.setYaw(0); 
+    m_pigeon2subsystem.setAccumZ(0);
   }
 private Command getTeleopCommand(){
     return m_reportingCommand;
@@ -77,5 +86,9 @@ private Command getTeleopCommand(){
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_reportingCommand;
+  }
+
+  public DriveSubsystem getDrives(){
+    return m_robotDrive;
   }
 }

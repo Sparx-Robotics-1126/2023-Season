@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -53,6 +54,9 @@ public class Robot extends TimedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 CommandScheduler.getInstance().run();
+SmartDashboard.putNumber("Position X", m_robotContainer.getDrives().getPose().getX());
+SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().getY());
+
     }
 
  /**
