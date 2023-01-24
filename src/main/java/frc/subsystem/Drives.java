@@ -14,10 +14,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 /**
  * Controls all drives behavior.
  */
-public class Drives extends Subsystem 
+public class Drives extends SubsystemBase 
 {
     /**
      * The maximum amount of current in amps that should be permitted during motor operation.
@@ -98,33 +100,33 @@ public class Drives extends Subsystem
         return drivesSensors;
     }
 
-    @Override
-    void execute() 
-    {
-        // if (drivesCommand != null) 
-        // {
-        //     DrivesOutput output = drivesCommand.execute();
+    // @Override
+    // void execute() 
+    // {
+    //     // if (drivesCommand != null) 
+    //     // {
+    //     //     DrivesOutput output = drivesCommand.execute();
             
-        //     leftMotorMaster.set(output.getLeftMotor());
-        //     rightMotorMaster.set(-output.getRightMotor());
+    //     //     leftMotorMaster.set(output.getLeftMotor());
+    //     //     rightMotorMaster.set(-output.getRightMotor());
 
-        //     if (output.isDone()) 
-        //     {
-        //         leftMotorMaster.set(0);
-        //         rightMotorMaster.set(0);
-        //         drivesCommand = null;
-        //     }
-        // }
-    }
+    //     //     if (output.isDone()) 
+    //     //     {
+    //     //         leftMotorMaster.set(0);
+    //     //         rightMotorMaster.set(0);
+    //     //         drivesCommand = null;
+    //     //     }
+    //     // }
+    // }
 
     /**
      * Signals when the current command is done executing (if applicable).
      */
-    @Override
-    public boolean isDone() 
-    {
-        return drivesCommand == null;
-    }
+    // @Override
+    // public boolean isDone() 
+    // {
+    //     return drivesCommand == null;
+    // }
 
     /**
      * Configures the joysticks that control the wheels of the robot.

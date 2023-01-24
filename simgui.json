@@ -1,17 +1,7 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "SPARK MAX [24]": {
-        "header": {
-          "open": true
-        }
-      }
-    }
-  },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/AUTONOMOUS_ROUTINE": "String Chooser"
+      "/FMSInfo": "FMSInfo"
     }
   }
 }

@@ -13,25 +13,27 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via specialized Controllers.
  */
 public class Robot extends TimedRobot
 {
-  private DifferentialDrive m_myRobot;
-  private final XboxController m_driverController = new XboxController(0);
+ 
  
   private final Timer m_timer = new Timer();
-    
+  private Command m_autonomousCommand;
+  
+  private RobotContainer m_robotContainer;
+  // private Command m_autonomousCommand;
 
     @Override
     public void robotInit()
     {
-      //Initialize Subsystems.
-      var drives = new Drives();
-
-      m_myRobot = new DifferentialDrive(drives.LeftMotorMaster, drives.RightMotorMaster);
+      m_robotContainer = new RobotContainer();
+      
 
         // limelight = new Limelight();
       
@@ -50,7 +52,7 @@ public class Robot extends TimedRobot
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-
+CommandScheduler.getInstance().run();
     }
 
  /**
@@ -74,14 +76,14 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousPeriodic() {
   // Drive for 2 seconds
-  if (m_timer.get() < 2.0) {
-    System.out.println("Moving forward");
-    // Drive forwards half speed, make sure to turn input squaring off
-    m_myRobot.tankDrive(0.5, 0.5, false);
-  } else {
-    System.out.println("Moving stopped");;
-    m_myRobot.stopMotor(); // stop robot
-  }
+  // if (m_timer.get() < 2.0) {
+  //   System.out.println("Moving forward");
+  //   // Drive forwards half speed, make sure to turn input squaring off
+  //   m_myRobot.tankDrive(-0.1, 0.1, false);
+  // } else {
+  //   System.out.println("Moving stopped");;
+  //   m_myRobot.stopMotor(); // stop robot
+  // }
   }
 
   /** This function is called once when teleop is enabled. */
@@ -93,6 +95,10 @@ public class Robot extends TimedRobot
     // this line or comment it out.
    
     System.out.println("********** TELEOPERATED STARTED ************");
+
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   /** This function is called periodically during operator control. */
@@ -118,6 +124,8 @@ public class Robot extends TimedRobot
                         System.out.println("********** TEST STARTED ************");
    // Cancels all running commands at the start of test mode.
   //  CommandScheduler.getInstance().cancelAll();
+   // Cancels all running commands at the start of test mode.
+   CommandScheduler.getInstance().cancelAll();
   
   }
 
@@ -145,8 +153,22 @@ public class Robot extends TimedRobot
     {
     	// currentController = autoControls;
         // state = RobotState.AUTO;
-        m_timer.reset();
-        m_timer.start();
+        // m_timer.reset();
+        // m_timer.start();
+
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+        /*
+         * String autoSelected = SmartDashboard.getString("Auto Selector",
+         * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+         * = new MyAutoCommand(); break; case "Default Auto": default:
+         * autonomousCommand = new ExampleCommand(); break; }
+         */
+    
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+          m_autonomousCommand.schedule();
+        }
     }
 
     /**
@@ -154,19 +176,21 @@ public class Robot extends TimedRobot
      */
     private void teleopStarted()
     {
-      double sensitivity =0.0;
+      double sensitivity =.5;
 
-      if (m_driverController.getRightBumperPressed()){
+      // if (m_driverController.getRightBumperPressed()){
         
-        sensitivity = 0.5;
-        System.out.println("sensitivity set: " + sensitivity);
-      }
-      if (m_driverController.getRightBumperReleased()){
-        sensitivity = 0.0;
-        System.out.println("sensitivity set: " + sensitivity);
-      }
-    
-      m_myRobot.tankDrive(m_driverController.getLeftY() * sensitivity, -m_driverController.getRightY()*sensitivity);
+      //   sensitivity = 0.25;
+      //   System.out.println("sensitivity set: " + sensitivity);
+      // }126
+
+      // if (m_driverController.getRightBumperReleased()){
+      //   sensitivity = 1.0;
+      //   System.out.println("sensitivity set: " + sensitivity);
+      // }
+      // System.out.println("sensitivity set: "+ m_driverController.getLeftY() * sensitivity);
+      
+      // m_myRobot.tankDrive(m_driverController.getLeftY() * sensitivity, -m_driverController.getRightY()*sensitivity);
     }
 
     /**
@@ -178,75 +202,8 @@ public class Robot extends TimedRobot
         // state = RobotState.TEST;
     }
 
-    /**
-     * The main loop of the robot. Ran every update/tick of the RIO.
-     */
-    // private void mainLoop() 
-    // {
-    //     switch (state)
-    //     {
-    //         case STANDBY:
-    //             return;
-    //         case AUTO:
-    //             //This can be used to give grive (drive?) control after done
-    //         	//Also used if semi-auto things are happening
-    //         	//NOTICE THERE IS NO BREAK HERE
-    //         case TELE:
-    //         case TEST:
-    //             currentController.execute(); //Calls the current controller (auto/teleop/test)
-    //     }
-    // }
 
-//     @Override
-//     public void startCompetition() 
-//     {
-//         System.out.println("******** ROBOT INIT ********");
-       
-//         DriverStationJNI.observeUserProgramStarting();
-//         robotInit();
 
-//         System.out.println("************ ENGAGING MAIN LOOP ************");
-// /*System.out.println("Robot disabled " + isDisabled() + " State: " + state);*/
-//         while (true)
-//         {
-//             if (!isDisabled())
-//             {
-//                 if (isAutonomous() && state != RobotState.AUTO)
-//                 {
-//                     System.out.println("********** AUTONOMOUS STARTED ************");
-//                     autoStarted();
-//                     DriverStationJNI.observeUserProgramAutonomous();
-//                 }
-//                 else if (isTeleop() && state != RobotState.TELE)
-//                 {
-//                     teleopStarted();
-//                     System.out.println("********** TELEOPERATED STARTED ************");
-//                     DriverStationJNI.observeUserProgramTeleop();
-//                 }
-//                 else if (isTest() && state != RobotState.TEST)
-//                 {
-//                     System.out.println("********** TEST STARTED ************");
-//                     testStarted();
-//                     DriverStationJNI.observeUserProgramTest();
-//                 }
-//             }
-//             else if (state != RobotState.STANDBY)
-//             {
-//                 System.out.println("********** ROBOT DISABLED ************");
-//                 disabledStarted();        
-//                 DriverStationJNI.observeUserProgramDisabled();
-//             }
-
-//             SmartDashboard.updateValues();
-//             mainLoop();
-//         }
-    // }
-
-    // @Override
-    // public void endCompetition() 
-    // {
-    
-    // }
     
     /**
      * @return The instance of the Drives subsystem currently in use by the robot. Null if the robot has not been initialized yet.
