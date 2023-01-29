@@ -1,11 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.TurnToAngleProfiled;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 
@@ -57,7 +62,34 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> _robotDrive.setMaxOutput(.5)))
         .onFalse(new InstantCommand(() -> _robotDrive.setMaxOutput(1)));
 
-    new JoystickButton(_driverController, Button.kA.value).onTrue(new InstantCommand(() -> _pigeon.reset()));
+    // new JoystickButton(_driverController, Button.kA.value).onTrue(new
+    // InstantCommand(() -> _pigeon.reset()));
+
+    // Stabilize robot to drive straight with gyro when left bumper is held
+    new JoystickButton(_driverController, Button.kLeftBumper.value)
+        .whileTrue(
+            new PIDCommand(
+                new PIDController(
+                    DriveConstants.kStabilizationP,
+                    DriveConstants.kStabilizationI,
+                    DriveConstants.kStabilizationD),
+                // Close the loop on the turn rate
+                _robotDrive::getTurnRate,
+                // Setpoint is 0
+                0,
+                // Pipe the output to the turning controls
+                output -> _robotDrive.tankDrive(-_driverController.getLeftY(), output),
+                // Require the robot drive
+                _robotDrive));
+
+    // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
+    new JoystickButton(_driverController, Button.kX.value)
+        .onTrue(new TurnToAngle(90, _robotDrive).withTimeout(5));
+
+    // Turn to -90 degrees with a profile when the Circle button is pressed, with a
+    // 5 second timeout
+    new JoystickButton(_driverController, Button.kA.value)
+        .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
   }
 
