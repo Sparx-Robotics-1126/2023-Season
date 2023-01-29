@@ -11,11 +11,12 @@ public final class IO
 	private IO() {}
 
 	//MOTORS
-	public static final int DRIVES_RIGHT_MOTOR_1			= 24;
-	public static final int DRIVES_RIGHT_MOTOR_2			= 26;
-	public static final int DRIVES_LEFT_MOTOR_1				= 27;
-	public static final int DRIVES_LEFT_MOTOR_2				= 25;
+	public static final int DRIVES_RIGHT_MOTOR_1			= 25;
+	public static final int DRIVES_RIGHT_MOTOR_2			= 27;
+	public static final int DRIVES_LEFT_MOTOR_1				= 24;
+	public static final int DRIVES_LEFT_MOTOR_2				= 26;
 
+	
 	
 	//SENSORS
 	public static final I2C.Port I2C_ONBOARD				= I2C.Port.kOnboard;

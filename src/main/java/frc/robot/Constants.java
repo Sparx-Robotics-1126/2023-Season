@@ -11,7 +11,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int Pigeon2ID = 1;
+    public static final int Pigeon2ID = 4;
 
     public static final int ZeroPigeonYaws = XboxController.Button.kA.value;
     public static final int AddPigeonYaws = XboxController.Button.kB.value;

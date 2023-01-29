@@ -54,10 +54,15 @@ public class Robot extends TimedRobot
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 CommandScheduler.getInstance().run();
-SmartDashboard.putNumber("Position X", m_robotContainer.getDrives().getPose().getX());
-SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().getY());
+var pitch = m_robotContainer.getPitch();
+SmartDashboard.putNumber("PITCH", pitch);
+
+// SmartDashboard.putNumber("Position X", m_robotContainer.getDrives().getPose().getX());
+// SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().getY());
 
     }
+
+
 
  /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -108,7 +113,8 @@ SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().ge
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    teleopStarted();
+    
+    // teleopStarted();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -160,7 +166,7 @@ SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().ge
         // m_timer.reset();
         // m_timer.start();
 
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+      //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -180,7 +186,8 @@ SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().ge
      */
     private void teleopStarted()
     {
-      double sensitivity =.5;
+
+      // double sensitivity =.5;
 
       // if (m_driverController.getRightBumperPressed()){
         
@@ -212,11 +219,11 @@ SmartDashboard.putNumber("Position Y", m_robotContainer.getDrives().getPose().ge
     /**
      * @return The instance of the Drives subsystem currently in use by the robot. Null if the robot has not been initialized yet.
      */
-    public static Drives getDrives()
-    {
-        // return drives;
-        return null;
-    }
+    // public static Drives getDrives()
+    // {
+    //     // return drives;
+    //     return null;
+    // }
 
 
 
