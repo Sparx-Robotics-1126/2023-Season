@@ -1,4 +1,4 @@
-package frc.subsystem;
+package frc.robot.subsystem;
 
 /**
  * An abstract class that provides the framework for all active systems on the robot.

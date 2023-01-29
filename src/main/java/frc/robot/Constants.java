@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 /**
@@ -11,6 +13,33 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  //MOTORS
+	public static final int DRIVES_RIGHT_MOTOR_1			= 25;
+	public static final int DRIVES_RIGHT_MOTOR_2			= 27;
+	public static final int DRIVES_LEFT_MOTOR_1				= 24;
+	public static final int DRIVES_LEFT_MOTOR_2				= 26;
+
+    /**
+   * The maximum amount of current in amps that should be permitted during motor
+   * operation.
+   */
+  public static final int MAX_CURRENT = 25;
+
+  /**
+   * The ideal voltage that the motors should attempt to match.
+   */
+  public static final double NOMINAL_VOLTAGE = 12;
+
+  public static final double DEAD_BAND = .5;
+
+	//XBOX Controller
+  public static final int XBOX_CONTROLLER_PORT = 0;
+	
+	//SENSORS
+	public static final I2C.Port I2C_ONBOARD				= I2C.Port.kOnboard;
+	public static final SerialPort.Port USB_ONBOARD 		= SerialPort.Port.kUSB;
+  
     public static final int Pigeon2ID = 4;
 
     public static final int ZeroPigeonYaws = XboxController.Button.kA.value;
