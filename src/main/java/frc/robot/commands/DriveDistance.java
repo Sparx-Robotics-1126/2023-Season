@@ -25,7 +25,7 @@ public class DriveDistance extends CommandBase {
     @Override
     public void initialize() {
       m_drive.resetEncoders();
-      m_drive.tankDrive(m_speed, 0);
+      m_drive.tankDrive(0, 0);
     }
   
     @Override

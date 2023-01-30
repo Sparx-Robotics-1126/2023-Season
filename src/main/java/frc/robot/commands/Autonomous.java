@@ -11,7 +11,7 @@ public class Autonomous extends SequentialCommandGroup {
     // addSequential(new DriveDistance(RobotPreferences.autoDriveDistance()));
     // addSequential(new DoDelay(RobotPreferences.autoDelay()));
     // addSequential(new ShooterUp());
-    addCommands(new DriveDistance(12,.5,drive));
+    addCommands(new DriveDistance(12,.25,drive));
    
   }
 }
