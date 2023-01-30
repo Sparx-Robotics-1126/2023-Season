@@ -102,6 +102,10 @@ public class DriveSubsystem extends SubsystemBase {
         _pigeon.getRotation2d(), _leftEncoder.getPosition(),
         _rightEncoder.getPosition());
     SmartDashboard.putNumber("ROBOT_ANGLE", _pigeon.getAngle());
+
+    SmartDashboard.putNumber("ROBOT_POSITION_X", getPose().getX());
+    SmartDashboard.putNumber("ROBOT_POSITION_Y", getPose().getY());
+    SmartDashboard.putNumber("ROBOT_AVG_DIST", getAverageEncoderDistance());
   }
 
   /**

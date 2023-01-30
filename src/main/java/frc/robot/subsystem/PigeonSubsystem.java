@@ -113,6 +113,8 @@ public class PigeonSubsystem extends SubsystemBase {
         _pigeon.getFaults(_pigeonFaults);
         SmartDashboard.putNumber("PITCH", getPitch());
         SmartDashboard.putNumber("PIGION_TEMP", getTemp());
+        SmartDashboard.putNumber("PIGION_ANGLE", getAngle());
+        SmartDashboard.putNumber("PIGION_RATE", getRate());
     }
 
     public String getFaultMessage() {
