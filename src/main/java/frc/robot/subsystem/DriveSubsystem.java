@@ -11,11 +11,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import frc.drives.DrivesSensorInterface;
+import frc.drives.DrivesSensors;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  // private DrivesSensorInterface _drivesSensors;
+  private DrivesSensorInterface _drivesSensors;
 
   // Put motor initialization here.
   private final CANSparkMax _rightMotors;
@@ -39,7 +41,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem(PigeonSubsystem pigeon) {
     _pigeon = pigeon;
     // Initialize sensors.
-    // _drivesSensors = new DrivesSensors();
+    _drivesSensors = new DrivesSensors();
     _rightMotors = new CANSparkMax(Constants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
     CANSparkMax rightMotorSlave = new CANSparkMax(Constants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
@@ -60,7 +62,8 @@ public class DriveSubsystem extends SubsystemBase {
     _leftEncoder = _leftMotors.getEncoder();
     _rightEncoder = _rightMotors.getEncoder();
 
-    // _drivesSensors.addEncoders(_leftEncoder,_rightEncoder);
+    _drivesSensors.addEncoders(_leftEncoder,_rightEncoder);
+    
 
     // resetEncoders();
     _odometry = new DifferentialDriveOdometry(_pigeon.getRotation2d(),

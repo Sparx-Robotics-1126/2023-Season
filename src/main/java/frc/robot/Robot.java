@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 // import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Autonomous;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -135,6 +136,7 @@ public class Robot extends TimedRobot {
    * Called when autonomous begins.
    */
   private void autoStarted() {
+    m_autonomousCommand = _robotContainer.getAutonomousCommand();
     // currentController = autoControls;
     // state = RobotState.AUTO;
     // m_timer.reset();

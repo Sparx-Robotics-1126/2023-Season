@@ -1,5 +1,6 @@
 package frc.drives;
 
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
 
 /**
@@ -130,5 +131,11 @@ public class DrivesSensors implements DrivesSensorInterface
 	public void setLeftJoystick(double value) 
 	{
 		leftJoystick = value;
+	}
+
+	@Override
+	public void addGyro(WPI_Pigeon2 pigeon) {
+		// TODO Auto-generated method stub
+		
 	}
 }

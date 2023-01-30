@@ -1,5 +1,6 @@
 package frc.drives;
 
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
 
 /**
@@ -8,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 public interface DrivesSensorInterface 
 {
 	void addEncoders(RelativeEncoder leftSpark, RelativeEncoder rightSpark);
+    void addGyro(WPI_Pigeon2 pigeon);
 	
     //Sensors.
     double getLeftEncoderDistance();
