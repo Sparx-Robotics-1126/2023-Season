@@ -1,10 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-// import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.commands.Autonomous;
+import frc.robot.commands.DriveDistance;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 
-  // private final Timer m_timer = new Timer();
+  private final Timer m_timer = new Timer();
   private Command m_autonomousCommand;
 
   private RobotContainer _robotContainer;
@@ -56,20 +57,27 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     System.out.println("********** AUTONOMOUS STARTED ************");
-    autoStarted();
+    m_autonomousCommand = _robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
+    // m_autonomousCommand =  _robotContainer.getAutonomousCommand();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    
     // Drive for 2 seconds
     // if (m_timer.get() < 2.0) {
     // System.out.println("Moving forward");
     // // Drive forwards half speed, make sure to turn input squaring off
-    // m_myRobot.tankDrive(-0.1, 0.1, false);
+    // _robotContainer.tankDrive(-0.1, .1, .1);
     // } else {
     // System.out.println("Moving stopped");;
-    // m_myRobot.stopMotor(); // stop robot
+    // _robotContainer.tankDrive(0, 0, 0); // stop robot
     // }
   }
 
@@ -92,7 +100,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     System.out.println("********** ROBOT DISABLED ************");
-    disabledStarted();
+    // disabledStarted();
   }
 
   /** This function is called periodically when disabled. */
@@ -126,33 +134,33 @@ public class Robot extends TimedRobot {
   public void simulationPeriodic() {
   }
 
-  private void disabledStarted() {
-    // state = RobotState.STANDBY;
-  }
+ 
 
   /**
    * Called when autonomous begins.
    */
-  private void autoStarted() {
-    m_autonomousCommand = _robotContainer.getAutonomousCommand();
-    // currentController = autoControls;
-    // state = RobotState.AUTO;
-    // m_timer.reset();
-    // m_timer.start();
+  // private void autoStarted() {
 
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
+  //   // m_autonomousCommand = _robotContainer.getAutonomousCommand();
+  //   // currentController = autoControls;
+  //   // state = RobotState.AUTO;
+  //   // m_timer.reset();
+  //   // m_timer.start();
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
+  //   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+  //   /*
+  //    * String autoSelected = SmartDashboard.getString("Auto Selector",
+  //    * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+  //    * = new MyAutoCommand(); break; case "Default Auto": default:
+  //    * autonomousCommand = new ExampleCommand(); break; }
+  //    */
+
+  //   // schedule the autonomous command (example)
+  //   if (m_autonomousCommand != null) {
+  //     m_autonomousCommand.schedule();
+  //   }
+  // }
 
 }

@@ -85,6 +85,10 @@ public final class Constants {
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
+    public static final double kAutoDriveForwardSpeed = 0.5;
+    public static final double kAutoDriveForwardDistance = 1.5;
+
+    public static final double kEncoderTick2Meter = 1.0 / 4096.0 * 0.1 * Math.PI;
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or
     // theoretically

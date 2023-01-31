@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import frc.drives.DrivesSensorInterface;
 import frc.drives.DrivesSensors;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -95,6 +96,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  public double getEncoderMeters() {
+    return (_leftEncoder.getPosition() + _rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
+}
+
+public void setMotors(double leftSpeed, double rightSpeed) {
+  _leftMotors.set(leftSpeed);
+  _rightMotors.set(-rightSpeed);
+}
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
@@ -218,6 +227,18 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return -_pigeon.getRate();
+  }
+
+  public DrivesSensorInterface getDriveSenors() {
+    return _drivesSensors;
+  }
+
+  public void driveDistance(double inches){
+    while (Math.abs(getAverageEncoderDistance()) <= inches) {
+      tankDrive(.1, .1);
+
+    }
+
   }
 
 }
