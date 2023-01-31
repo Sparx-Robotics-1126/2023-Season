@@ -19,6 +19,7 @@ import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveForwardCmd;
+import frc.robot.commands.DriveToPitch;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -119,7 +120,12 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
 
         return new SequentialCommandGroup(  new DriveForwardCmd(_robotDrive, 1));
-        // An ExampleCommand will run in autonomous
+
+       // return new SequentialCommandGroup(  new DriveToPitch(_robotDrive, .5),
+                                            // new DriveToPitch(_robotDrive, -.5));
+        
+        
+                                            // An ExampleCommand will run in autonomous
 
         // return new DriveForward(_robotDrive.getDriveSenors(),.15, 12);
         // return new DriveDistance(12, .2, _robotDrive);

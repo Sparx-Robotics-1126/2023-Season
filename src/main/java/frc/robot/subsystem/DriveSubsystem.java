@@ -238,7 +238,10 @@ public void setMotors(double leftSpeed, double rightSpeed) {
       tankDrive(.1, .1);
 
     }
+  }
 
+  public double getPitch(){
+    return _pigeon.getPitch();
   }
 
 }

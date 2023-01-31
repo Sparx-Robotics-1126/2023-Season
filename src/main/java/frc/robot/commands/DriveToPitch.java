@@ -1,5 +1,3 @@
-
-
 package frc.robot.commands;
 
 import frc.robot.Constants.DriveConstants;
@@ -7,13 +5,13 @@ import frc.robot.subsystem.DriveSubsystem;
 // import frc.robot.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DriveForwardCmd extends CommandBase {
+public class DriveToPitch extends CommandBase {
     private final DriveSubsystem _driveSubsystem;
-    private final double _distance;
+    private final double _pitch;
 
-    public DriveForwardCmd(DriveSubsystem driveSubsystem, double distanceMeters) {
-        _driveSubsystem = driveSubsystem;
-        _distance = driveSubsystem.getEncoderMeters() + distanceMeters;
+    public DriveToPitch(DriveSubsystem driveSubsystem, double pitch) {
+        this._driveSubsystem = driveSubsystem;
+        this._pitch = pitch;
         addRequirements(driveSubsystem);
     }
 
@@ -38,7 +36,7 @@ public class DriveForwardCmd extends CommandBase {
     @Override
     public boolean isFinished() {
       //  System.out.println("DriveForwardCmd finished!");
-        if (_driveSubsystem.getEncoderMeters() > _distance)
+        if (_driveSubsystem.getPitch() > _pitch)
             return true;
         else
             return false;

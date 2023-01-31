@@ -14,12 +14,15 @@ import com.ctre.phoenix.sensors.Pigeon2Configuration;
 
 public class PigeonSubsystem extends SubsystemBase {
     private final WPI_Pigeon2 _pigeon;
+
+    // private Pigeon2 _test;
     private static Pigeon2_Faults _pigeonFaults = new Pigeon2_Faults();
     // private BasePigeon m_basePigeon;
 
     public PigeonSubsystem() {
         _pigeon = new WPI_Pigeon2(Constants.Pigeon2ID);
         _pigeonFaults = new Pigeon2_Faults();
+        // _test = new Pigeon2(4);
         initPigeon();
     }
 
