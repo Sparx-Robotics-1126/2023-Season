@@ -162,6 +162,16 @@ public void setMotors(double leftSpeed, double rightSpeed) {
     DriveDifferential.tankDrive(leftY, rightY, true);
 
   }
+/**
+   * Drives the robot using arcade controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void arcadeDrive(double fwd, double rot) {
+    DriveDifferential.arcadeDrive(fwd, rot);
+  }
+
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
@@ -175,7 +185,7 @@ public void setMotors(double leftSpeed, double rightSpeed) {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (_leftEncoder.getPosition() + _rightEncoder.getPosition()) / 2.0;
+    return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2.0;
   }
 
   /**
@@ -195,6 +205,25 @@ public void setMotors(double leftSpeed, double rightSpeed) {
   public RelativeEncoder getRightEncoder() {
     return _rightEncoder;
   }
+
+
+	/**
+	 * @return The current distance that the left encoder is reporting.
+	 */
+
+	public double getLeftEncoderDistance() 
+	{
+		return _leftEncoder.getPosition() * DriveConstants.ENCODER_MULTIPLIER;
+	}
+
+/**
+	 * @return The current distance that the right encoder is reporting.
+	 */
+
+   public double getRightEncoderDistance() 
+   {
+     return _rightEncoder.getPosition() * -DriveConstants.ENCODER_MULTIPLIER;
+   }
 
   /**
    * Sets the max output of the drive. Useful for scaling the drive to drive more
@@ -226,7 +255,7 @@ public void setMotors(double leftSpeed, double rightSpeed) {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return -_pigeon.getRate();
+    return _pigeon.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   public DrivesSensorInterface getDriveSenors() {
@@ -243,5 +272,7 @@ public void setMotors(double leftSpeed, double rightSpeed) {
   public double getPitch(){
     return _pigeon.getPitch();
   }
+
+ 
 
 }

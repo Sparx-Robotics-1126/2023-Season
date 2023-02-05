@@ -88,6 +88,9 @@ public final class Constants {
     public static final double kAutoDriveForwardSpeed = 0.15;
     public static final double kAutoDriveForwardDistance = 1.5;
 
+
+    public static final double ENCODER_MULTIPLIER = 1.2;
+
     public static final double kEncoderTick2Meter = 1.0 / 4096.0 * 0.1 * Math.PI;
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or
@@ -102,6 +105,7 @@ public final class Constants {
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPDriveVel = 8.5;
+    public static boolean kGyroReversed = false;
   }
 
   public static final class OIConstants {

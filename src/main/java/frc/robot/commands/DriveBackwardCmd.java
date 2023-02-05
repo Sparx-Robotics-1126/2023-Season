@@ -5,7 +5,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystem.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DriveForwardCmd extends CommandBase {
+public class DriveBackwardCmd extends CommandBase {
     private final DriveSubsystem _driveSubsystem;
     // private final double _distance;
 
@@ -16,18 +16,18 @@ public class DriveForwardCmd extends CommandBase {
 
     // private final double REQUESTED_SPEED;
 
-    public DriveForwardCmd(DriveSubsystem driveSubsystem, double distance) {
+    public DriveBackwardCmd(DriveSubsystem driveSubsystem, double distance) {
 
         _driveSubsystem = driveSubsystem;
 
-        TARGET_DISTANCE = _driveSubsystem.getAverageEncoderDistance() + distance;
+        TARGET_DISTANCE = _driveSubsystem.getAverageEncoderDistance() - distance;
         // _distance = driveSubsystem.getEncoderMeters() + distanceMeters;
         addRequirements(driveSubsystem);
     }
 
     @Override
     public void initialize() {
-        // System.out.println("DriveForwardCmd started!");
+        // System.out.println("DriveBackwardCmd started!");
     }
 
     @Override
@@ -39,14 +39,13 @@ public class DriveForwardCmd extends CommandBase {
 
         leftSpeed = rightSpeed = distanceError * DISTANCE_kP * DriveConstants.kAutoDriveForwardSpeed;
 
-        if (leftSpeed > -1) {
+        if (leftSpeed < -1) {
             leftSpeed = -1;
             rightSpeed = -1;
         }
 
-        if (_driveSubsystem.getAverageEncoderDistance() > TARGET_DISTANCE - DISTANCE_DEADBAND) {
+        if (_driveSubsystem.getAverageEncoderDistance() < TARGET_DISTANCE - DISTANCE_DEADBAND) {
             _driveSubsystem.tankDrive(0, 0);
-            end(true);
         }
 
         _driveSubsystem.tankDrive(leftSpeed, rightSpeed);

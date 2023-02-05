@@ -14,6 +14,7 @@ import frc.drives.commands.DriveForward;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.BalanceCmd;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
@@ -75,21 +76,21 @@ public class RobotContainer {
         // InstantCommand(() -> _pigeon.reset()));
 
         // Stabilize robot to drive straight with gyro when left bumper is held
-        // new JoystickButton(_driverController, Button.kY.value)
-        //         .whileTrue(
-        //                 new PIDCommand(
-        //                         new PIDController(
-        //                                 DriveConstants.kStabilizationP,
-        //                                 DriveConstants.kStabilizationI,
-        //                                 DriveConstants.kStabilizationD),
-        //                         // Close the loop on the turn rate
-        //                         _robotDrive::getTurnRate,
-        //                         // Setpoint is 0
-        //                         0,
-        //                         // Pipe the output to the turning controls
-        //                         output -> _robotDrive.tankDrive(-_driverController.getLeftY(), output),
-        //                         // Require the robot drive
-        //                         _robotDrive));
+        new JoystickButton(_driverController, Button.kY.value)
+                .whileTrue(
+                        new PIDCommand(
+                                new PIDController(
+                                        DriveConstants.kStabilizationP,
+                                        DriveConstants.kStabilizationI,
+                                        DriveConstants.kStabilizationD),
+                                // Close the loop on the turn rate
+                                _robotDrive::getTurnRate,
+                                // Setpoint is 0
+                                0,
+                                // Pipe the output to the turning controls
+                                output -> _robotDrive.arcadeDrive(-_driverController.getLeftY(), output),
+                                // Require the robot drive
+                                _robotDrive));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         // new JoystickButton(_driverController, Button.kX.value)
@@ -100,6 +101,10 @@ public class RobotContainer {
         // // 5 second timeout
         // new JoystickButton(_driverController, Button.kB.value)
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
+
+        new JoystickButton(_driverController, Button.kA.value)
+        .onTrue(new BalanceCmd(_robotDrive));
+
 
     }
 
