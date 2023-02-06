@@ -124,7 +124,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return new SequentialCommandGroup(  new DriveForwardCmd(_robotDrive, 1));
+        return new SequentialCommandGroup(  new DriveForwardCmd(_robotDrive, 1,20));
 
        // return new SequentialCommandGroup(  new DriveToPitch(_robotDrive, .5),
                                             // new DriveToPitch(_robotDrive, -.5));
