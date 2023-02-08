@@ -44,6 +44,7 @@ public class DriveForwardCmd extends CommandBase {
         if (_timer != null) {
             _timer.start();
         }
+        
     }
 
     @Override

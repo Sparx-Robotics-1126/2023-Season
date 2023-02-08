@@ -15,13 +15,19 @@ import frc.robot.Constants.DriveConstants;
 // import frc.robot.commands.TurnToAngleProfiled;
 // import frc.robot.commands.Autonomous;
 import frc.robot.commands.BalanceCmd;
+import frc.robot.commands.DriveDistance;
 // import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 // import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveForwardCmd;
+import frc.robot.commands.DriveToPitch;
 // import frc.robot.commands.DriveToPitch;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+// import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+// import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -34,9 +40,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem _pigeon;
-    private final DriveSubsystem _robotDrive;
-    private final XboxController _driverController;
+    // BasePigeonSimCollection m_pigeonSim = _pigeon.getSimCollection();
+    private final DriveSubsystem m_robotDrive;
+    private final XboxController m_driverController;
 
+    private double driveSpeed = 0.9;
+    private double turnSpeed = 0.8;
+    private double triggerSpeed = 0.1; 
   
 
     /**
@@ -44,18 +54,20 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
-        _driverController = new XboxController(Constants.XBOX_CONTROLLER_PORT);
+        m_driverController = new XboxController(Constants.XBOX_CONTROLLER_PORT);
 
         _pigeon = new PigeonSubsystem();
 
         configureButtonBindings();
-        _robotDrive = new DriveSubsystem(_pigeon);
-        _robotDrive.setDefaultCommand(
+        
+        m_robotDrive = new DriveSubsystem(_pigeon);
+        m_robotDrive.setMaxOutput(driveSpeed);
+        m_robotDrive.setDefaultCommand(
 
                 new RunCommand(
-                        () -> _robotDrive.tankDrive(
-                                -(_driverController.getLeftY()), _driverController.getRightY()),
-                        _robotDrive));
+                        () -> m_robotDrive.tankDrive(
+                                -(m_driverController.getLeftY()), m_driverController.getRightY()),
+                        m_robotDrive));
 
     }
 
@@ -68,15 +80,15 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        new JoystickButton(_driverController, Button.kRightBumper.value)
-                .whileTrue(new InstantCommand(() -> _robotDrive.setMaxOutput(.1)))
-                .onFalse(new InstantCommand(() -> _robotDrive.setMaxOutput(1)));
+        new JoystickButton(m_driverController, Button.kRightBumper.value)
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(triggerSpeed)))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(driveSpeed)));
 
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
         // InstantCommand(() -> _pigeon.reset()));
 
         // Stabilize robot to drive straight with gyro when left bumper is held
-        new JoystickButton(_driverController, Button.kY.value)
+        new JoystickButton(m_driverController, Button.kY.value)
                 .whileTrue(
                         new PIDCommand(
                                 new PIDController(
@@ -84,13 +96,13 @@ public class RobotContainer {
                                         DriveConstants.kStabilizationI,
                                         DriveConstants.kStabilizationD),
                                 // Close the loop on the turn rate
-                                _robotDrive::getTurnRate,
+                                m_robotDrive::getTurnRate,
                                 // Setpoint is 0
                                 0,
                                 // Pipe the output to the turning controls
-                                output -> _robotDrive.arcadeDrive(-_driverController.getLeftY(), output),
+                                output -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), output),
                                 // Require the robot drive
-                                _robotDrive));
+                                m_robotDrive));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         // new JoystickButton(_driverController, Button.kX.value)
@@ -102,15 +114,18 @@ public class RobotContainer {
         // new JoystickButton(_driverController, Button.kB.value)
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
-        new JoystickButton(_driverController, Button.kA.value)
-        .onTrue(new BalanceCmd(_robotDrive));
+        // new JoystickButton(m_driverController, Button.kA.value)
+        // .onTrue(new BalanceCmd(m_robotDrive));
+
+        new JoystickButton(m_driverController, Button.kA.value)
+        .onTrue(new DriveToPitch(m_robotDrive,.5,1));
 
 
     }
 
     public void tankDrive(double left, double right, double speed){
-        _robotDrive.setMaxOutput(speed);
-        _robotDrive.tankDrive(left, right);
+        m_robotDrive.setMaxOutput(speed);
+        m_robotDrive.tankDrive(left, right);
     }
 
     public double getPitch() {
@@ -124,7 +139,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return new SequentialCommandGroup(  new DriveForwardCmd(_robotDrive, 1,20));
+        return new SequentialCommandGroup(  new DriveDistance(m_robotDrive, 5,.5));
 
        // return new SequentialCommandGroup(  new DriveToPitch(_robotDrive, .5),
                                             // new DriveToPitch(_robotDrive, -.5));
@@ -138,7 +153,7 @@ public class RobotContainer {
     }
 
     public DriveSubsystem getDrives() {
-        return _robotDrive;
+        return m_robotDrive;
     }
 
 }

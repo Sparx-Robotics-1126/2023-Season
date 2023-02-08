@@ -7,6 +7,10 @@ import com.ctre.phoenix.sensors.Pigeon2_Faults;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
+
 import frc.robot.Constants;
 // import com.ctre.phoenixpro.hardware.Pigeon2;
 
@@ -36,6 +40,8 @@ public class PigeonSubsystem extends SubsystemBase {
         /* Speed up signals to an appropriate rate */
         // _pigeon2.getYaw().setUpdateFrequency(100);
         // _pigeon2.getPitch().setUpdateFrequency(100);
+        _pigeon.reset();
+        _pigeon.setYaw(0);
         _pigeon.getYaw();
         _pigeon.getPitch();
         // _pigeon2.setStatusFramePeriod(0,100 )
@@ -114,10 +120,11 @@ public class PigeonSubsystem extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         _pigeon.getFaults(_pigeonFaults);
-        SmartDashboard.putNumber("PITCH", getPitch());
-        SmartDashboard.putNumber("PIGION_TEMP", getTemp());
-        SmartDashboard.putNumber("PIGION_ANGLE", getAngle());
-        SmartDashboard.putNumber("PIGION_RATE", getRate());
+        SmartDashboard.putNumber("PIGEON_PITCH", getPitch());
+        SmartDashboard.putNumber("PIGEON_TEMP", getTemp());
+        SmartDashboard.putNumber("PIGEON_ANGLE", getAngle());
+        SmartDashboard.putNumber("PIGEON_RATE", getRate());
+        SmartDashboard.putNumber("PIGEON_YAW", getYaw());
     }
 
     public String getFaultMessage() {

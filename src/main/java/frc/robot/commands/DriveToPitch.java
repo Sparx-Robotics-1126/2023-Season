@@ -1,50 +1,64 @@
 package frc.robot.commands;
 
-import frc.robot.Constants.DriveConstants;
+// import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystem.DriveSubsystem;
 // import frc.robot.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveToPitch extends CommandBase {
-    private final DriveSubsystem _driveSubsystem;
-    private final double _pitch;
+    private final DriveSubsystem m_drive;
+    private double _pitch;
+    private double _startAngle;
+    private double _speed;
 
-    public DriveToPitch(DriveSubsystem driveSubsystem, double pitch) {
-        _driveSubsystem = driveSubsystem;
+    public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch) {
+        m_drive = driveSubsystem;
         _pitch = pitch;
+        _speed = -speed;
         addRequirements(driveSubsystem);
     }
 
     @Override
     public void initialize() {
-        // System.out.println("DriveForwardCmd started!");
+        m_drive.resetEncoders();
+        _startAngle = m_drive.getHeading();
     }
 
     @Override
     public void execute() {
-       // System.out.println("DriveForwardCmd executing!");
+        double turnValue = 0;
+        double currentAngle = m_drive.getHeading();
+        if (currentAngle > _startAngle + 2) {
+            turnValue = 0.3;
 
-       if (_driveSubsystem.getPitch() > _pitch){
-        _driveSubsystem.tankDrive(0, 0);
-        end(true);
-       }
+        } else if (currentAngle > _startAngle + 0.5) {
+            turnValue = 0.2;
+        } else if (currentAngle < _startAngle - 0.5) {
+            turnValue = -0.2;
+        } else if (currentAngle < _startAngle - 2) {
+            turnValue = -0.3;
+        } else {
+            turnValue = 0;
+        }
+        double moveValue = _speed;
 
-       _driveSubsystem.tankDrive(DriveConstants.kAutoDriveForwardSpeed, DriveConstants.kAutoDriveForwardSpeed);
+        m_drive.arcadeDrive(moveValue, turnValue);
+
+        // m_drive.tankDrive(DriveConstants.kAutoDriveForwardSpeed,
+        // DriveConstants.kAutoDriveForwardSpeed);
     }
 
-    // @Override
-    // public void end(boolean interrupted) {
-    //    // System.out.println("DriveForwardCmd ended!");
-    //    _driveSubsystem.setMotors(0, 0);
-    //     System.out.println("DriveForwardCmd ended!");
-    // }
+    @Override
+    public void end(boolean interrupted) {
+        m_drive.stop();
+    }
 
-    // @Override
-    // public boolean isFinished() {
-    //   //  System.out.println("DriveForwardCmd finished!");
-    //     if (_driveSubsystem.getPitch() > _pitch)
-    //         return true;
-    //     else
-    //         return false;
-    // }
+    @Override
+    public boolean isFinished() {
+        // System.out.println("DriveForwardCmd finished!");
+        if (m_drive.getPitch() > _pitch)
+            return true;
+        else
+            return false;
+    }
 }
