@@ -19,7 +19,7 @@ public class BalanceCmd extends PIDCommand {
                 driveSubsystem);
 
                 getController().enableContinuousInput(-0.5, 0.5);
-                getController().setTolerance(-.1,.1);
+                getController().setTolerance(-1,1);
         
     }
 

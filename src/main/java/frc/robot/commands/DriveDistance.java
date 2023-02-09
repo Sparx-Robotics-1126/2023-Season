@@ -20,7 +20,7 @@ public class DriveDistance extends CommandBase {
      */
     public DriveDistance(DriveSubsystem drive,double distanceInMeters, double speed ) {
       this.distance = distanceInMeters;
-      this.speed = -speed;
+     this.speed = speed;
       m_drive = drive;
       addRequirements(drive);
     

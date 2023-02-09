@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(PigeonSubsystem pigeon) {
-    stop();
+    //stop();
     m_pigeon = pigeon;
 
     rightMotors = new CANSparkMax(Constants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
     configureMotor(leftMotors, leftMotorSlave);
 
     m_driveDifferential = new DifferentialDrive(leftMotors, rightMotors);
-    m_driveDifferential.setDeadband(Constants.DEAD_BAND);
+    //m_driveDifferential.setDeadband(Constants.DEAD_BAND);
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
@@ -75,8 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    _drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
-
+    //_drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
+rightMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
     leftMotors.burnFlash();
@@ -307,6 +307,7 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Stops all the Drive subsytem motors
    */
+
   public void stop() {
     leftMotors.stopMotor();
     rightMotors.stopMotor();

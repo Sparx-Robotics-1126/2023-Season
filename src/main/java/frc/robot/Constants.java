@@ -67,7 +67,7 @@ public final class Constants {
         kTrackwidthMeters);
 
     public static final int kEncoderCPR = 1024;
-    public static final double kGearRatio = 10.71;
+    public static final double kGearRatio =8.45;// 10.71;
     public static final double kWheelDiameterInches = 6;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(kWheelDiameterInches);
     public static final double kEncoderDistanceConversionFactor = ((double) (Math.PI*kWheelDiameterMeters)/(kGearRatio));

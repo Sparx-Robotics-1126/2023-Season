@@ -46,8 +46,7 @@ public class RobotContainer {
 
     private double driveSpeed = 0.9;
     private double turnSpeed = 0.8;
-    private double triggerSpeed = 0.1; 
-  
+    private double triggerSpeed = 0.1;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -58,8 +57,6 @@ public class RobotContainer {
 
         _pigeon = new PigeonSubsystem();
 
-        configureButtonBindings();
-        
         m_robotDrive = new DriveSubsystem(_pigeon);
         m_robotDrive.setMaxOutput(driveSpeed);
         m_robotDrive.setDefaultCommand(
@@ -68,6 +65,8 @@ public class RobotContainer {
                         () -> m_robotDrive.tankDrive(
                                 -(m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
+
+        configureButtonBindings();
 
     }
 
@@ -88,7 +87,7 @@ public class RobotContainer {
         // InstantCommand(() -> _pigeon.reset()));
 
         // Stabilize robot to drive straight with gyro when left bumper is held
-        new JoystickButton(m_driverController, Button.kY.value)
+        new JoystickButton(m_driverController, Button.kLeftBumper.value)
                 .whileTrue(
                         new PIDCommand(
                                 new PIDController(
@@ -114,16 +113,15 @@ public class RobotContainer {
         // new JoystickButton(_driverController, Button.kB.value)
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
-        // new JoystickButton(m_driverController, Button.kA.value)
-        // .onTrue(new BalanceCmd(m_robotDrive));
+        new JoystickButton(m_driverController, Button.kY.value)
+        .whileTrue(new BalanceCmd(m_robotDrive));
 
         new JoystickButton(m_driverController, Button.kA.value)
-        .onTrue(new DriveToPitch(m_robotDrive,.5,1));
-
+                .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
 
     }
 
-    public void tankDrive(double left, double right, double speed){
+    public void tankDrive(double left, double right, double speed) {
         m_robotDrive.setMaxOutput(speed);
         m_robotDrive.tankDrive(left, right);
     }
@@ -139,13 +137,14 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return new SequentialCommandGroup(  new DriveDistance(m_robotDrive, 5,.5));
+        return new SequentialCommandGroup(new DriveDistance(m_robotDrive, 2, .8),
+        new DriveToPitch(m_robotDrive, .2, 1),
+        new DriveToPitch(m_robotDrive, .2, -1));
 
-       // return new SequentialCommandGroup(  new DriveToPitch(_robotDrive, .5),
-                                            // new DriveToPitch(_robotDrive, -.5));
-        
-        
-                                            // An ExampleCommand will run in autonomous
+        // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
+        // new DriveToPitch(_robotDrive, -.5));
+
+        // An ExampleCommand will run in autonomous
 
         // return new DriveForward(_robotDrive.getDriveSenors(),.15, 12);
         // return new DriveDistance(12, .2, _robotDrive);
