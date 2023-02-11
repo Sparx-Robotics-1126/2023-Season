@@ -76,7 +76,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
     //_drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
-rightMotors.setInverted(true);
+    leftMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
     leftMotors.burnFlash();
@@ -130,10 +130,10 @@ rightMotors.setInverted(true);
     return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
   }
 
-  public void setMotors(double leftSpeed, double rightSpeed) {
-    leftMotors.set(leftSpeed);
-    rightMotors.set(-rightSpeed);
-  }
+  // public void setMotors(double leftSpeed, double rightSpeed) {
+  //   leftMotors.set(leftSpeed);
+  //   rightMotors.set(-rightSpeed);
+  // }
 
 
   /**

@@ -63,9 +63,17 @@ public class RobotContainer {
 
                 new RunCommand(
                         () -> m_robotDrive.tankDrive(
-                                -(m_driverController.getLeftY()), m_driverController.getRightY()),
+                                (m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
 
+
+                        // m_robotDrive.setDefaultCommand(
+
+                        // new PIDCommand(
+                        //     joystickPID,
+                        //     m_robotDrive::getEncoderMeters,
+                        //     output -> m_robotDrive.tankDrive(m_driverController.getLeftY()), m_driverController.getRightY()),
+                        //     m_robotDrive);
         configureButtonBindings();
 
     }
@@ -137,9 +145,16 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return new SequentialCommandGroup(new DriveDistance(m_robotDrive, 2, .8),
-        new DriveToPitch(m_robotDrive, .2, 1),
-        new DriveToPitch(m_robotDrive, .2, -1));
+        // return new SequentialCommandGroup(
+        //     new DriveDistance(m_robotDrive, 2, .8),
+        //     new DriveToPitch(m_robotDrive, .2, 1),
+        //     new DriveToPitch(m_robotDrive, .2, -1)
+        //     );
+
+            return new SequentialCommandGroup(
+                new DriveToPitch(m_robotDrive, .8, 10),
+                new DriveToPitch(m_robotDrive, .2, -5),
+                new DriveToPitch(m_robotDrive, -.2, 0));
 
         // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
         // new DriveToPitch(_robotDrive, -.5));
