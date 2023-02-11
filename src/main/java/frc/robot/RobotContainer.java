@@ -43,6 +43,7 @@ public class RobotContainer {
     // BasePigeonSimCollection m_pigeonSim = _pigeon.getSimCollection();
     private final DriveSubsystem m_robotDrive;
     private final XboxController m_driverController;
+    private final XboxController m_operatorController;
 
     private double driveSpeed = 0.9;
     private double turnSpeed = 0.8;
@@ -66,7 +67,7 @@ public class RobotContainer {
                                 -(m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
 
-        configureButtonBindings();
+                        configureDriverButtonBindings();
 
     }
 
@@ -78,7 +79,7 @@ public class RobotContainer {
      * it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {
+    private void configureDriverButtonBindings() {
         new JoystickButton(m_driverController, Button.kRightBumper.value)
                 .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(triggerSpeed)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(driveSpeed)));
@@ -113,11 +114,15 @@ public class RobotContainer {
         // new JoystickButton(_driverController, Button.kB.value)
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
-        new JoystickButton(m_driverController, Button.kY.value)
-        .whileTrue(new BalanceCmd(m_robotDrive));
+        //new JoystickButton(m_driverController, Button.kY.value)
+       // .whileTrue(new BalanceCmd(m_robotDrive));
 
-        new JoystickButton(m_driverController, Button.kA.value)
-                .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
+        //new JoystickButton(m_driverController, Button.kA.value)
+             //   .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
+
+    }
+
+    private void configureOperatorButtons(){
 
     }
 
@@ -138,8 +143,8 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
 
         return new SequentialCommandGroup(new DriveDistance(m_robotDrive, 2, .8),
-        new DriveToPitch(m_robotDrive, .2, 1),
-        new DriveToPitch(m_robotDrive, .2, -1));
+                                    new DriveToPitch(m_robotDrive, .2, 1),
+                                    new DriveToPitch(m_robotDrive, .2, -1));
 
         // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
         // new DriveToPitch(_robotDrive, -.5));
