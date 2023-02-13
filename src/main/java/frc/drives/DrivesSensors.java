@@ -4,10 +4,10 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
 
 /**
- * Class for interfacing with the various sensors of the Drives subsystem (e.g. encoders).
+ * Class for interfacing with the various sensors of the Drives subsystem (e.g.
+ * encoders).
  */
-public class DrivesSensors implements DrivesSensorInterface 
-{
+public class DrivesSensors implements DrivesSensorInterface {
 	private final double MULTIPLIER = 1.2;
 
 	private RelativeEncoder rightEncoder;
@@ -15,34 +15,33 @@ public class DrivesSensors implements DrivesSensorInterface
 
 	private double rightJoystick;
 	private double leftJoystick;
-	
+
 	/**
-	 * Creates a new object for interfacing with the various sensors of the Drives subsystem (e.g. encoders).
+	 * Creates a new object for interfacing with the various sensors of the Drives
+	 * subsystem (e.g. encoders).
 	 */
-	public DrivesSensors() 
-	{
+	public DrivesSensors() {
 		rightJoystick = 0;
 		leftJoystick = 0;
 	}
-	
+
 	/**
 	 * Adds the left and right encoders of the motor to this DrivesSensors object.
-	 * @param leftSpark The left encoder of the motor.
+	 * 
+	 * @param leftSpark  The left encoder of the motor.
 	 * @param rightSpark The right encoder of the motor.
 	 */
 	@Override
-	public void addEncoders(RelativeEncoder leftSpark, RelativeEncoder rightSpark) 
-	{
+	public void addEncoders(RelativeEncoder leftSpark, RelativeEncoder rightSpark) {
 		this.leftEncoder = leftSpark;
 		this.rightEncoder = rightSpark;
 	}
-	
+
 	/**
 	 * @return The current distance that the left encoder is reporting.
 	 */
 	@Override
-	public double getLeftEncoderDistance() 
-	{
+	public double getLeftEncoderDistance() {
 		return leftEncoder.getPosition() * MULTIPLIER;
 	}
 
@@ -50,8 +49,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The current speed that the left encoder is reporting.
 	 */
 	@Override
-	public double getLeftEncoderSpeed() 
-	{
+	public double getLeftEncoderSpeed() {
 		return leftEncoder.getVelocity();
 	}
 
@@ -59,8 +57,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The current distance that the right encoder is reporting.
 	 */
 	@Override
-	public double getRightEncoderDistance() 
-	{
+	public double getRightEncoderDistance() {
 		return rightEncoder.getPosition() * -MULTIPLIER;
 	}
 
@@ -68,8 +65,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The current speed that the right encoder is reporting.
 	 */
 	@Override
-	public double getRightEncoderSpeed() 
-	{
+	public double getRightEncoderSpeed() {
 		return -rightEncoder.getVelocity();
 	}
 
@@ -77,8 +73,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The average of both the right and left encoder distances.
 	 */
 	@Override
-	public double getAverageEncoderDistance() 
-	{
+	public double getAverageEncoderDistance() {
 		return (getRightEncoderDistance() + getLeftEncoderDistance()) / 2;
 	}
 
@@ -86,8 +81,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The average of both the right and left encoder speeds.
 	 */
 	@Override
-	public double getAverageEncoderSpeed() 
-	{
+	public double getAverageEncoderSpeed() {
 		return (getRightEncoderSpeed() + getLeftEncoderSpeed()) / 2;
 	}
 
@@ -99,8 +93,7 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The right joystick's set value.
 	 */
 	@Override
-	public double getRightJoyStick() 
-	{
+	public double getRightJoyStick() {
 		return rightJoystick;
 	}
 
@@ -108,34 +101,36 @@ public class DrivesSensors implements DrivesSensorInterface
 	 * @return The left joystick's set value.
 	 */
 	@Override
-	public double getLeftJoyStick() 
-	{
+	public double getLeftJoyStick() {
 		return leftJoystick;
 	}
 
 	/**
 	 * Sets the value of the right joystick.
+	 * 
 	 * @param value The value to set.
 	 */
 	@Override
-	public void setRightJoystick(double value) 
-	{
+	public void setRightJoystick(double value) {
 		rightJoystick = value;
 	}
 
 	/**
 	 * Sets the value of the left joystick.
+	 * 
 	 * @param value The value to set.
 	 */
 	@Override
-	public void setLeftJoystick(double value) 
-	{
+	public void setLeftJoystick(double value) {
 		leftJoystick = value;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void addGyro(WPI_Pigeon2 pigeon) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
