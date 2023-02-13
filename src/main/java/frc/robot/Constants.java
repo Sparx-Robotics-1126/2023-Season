@@ -25,7 +25,14 @@ public final class Constants {
   public static final int DRIVES_RIGHT_MOTOR_2 = 27;
   public static final int DRIVES_LEFT_MOTOR_1 = 24;
   public static final int DRIVES_LEFT_MOTOR_2 = 26;
+  
+  public static final int ELEVATIONS_LEFT_MOTOR = 28;
+  public static final int ELEVATIONS_RIGHT_MOTOR = 29;
+  public static final int EXTENDERS_LEFT_MOTOR = 30;
+  public static final int EXTENDERS_RIGHT_MOTOR = 31;
 
+  
+  
   /**
    * The maximum amount of current in amps that should be permitted during motor
    * operation.
