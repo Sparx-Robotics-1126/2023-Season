@@ -130,6 +130,11 @@ public class RobotContainer {
 
     }
 
+    /**
+     * @param left
+     * @param right
+     * @param speed
+     */
     public void tankDrive(double left, double right, double speed) {
         m_robotDrive.setMaxOutput(speed);
         m_robotDrive.tankDrive(left, right);

@@ -53,12 +53,20 @@ public class DriveDistance extends CommandBase {
     m_drive.arcadeDrive(moveValue, turnValue);
   }
 
+  
+  /** 
+   * @param interrupted
+   */
   @Override
   public void end(boolean interrupted) {
     // m_drive.stop();
     m_drive.arcadeDrive(0, 0);
   }
 
+  
+  /** 
+   * @return boolean
+   */
   @Override
   public boolean isFinished() {
     var finished = false;

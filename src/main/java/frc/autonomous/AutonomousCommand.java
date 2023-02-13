@@ -15,6 +15,10 @@ public abstract class AutonomousCommand
         execute();
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public final boolean hasRan()
     {
         return ran;

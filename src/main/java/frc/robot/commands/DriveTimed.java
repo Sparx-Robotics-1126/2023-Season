@@ -29,6 +29,10 @@ public class DriveTimed extends CommandBase {
   public void execute() {
   }
 
+  
+  /** 
+   * @param interrupted
+   */
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -36,6 +40,10 @@ public class DriveTimed extends CommandBase {
 
   }
 
+  
+  /** 
+   * @return boolean
+   */
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

@@ -33,6 +33,10 @@ public class TurnToAngle extends PIDCommand {
         .setTolerance(DriveConstants.kTurnToleranceDeg, DriveConstants.kTurnRateToleranceDegPerS);
   }
 
+  
+  /** 
+   * @return boolean
+   */
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.

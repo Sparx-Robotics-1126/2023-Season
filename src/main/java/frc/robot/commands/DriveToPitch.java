@@ -48,12 +48,20 @@ public class DriveToPitch extends CommandBase {
         // DriveConstants.kAutoDriveForwardSpeed);
     }
 
+    
+    /** 
+     * @param interrupted
+     */
     @Override
     public void end(boolean interrupted) {
         // m_drive.stop();
         m_drive.arcadeDrive(0, 0);
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isFinished() {
         // System.out.println("DriveForwardCmd finished!");

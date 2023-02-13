@@ -125,10 +125,18 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  
+  /** 
+   * @return double
+   */
   public double getEncoderMeters() {
     return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
   }
 
+  
+  /** 
+   * @return Pose2d
+   */
   // public void setMotors(double leftSpeed, double rightSpeed) {
   //   leftMotors.set(leftSpeed);
   //   rightMotors.set(-rightSpeed);
@@ -180,6 +188,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_driveDifferential.tankDrive(leftY, rightY, true);
 
   }
+  
+  /** 
+   * @param leftVelocitySetpoint
+   * @param rightVelocitySetpoint
+   */
   public void tankDriveWithFeedforwardPID(double leftVelocitySetpoint, double rightVelocitySetpoint) {
     leftMotors.setVoltage(m_feedforward.calculate(leftVelocitySetpoint)
         + m_leftPID.calculate(m_leftEncoder.getVelocity(), leftVelocitySetpoint));
@@ -288,10 +301,18 @@ public class DriveSubsystem extends SubsystemBase {
     return m_pigeon.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  
+  /** 
+   * @return DrivesSensorInterface
+   */
   public DrivesSensorInterface getDriveSenors() {
     return _drivesSensors;
   }
 
+  
+  /** 
+   * @param inches
+   */
   public void driveDistance(double inches) {
     while (Math.abs(getAverageEncoderDistance()) <= inches) {
       tankDrive(.1, .1);
@@ -299,6 +320,10 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  
+  /** 
+   * @return double
+   */
   public double getPitch() {
     return m_pigeon.getPitch();
   }
@@ -311,16 +336,28 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }
+  
+  /** 
+   * @return double
+   */
   public double getHeadingCW() {
     // Not negating
     return Math.IEEEremainder(-m_pigeon.getAngle(), 360);
   }
 
+  
+  /** 
+   * @return double
+   */
   public double getTurnRateCW() {
     // Not negating
     return -m_pigeon.getRate();
   }
 
+  
+  /**
+   * 
+   */
   public void applyBrakes(){
     rightMotors.setIdleMode(IdleMode.kBrake);
     leftMotors.setIdleMode(IdleMode.kBrake);
