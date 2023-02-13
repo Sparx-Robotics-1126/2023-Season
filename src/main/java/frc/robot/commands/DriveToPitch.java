@@ -50,16 +50,17 @@ public class DriveToPitch extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        //m_drive.stop();
+        // m_drive.stop();
         m_drive.arcadeDrive(0, 0);
     }
 
     @Override
     public boolean isFinished() {
         // System.out.println("DriveForwardCmd finished!");
-        if (m_drive.getPitch() > _pitch)
+        if (m_drive.getPitch() > _pitch) {
+            System.out.println("Drive to Pitch " + _pitch + " finished!");
             return true;
-        else
+        } else
             return false;
     }
 }

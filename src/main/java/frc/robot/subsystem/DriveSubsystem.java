@@ -16,7 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import frc.drives.DrivesSensorInterface;
-import frc.drives.DrivesSensors;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
@@ -321,4 +320,16 @@ public class DriveSubsystem extends SubsystemBase {
     // Not negating
     return -m_pigeon.getRate();
   }
+
+  public void applyBrakes(){
+    rightMotors.setIdleMode(IdleMode.kBrake);
+    leftMotors.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void setToCoast(){
+    rightMotors.setIdleMode(IdleMode.kCoast);
+    leftMotors.setIdleMode(IdleMode.kCoast);
+  }
+
+ 
 }

@@ -15,6 +15,7 @@ import frc.robot.Constants.DriveConstants;
 // import frc.robot.commands.TurnToAngleProfiled;
 // import frc.robot.commands.Autonomous;
 import frc.robot.commands.BalanceCmd;
+import frc.robot.commands.BalanceRobot;
 import frc.robot.commands.DriveDistance;
 // import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
@@ -66,14 +67,14 @@ public class RobotContainer {
                                 (m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
 
+        // m_robotDrive.setDefaultCommand(
 
-                        // m_robotDrive.setDefaultCommand(
-
-                        // new PIDCommand(
-                        //     joystickPID,
-                        //     m_robotDrive::getEncoderMeters,
-                        //     output -> m_robotDrive.tankDrive(m_driverController.getLeftY()), m_driverController.getRightY()),
-                        //     m_robotDrive);
+        // new PIDCommand(
+        // joystickPID,
+        // m_robotDrive::getEncoderMeters,
+        // output -> m_robotDrive.tankDrive(m_driverController.getLeftY()),
+        // m_driverController.getRightY()),
+        // m_robotDrive);
         configureButtonBindings();
 
     }
@@ -122,7 +123,7 @@ public class RobotContainer {
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
-        .whileTrue(new BalanceCmd(m_robotDrive));
+                .whileTrue(new BalanceCmd(m_robotDrive));
 
         new JoystickButton(m_driverController, Button.kA.value)
                 .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
@@ -146,15 +147,12 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
 
         // return new SequentialCommandGroup(
-        //     new DriveDistance(m_robotDrive, 2, .8),
-        //     new DriveToPitch(m_robotDrive, .2, 1),
-        //     new DriveToPitch(m_robotDrive, .2, -1)
-        //     );
+        // new DriveDistance(m_robotDrive, 2, .8),
+        // new DriveToPitch(m_robotDrive, .2, 1),
+        // new DriveToPitch(m_robotDrive, .2, -1)
+        // );
 
-            return new SequentialCommandGroup(
-                new DriveToPitch(m_robotDrive, .8, 10),
-                new DriveToPitch(m_robotDrive, .2, -5),
-                new DriveToPitch(m_robotDrive, -.2, 0));
+        return new BalanceRobot(m_robotDrive);
 
         // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
         // new DriveToPitch(_robotDrive, -.5));
@@ -170,4 +168,11 @@ public class RobotContainer {
         return m_robotDrive;
     }
 
+    public void applyBrakes() {
+        m_robotDrive.applyBrakes();
+    }
+
+    public void setToCoast() {
+        m_robotDrive.setToCoast();
+    }
 }

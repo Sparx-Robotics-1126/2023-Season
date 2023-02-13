@@ -1,11 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-// import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.robot.commands.Autonomous;
-// import frc.robot.commands.DriveDistance;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -61,6 +58,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
+      _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
     // m_autonomousCommand =  _robotContainer.getAutonomousCommand();
@@ -94,6 +92,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    _robotContainer.setToCoast();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -134,6 +133,8 @@ public class Robot extends TimedRobot {
   public void simulationPeriodic() {
   }
 
+
+ 
  
 
   /**
