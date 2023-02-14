@@ -10,11 +10,29 @@ public class DriveToPitch extends CommandBase {
     private double _pitch;
     private double _startAngle;
     private double _speed;
+    private boolean isReverse;
 
     public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch) {
         m_drive = driveSubsystem;
         _pitch = pitch;
-        _speed = -speed;
+         _speed = speed;
+        isReverse = false;
+
+        if (pitch < 0) {
+            isReverse = false;
+           
+        } else {
+            isReverse = true;
+           
+        }
+
+        if (speed <0){
+            _speed = +speed;
+        }
+        else {
+            _speed = -speed;
+        }
+
         addRequirements(driveSubsystem);
     }
 
@@ -48,8 +66,7 @@ public class DriveToPitch extends CommandBase {
         // DriveConstants.kAutoDriveForwardSpeed);
     }
 
-    
-    /** 
+    /**
      * @param interrupted
      */
     @Override
@@ -58,17 +75,28 @@ public class DriveToPitch extends CommandBase {
         m_drive.arcadeDrive(0, 0);
     }
 
-    
-    /** 
+    /**
      * @return boolean
      */
     @Override
     public boolean isFinished() {
         // System.out.println("DriveForwardCmd finished!");
-        if (m_drive.getPitch() > _pitch) {
-            System.out.println("Drive to Pitch " + _pitch + " finished!");
-            return true;
-        } else
-            return false;
+        var currentPitch = m_drive.getPitch();
+        if (isReverse) {
+            if (currentPitch > _pitch) {
+                System.out.println(">Drive to Pitch " + _pitch + " finished! "+ currentPitch  );
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (currentPitch < _pitch) {
+                System.out.println("<Drive to Pitch " + _pitch + " finished!"+ currentPitch);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import frc.drives.commands.DriveForward;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.AutoDistances;
 // import frc.robot.commands.TurnToAngleProfiled;
 // import frc.robot.commands.Autonomous;
 import frc.robot.commands.BalanceCmd;
@@ -157,6 +158,8 @@ public class RobotContainer {
         // new DriveToPitch(m_robotDrive, .2, -1)
         // );
 
+        //  return new AutoDistances(m_robotDrive);
+
         return new BalanceRobot(m_robotDrive);
 
         // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
@@ -165,7 +168,7 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
 
         // return new DriveForward(_robotDrive.getDriveSenors(),.15, 12);
-        // return new DriveDistance(12, .2, _robotDrive);
+        // return new DriveDistance(m_robotDrive, 1, .5);
         // return new Autonomous(_robotDrive);
     }
 
@@ -179,5 +182,9 @@ public class RobotContainer {
 
     public void setToCoast() {
         m_robotDrive.setToCoast();
+    }
+
+    public void reset() {
+        m_robotDrive.reset();
     }
 }

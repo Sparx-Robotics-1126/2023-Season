@@ -12,9 +12,9 @@ public class BalanceRobot extends SequentialCommandGroup {
     // addSequential(new DoDelay(RobotPreferences.autoDelay()));
     // addSequential(new ShooterUp());
     // addCommands(new DriveDistance(drive,12,.25));
-    addCommands(new DriveToPitch(drive, .8, 10));
-    addCommands( new DriveToPitch(drive, .2, -5));
-    addCommands(new DriveToPitch(drive, -.2, 0));
+    addCommands(new DriveToPitch(drive, .8, -10));
+    addCommands( new DriveToPitch(drive, .5, 5));
+    addCommands(new DriveToPitch(drive, -.5, 0));
     
    
   }

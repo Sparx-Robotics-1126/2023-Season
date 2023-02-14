@@ -96,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
 
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("RIGHT DIST", -m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
     SmartDashboard.putNumber("AVG DIST", getAverageEncoderDistance());
   }
 
@@ -264,7 +264,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
 
   public double getRightEncoderDistance() {
-    return m_rightEncoder.getPosition() * -DriveConstants.ENCODER_MULTIPLIER;
+    return m_rightEncoder.getPosition() * DriveConstants.ENCODER_MULTIPLIER;
   }
 
   /**

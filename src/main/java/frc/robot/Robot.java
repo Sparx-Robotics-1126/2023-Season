@@ -17,6 +17,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+
     _robotContainer = new RobotContainer();
   }
 
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     System.out.println("********** AUTONOMOUS STARTED ************");
+    _robotContainer.reset();
     m_autonomousCommand = _robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -92,6 +94,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
+    _robotContainer.reset();
     _robotContainer.setToCoast();
   }
 
