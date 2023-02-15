@@ -21,6 +21,7 @@ import frc.robot.commands.DriveDistance;
 // import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
+import frc.sensors.Limelight;
 // import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveForwardCmd;
 import frc.robot.commands.DriveToPitch;
@@ -50,11 +51,16 @@ public class RobotContainer {
     private double turnSpeed = 0.8;
     private double triggerSpeed = 0.1;
 
+    private Limelight m_limeLight;
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
 
+        m_limeLight = new Limelight();
+        m_limeLight.enableVision();
+        
         m_driverController = new XboxController(Constants.XBOX_CONTROLLER_PORT);
 
         _pigeon = new PigeonSubsystem();
