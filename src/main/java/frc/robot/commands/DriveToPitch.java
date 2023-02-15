@@ -32,8 +32,8 @@ public class DriveToPitch extends CommandBase {
         // else {
         // _speed = -speed;
         // }
-        if (isReverse){
-            _speed *=-1;
+        if (isReverse) {
+            _speed *= -1;
         }
 
         addRequirements(driveSubsystem);
@@ -99,11 +99,17 @@ public class DriveToPitch extends CommandBase {
             return true;
         }
 
-        if (isReverse) {
-            if (currentPitch < m_toPitch) {
+        if (m_toPitch == 0) {
+            if (currentPitch == 0) {
                 return true;
             }
         }
+
+        // if (isReverse) {
+        // if (currentPitch < m_toPitch) {
+        // return true;
+        // }
+        // }
 
         return false;
 
