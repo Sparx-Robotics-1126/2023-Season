@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystem.DriveSubsystem;
 
 public class BalanceRobot extends SequentialCommandGroup {
@@ -12,9 +13,11 @@ public class BalanceRobot extends SequentialCommandGroup {
     // addSequential(new DoDelay(RobotPreferences.autoDelay()));
     // addSequential(new ShooterUp());
     // addCommands(new DriveDistance(drive,12,.25));
-    addCommands(new DriveToPitch(drive, .8, -10));
-    addCommands( new DriveToPitch(drive, .5, 5));
-    addCommands(new DriveToPitch(drive, -.5, 0));
+    addCommands(new DriveToPitch(drive, .8, 10));
+    addCommands(new WaitCommand(2));
+    addCommands( new DriveToPitch(drive, .2, -5));
+    addCommands(new WaitCommand(2));
+    addCommands(new DriveToPitch(drive, .2, 0, true));
     
    
   }

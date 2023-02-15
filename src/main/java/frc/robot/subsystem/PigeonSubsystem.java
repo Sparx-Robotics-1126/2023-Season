@@ -67,7 +67,9 @@ public class PigeonSubsystem extends SubsystemBase {
      * @return double
      */
     public double getPitch() {
-        return _pigeon.getPitch();
+        var pitch = _pigeon.getPitch();
+        pitch *= -1;
+        return pitch;
     }
 
     
