@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -23,54 +24,48 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     private DrivesSensors _acquisitionsSensors;
 
-    //motors for elevations (X) and extenders (Y).
-    TalonSRX xMotorLeft;
-    TalonSRX xMotorRight;
-    TalonSRX yMotorLeft;
-    TalonSRX yMotorRight;
+    // motors for elevations (X) and extenders (Y).
+    TalonSRX xMotor;
+    TalonSRX xMotorRight; // slave of xMotor
+    TalonSRX yMotor;
+    TalonSRX yMotorRight; // slave of yMotor
 
     public AcquisitionSubsystem() {
 
-    xMotorLeft = new TalonSRX(Constants.ELEVATIONS_LEFT_MOTOR);
-    TalonSRX leftMotorSlave = new TalonSRX(Constants.ELEVATIONS_RIGHT_MOTOR);
-   
-        xMotorLeft.follow(leftMotorSlave);
-        configureMotor(xMotorLeft, leftMotorSlave);
+        xMotor = new TalonSRX(Constants.ELEVATIONS_LEFT_MOTOR);
+        TalonSRX xMotorSlave = new TalonSRX(Constants.ELEVATIONS_RIGHT_MOTOR);
 
-    xMotorRight = new TalonSRX(Constants.EXTENDERS_RIGHT_MOTOR);
-    TalonSRX  rightMotorSlave = new TalonSRX(Constants.EXTENDERS_RIGHT_MOTOR);
+        xMotor.follow(xMotorSlave);
+        configureMotor(xMotor, xMotorSlave);
 
-        xMotorRight.follow(rightMotorSlave);
-        configureMotor(xMotorRight, rightMotorSlave);
-}
-    
+        yMotor = new TalonSRX(Constants.EXTENDERS_LEFT_MOTOR);
+        TalonSRX yMotorSlave = new TalonSRX(Constants.EXTENDERS_RIGHT_MOTOR);
 
+        yMotor.follow(yMotorSlave);
+        configureMotor(xMotor, yMotor);
+    }
 
-public void periodic() {
+    public void elevate() {
+        System.out.println("elevate");
+    }
 
-}
+    public void periodic() {
 
-private static void configureMotor(TalonSRX master, TalonSRX... slavesSrxs) {
-    master.configAllSettings(new TalonSRXConfiguration());
-    //speed command
-    master.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
-    master.configPeakCurrentLimit(Constants.MAX_CURRENT);
-    
-    for (TalonSRX slave : slavesSrxs) {
-     slave.configAllSettings(new TalonSRXConfiguration());
-        //set speed command
-     slave.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
-     slave.configPeakCurrentLimit(Constants.MAX_CURRENT);
+    }
+
+    private static void configureMotor(TalonSRX master, TalonSRX... slavesSrxs) {
+        master.configAllSettings(new TalonSRXConfiguration());
+        // speed command
+        master.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
+        master.configPeakCurrentLimit(Constants.MAX_CURRENT);
+
+        for (TalonSRX slave : slavesSrxs) {
+            slave.configAllSettings(new TalonSRXConfiguration());
+            // set speed command
+            slave.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
+            slave.configPeakCurrentLimit(Constants.MAX_CURRENT);
 
         }
     }
 
-
-
-
-
-
-
-
-    
 }
