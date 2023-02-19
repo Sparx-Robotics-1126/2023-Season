@@ -5,32 +5,20 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// import frc.drives.commands.DriveForward;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.AutoDistances;
-// import frc.robot.commands.TurnToAngleProfiled;
-// import frc.robot.commands.Autonomous;
 import frc.robot.commands.BalanceCmd;
 import frc.robot.commands.BalanceRobot;
-import frc.robot.commands.DriveDistance;
-// import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.sensors.Limelight;
-// import frc.robot.commands.DriveDistance;
-import frc.robot.commands.DriveForwardCmd;
 import frc.robot.commands.DriveToPitch;
-// import frc.robot.commands.DriveToPitch;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.TurnToAngle;
 
-// import com.ctre.phoenix.sensors.BasePigeonSimCollection;
-// import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-// import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -48,7 +36,7 @@ public class RobotContainer {
     private final XboxController m_driverController;
 
     private double driveSpeed = 0.9;
-    private double turnSpeed = 0.8;
+    // private double turnSpeed = 0.8;
     private double triggerSpeed = 0.1;
 
     private Limelight m_limeLight;
@@ -60,7 +48,7 @@ public class RobotContainer {
 
         m_limeLight = new Limelight();
         m_limeLight.enableVision();
-        
+
         m_driverController = new XboxController(Constants.XBOX_CONTROLLER_PORT);
 
         _pigeon = new PigeonSubsystem();
@@ -126,8 +114,11 @@ public class RobotContainer {
         // // Turn to -90 degrees with a profile when the Circle button is pressed, with
         // a
         // // 5 second timeout
-        // new JoystickButton(_driverController, Button.kB.value)
-        // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
+        new JoystickButton(m_driverController, Button.kX.value)
+        .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
+
+        new JoystickButton(m_driverController, Button.kX.value)
+        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
                 .whileTrue(new BalanceCmd(m_robotDrive));
@@ -158,24 +149,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        // return new SequentialCommandGroup(
-        // new DriveDistance(m_robotDrive, 2, .8),
-        // new DriveToPitch(m_robotDrive, .2, 1),
-        // new DriveToPitch(m_robotDrive, .2, -1)
-        // );
-
-        //  return new AutoDistances(m_robotDrive);
-
         return new BalanceRobot(m_robotDrive);
-
-        // return new SequentialCommandGroup( new DriveToPitch(_robotDrive, .5),
-        // new DriveToPitch(_robotDrive, -.5));
-
-        // An ExampleCommand will run in autonomous
-
-        // return new DriveForward(_robotDrive.getDriveSenors(),.15, 12);
-        // return new DriveDistance(m_robotDrive, 1, .5);
-        // return new Autonomous(_robotDrive);
     }
 
     public DriveSubsystem getDrives() {

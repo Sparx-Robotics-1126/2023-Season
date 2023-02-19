@@ -16,7 +16,7 @@ public class DriveToPitch extends CommandBase {
     public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch, boolean driveBackwards) {
         m_drive = driveSubsystem;
         m_toPitch = pitch;
-        _speed = speed;
+        _speed = -speed;
         isReverse = driveBackwards;
 
         // if (pitch < 0) {
@@ -43,7 +43,7 @@ public class DriveToPitch extends CommandBase {
     public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch) {
         m_drive = driveSubsystem;
         m_toPitch = pitch;
-        _speed = speed;
+        _speed = -speed;
         isReverse = false;
 
         addRequirements(driveSubsystem);
