@@ -342,7 +342,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getHeadingCW() {
     // Not negating
-    return Math.IEEEremainder(-m_pigeon.getAngle(), 360);
+    return Math.IEEEremainder(m_pigeon.getAngle(), 360);
   }
 
   
@@ -354,7 +354,6 @@ public class DriveSubsystem extends SubsystemBase {
     return -m_pigeon.getRate();
   }
 
-  
   /**
    * 
    */
