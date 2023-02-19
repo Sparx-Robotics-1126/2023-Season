@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 // import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystem.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -85,6 +86,7 @@ public class DriveToPitch extends CommandBase {
     public void end(boolean interrupted) {
         // m_drive.stop();
         m_drive.arcadeDrive(0, 0);
+        m_drive.applyBrakes();
     }
 
     /**
@@ -95,14 +97,29 @@ public class DriveToPitch extends CommandBase {
         // System.out.println("DriveForwardCmd finished!");
         var currentPitch = Math.rint(m_drive.getPitch());
 
+if (m_toPitch >0){
+SmartDashboard.putString("BALANCE_STAGE", "Postive");
         if (currentPitch > m_toPitch) {
+            SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
             return true;
         }
+    }
 
-        if (m_toPitch == 0) {
-            if (currentPitch == 0) {
+    if (m_toPitch <0 && currentPitch >0){
+        SmartDashboard.putString("BALANCE_STAGE", "Negative");
+        return false;
+    } 
+
+        if (currentPitch > m_toPitch) {
+            SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
+            return true;
+        }
+    
+
+
+        if (m_toPitch == 0  && currentPitch == 0 ) {
+            SmartDashboard.putString("BALANCE_STAGE", "Equal");
                 return true;
-            }
         }
 
         // if (isReverse) {

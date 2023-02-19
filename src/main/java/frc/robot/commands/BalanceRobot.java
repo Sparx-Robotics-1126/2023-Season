@@ -15,9 +15,9 @@ public class BalanceRobot extends SequentialCommandGroup {
     // addCommands(new DriveDistance(drive,12,.25));
     addCommands(new DriveToPitch(drive, .8, 10));
     addCommands(new WaitCommand(2));
-    addCommands( new DriveToPitch(drive, .2, -5));
+    addCommands( new DriveToPitch(drive, .5, -5));
     addCommands(new WaitCommand(2));
-    addCommands(new DriveToPitch(drive, .2, 0, true));
+    addCommands(new DriveToPitch(drive, .5, 0, true));
     
    
   }

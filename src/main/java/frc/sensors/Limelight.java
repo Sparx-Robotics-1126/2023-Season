@@ -32,7 +32,8 @@ public class Limelight
 
 		ledMode = table.getEntry("ledMode");
 		camMode = table.getEntry("camMode");
-		camMode.setValue(0);
+		camMode.setValue(1);
+
 		
 	}
 	
@@ -66,8 +67,8 @@ public class Limelight
 		return false;
 	}
 	public void enableVision(){
-		ledMode.setNumber(1);
-		camMode.setValue(0);
+		ledMode.setNumber(0);
+		camMode.setValue(1);
 	}
 	
 	public void enable(boolean enable) 
