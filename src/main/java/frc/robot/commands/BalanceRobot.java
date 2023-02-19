@@ -13,11 +13,13 @@ public class BalanceRobot extends SequentialCommandGroup {
     // addSequential(new DoDelay(RobotPreferences.autoDelay()));
     // addSequential(new ShooterUp());
     // addCommands(new DriveDistance(drive,12,.25));
-    addCommands(new DriveToPitch(drive, .8, 10));
+    addCommands(new DriveToPitch(drive, .6, 10));
     addCommands(new WaitCommand(2));
-    addCommands( new DriveToPitch(drive, .5, -5));
+    addCommands(new DriveDistance(drive, .1, .3));
     addCommands(new WaitCommand(2));
-    addCommands(new DriveToPitch(drive, .5, 0, true));
+    addCommands( new DriveToPitch(drive, .3, -5));
+    addCommands(new WaitCommand(2));
+    addCommands(new DriveToPitch(drive, .3, 0, true));
     
    
   }
