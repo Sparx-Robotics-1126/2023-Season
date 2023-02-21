@@ -10,44 +10,36 @@ public class DriveToPitch extends CommandBase {
     private final DriveSubsystem m_drive;
     private double m_toPitch;
     private double _startAngle;
-    private double _speed;
-    private boolean isReverse;
+    private double m_speed;
+    private boolean m_driveBackwards;
+    private boolean m_reverse = false;
+    private String m_stepNumber;
 
-    public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch, boolean driveBackwards) {
+    public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch, boolean driveBackwards,
+            boolean reverse, String stepNumber) {
         m_drive = driveSubsystem;
         m_toPitch = pitch;
-        _speed = -speed;
-        isReverse = driveBackwards;
+        m_speed = -speed;
+        m_driveBackwards = driveBackwards;
+        m_reverse = reverse;
 
-        // if (pitch < 0) {
-        // isReverse = false;
-
-        // } else {
-        // isReverse = true;
-
-        // }
-
-        // if (speed <0){
-        // _speed = +speed;
-        // }
-        // else {
-        // _speed = -speed;
-        // }
-        if (isReverse) {
-            _speed *= -1;
+        if (m_driveBackwards) {
+            m_speed *= -1;
         }
-
         addRequirements(driveSubsystem);
+        m_stepNumber = stepNumber;
+
     }
 
-    public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch) {
-        m_drive = driveSubsystem;
-        m_toPitch = pitch;
-        _speed = -speed;
-        isReverse = false;
+    // public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double
+    // pitch) {
+    // m_drive = driveSubsystem;
+    // m_toPitch = pitch;
+    // m_speed = -speed;
+    // m_driveBackwards = false;
 
-        addRequirements(driveSubsystem);
-    }
+    // addRequirements(driveSubsystem);
+    // }
 
     @Override
     public void initialize() {
@@ -57,6 +49,7 @@ public class DriveToPitch extends CommandBase {
 
     @Override
     public void execute() {
+
         double turnValue = 0;
         double currentAngle = m_drive.getHeading();
         if (currentAngle > _startAngle + 2) {
@@ -71,9 +64,9 @@ public class DriveToPitch extends CommandBase {
         } else {
             turnValue = 0;
         }
-        double moveValue = _speed;
+        double moveValue = m_speed;
 
-        m_drive.arcadeDrive(moveValue, turnValue);
+        m_drive.arcadeDrive(moveValue, -turnValue);
 
         // m_drive.tankDrive(DriveConstants.kAutoDriveForwardSpeed,
         // DriveConstants.kAutoDriveForwardSpeed);
@@ -94,59 +87,56 @@ public class DriveToPitch extends CommandBase {
      */
     @Override
     public boolean isFinished() {
+        SmartDashboard.putString("CURRENT_STEP", m_stepNumber);
         // System.out.println("DriveForwardCmd finished!");
-        var currentPitch = Math.rint(m_drive.getPitch());
+        var currentPitch = m_drive.getPitch();
+        if (!m_reverse) {
+            if (m_toPitch > 0) {
+                SmartDashboard.putString("BALANCE_STAGE", "Postive");
+                if (currentPitch > m_toPitch) {
+                    SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
+                    return true;
+                }
+            }
 
-if (m_toPitch >0){
-SmartDashboard.putString("BALANCE_STAGE", "Postive");
-        if (currentPitch > m_toPitch) {
-            SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
-            return true;
-        }
-    }
+            if (m_toPitch < 0 && currentPitch > 0) {
+                SmartDashboard.putString("BALANCE_STAGE", "Negative");
+                return false;
+            }
 
-    if (m_toPitch <0 && currentPitch >0){
-        SmartDashboard.putString("BALANCE_STAGE", "Negative");
-        return false;
-    } 
-
-        if (currentPitch > m_toPitch) {
-            SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
-            return true;
-        }
-    
-
-
-        if (m_toPitch == 0  && currentPitch == 0 ) {
-            SmartDashboard.putString("BALANCE_STAGE", "Equal");
+            if (currentPitch > m_toPitch) {
+                SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
                 return true;
+            }
         }
 
-        // if (isReverse) {
-        // if (currentPitch < m_toPitch) {
-        // return true;
-        // }
-        // }
+        if (m_reverse) {
+            if (m_toPitch < 0) {
+                SmartDashboard.putString("BALANCE_STAGE", "Negative");
+                if (currentPitch < m_toPitch) {
+                    SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
+                    return true;
+                }
+            }
+
+            if (m_toPitch > 0 && currentPitch < 0) {
+                SmartDashboard.putString("BALANCE_STAGE", "Postive");
+                return false;
+            }
+
+            if (currentPitch < m_toPitch) {
+                SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
+                return true;
+            }
+        }
+
+        if (m_toPitch == 0 && currentPitch == 0) {
+            SmartDashboard.putString("BALANCE_STAGE", "Equal");
+            return true;
+        }
 
         return false;
 
-        // if (isReverse) {
-        // if (currentPitch > m_toPitch) {
-        // System.out.println(">Drive to Pitch " + m_toPitch + " finished! "+
-        // currentPitch );
-        // return true;
-        // } else {
-        // return false;
-        // }
-        // } else {
-        // if (currentPitch < m_toPitch) {
-        // System.out.println("<Drive to Pitch " + m_toPitch + " finished!"+
-        // currentPitch);
-        // return true;
-        // } else {
-        // return false;
-        // }
-        // }
-
     }
+
 }

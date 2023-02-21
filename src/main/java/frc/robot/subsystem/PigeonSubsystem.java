@@ -66,10 +66,10 @@ public class PigeonSubsystem extends SubsystemBase {
     /** 
      * @return double
      */
-    public double getPitch() {
-        var pitch = _pigeon.getPitch();
+    public int getPitch() {
+        var pitch = Math.round(_pigeon.getPitch());
         pitch *= -1;
-        return pitch;
+        return (int)  pitch;
     }
 
     

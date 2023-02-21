@@ -1,8 +1,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -19,6 +25,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     _robotContainer = new RobotContainer();
+
   }
 
   @Override
@@ -55,13 +62,16 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     System.out.println("********** AUTONOMOUS STARTED ************");
+    SmartDashboard.putString("CURRENT_STEP", "start");
     _robotContainer.reset();
     m_autonomousCommand = _robotContainer.getAutonomousCommand();
 
+    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
+    // m_autonomousCommand =  _robotContainer.getAutonomousCommand();
   }
 
   /** This function is called periodically during autonomous. */
@@ -134,5 +144,36 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {
   }
+
+
+ 
+ 
+
+  /**
+   * Called when autonomous begins.
+   */
+  // private void autoStarted() {
+
+
+  //   // m_autonomousCommand = _robotContainer.getAutonomousCommand();
+  //   // currentController = autoControls;
+  //   // state = RobotState.AUTO;
+  //   // m_timer.reset();
+  //   // m_timer.start();
+
+  //   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+  //   /*
+  //    * String autoSelected = SmartDashboard.getString("Auto Selector",
+  //    * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+  //    * = new MyAutoCommand(); break; case "Default Auto": default:
+  //    * autonomousCommand = new ExampleCommand(); break; }
+  //    */
+
+  //   // schedule the autonomous command (example)
+  //   if (m_autonomousCommand != null) {
+  //     m_autonomousCommand.schedule();
+  //   }
+  // }
 
 }

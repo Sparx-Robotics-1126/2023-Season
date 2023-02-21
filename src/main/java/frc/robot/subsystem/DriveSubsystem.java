@@ -324,7 +324,7 @@ public class DriveSubsystem extends SubsystemBase {
   /** 
    * @return double
    */
-  public double getPitch() {
+  public int getPitch() {
     return m_pigeon.getPitch();
   }
 

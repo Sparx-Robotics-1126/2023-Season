@@ -7,7 +7,7 @@ public class DriveDistance extends CommandBase {
   private final DriveSubsystem m_drive;
 
   private double distance;
-  private double speed;
+  private double m_speed;
   private boolean isReverse;
   private double startAngle;
 
@@ -25,10 +25,10 @@ public class DriveDistance extends CommandBase {
     m_drive = drive;
     if (distanceInMeters < 0){
       isReverse = true;
-      this.speed = speed;
+      m_speed = speed;
     }
     else {
-      this.speed = -speed;
+      m_speed = -speed;
     }
  
     addRequirements(drive);
@@ -59,7 +59,7 @@ public class DriveDistance extends CommandBase {
     } else {
       turnValue = 0;
     }
-    double moveValue = speed;
+    double moveValue = m_speed;
 
     m_drive.arcadeDrive(moveValue, -turnValue);
 
@@ -82,13 +82,7 @@ public class DriveDistance extends CommandBase {
     // var finished = false;
 
     var actualDistance = -m_drive.getAverageEncoderDistance();
-    System.out.println("Drive Distance " + distance);
-
-    System.out.println("Actual Distance " +actualDistance);
-
-
-
-    System.out.println("is reversed " + isReverse);
+  
     if (isReverse) {
       if (actualDistance < distance) {
         return true;
