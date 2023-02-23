@@ -360,6 +360,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void applyBrakes(){
     rightMotors.setIdleMode(IdleMode.kBrake);
     leftMotors.setIdleMode(IdleMode.kBrake);
+    System.out.println("**** Brakes Applied ****");
   }
 
   public void setToCoast(){

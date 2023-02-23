@@ -1,13 +1,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 
 /**
@@ -16,6 +13,11 @@ import java.net.URISyntaxException;
  */
 public class Robot extends TimedRobot {
 
+  // Options for the Sendable Chooser
+  private static final String kOption1 = "Option 1";
+  private static final String kOption2 = "Option 2";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
   // private final Timer m_timer = new Timer();
   private Command m_autonomousCommand;
 
@@ -25,7 +27,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     _robotContainer = new RobotContainer();
-
+    m_chooser.setDefaultOption("Short", kOption1);
+    m_chooser.addOption("Long", kOption2);
+    SmartDashboard.putData("Auto Choices", m_chooser);
   }
 
   @Override
@@ -62,22 +66,35 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     System.out.println("********** AUTONOMOUS STARTED ************");
-    SmartDashboard.putString("CURRENT_STEP", "start");
+   
     _robotContainer.reset();
-    m_autonomousCommand = _robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
+   m_autoSelected = m_chooser.getSelected();
+  //  System.out.println("Auto Selected: " + m_autoSelected);
+  switch (m_autoSelected) {
+
+    case kOption1:
+      m_autonomousCommand = _robotContainer.getShortAutoCommand();
+      break;
+
+    case kOption2:
+      m_autonomousCommand = _robotContainer.getLongAutoCommand();
+      break;
+  }
+
+
     if (m_autonomousCommand != null) {
       _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
-    // m_autonomousCommand =  _robotContainer.getAutonomousCommand();
+
+    // m_autonomousCommand = _robotContainer.getAutonomousCommand();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    
+
     // Drive for 2 seconds
     // if (m_timer.get() < 2.0) {
     // System.out.println("Moving forward");
@@ -87,6 +104,8 @@ public class Robot extends TimedRobot {
     // System.out.println("Moving stopped");;
     // _robotContainer.tankDrive(0, 0, 0); // stop robot
     // }
+
+  
   }
 
   /** This function is called once when teleop is enabled. */
@@ -102,7 +121,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+
     _robotContainer.reset();
     _robotContainer.setToCoast();
   }
@@ -145,35 +164,30 @@ public class Robot extends TimedRobot {
   public void simulationPeriodic() {
   }
 
-
- 
- 
-
   /**
    * Called when autonomous begins.
    */
   // private void autoStarted() {
 
+  // // m_autonomousCommand = _robotContainer.getAutonomousCommand();
+  // // currentController = autoControls;
+  // // state = RobotState.AUTO;
+  // // m_timer.reset();
+  // // m_timer.start();
 
-  //   // m_autonomousCommand = _robotContainer.getAutonomousCommand();
-  //   // currentController = autoControls;
-  //   // state = RobotState.AUTO;
-  //   // m_timer.reset();
-  //   // m_timer.start();
+  // // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-  //   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  // /*
+  // * String autoSelected = SmartDashboard.getString("Auto Selector",
+  // * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+  // * = new MyAutoCommand(); break; case "Default Auto": default:
+  // * autonomousCommand = new ExampleCommand(); break; }
+  // */
 
-  //   /*
-  //    * String autoSelected = SmartDashboard.getString("Auto Selector",
-  //    * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-  //    * = new MyAutoCommand(); break; case "Default Auto": default:
-  //    * autonomousCommand = new ExampleCommand(); break; }
-  //    */
-
-  //   // schedule the autonomous command (example)
-  //   if (m_autonomousCommand != null) {
-  //     m_autonomousCommand.schedule();
-  //   }
+  // // schedule the autonomous command (example)
+  // if (m_autonomousCommand != null) {
+  // m_autonomousCommand.schedule();
+  // }
   // }
 
 }

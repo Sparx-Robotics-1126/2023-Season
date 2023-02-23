@@ -13,10 +13,10 @@ public class DriveToPitch extends CommandBase {
     private double m_speed;
     private boolean m_driveBackwards;
     private boolean m_reverse = false;
-    private String m_stepNumber;
+   
 
     public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch, boolean driveBackwards,
-            boolean reverse, String stepNumber) {
+            boolean reverse) {
         m_drive = driveSubsystem;
         m_toPitch = pitch;
         m_speed = -speed;
@@ -27,7 +27,7 @@ public class DriveToPitch extends CommandBase {
             m_speed *= -1;
         }
         addRequirements(driveSubsystem);
-        m_stepNumber = stepNumber;
+       
 
     }
 
@@ -40,6 +40,8 @@ public class DriveToPitch extends CommandBase {
 
     // addRequirements(driveSubsystem);
     // }
+
+   
 
     @Override
     public void initialize() {
@@ -80,6 +82,7 @@ public class DriveToPitch extends CommandBase {
         // m_drive.stop();
         m_drive.arcadeDrive(0, 0);
         m_drive.applyBrakes();
+     ;
     }
 
     /**
@@ -87,10 +90,13 @@ public class DriveToPitch extends CommandBase {
      */
     @Override
     public boolean isFinished() {
-        SmartDashboard.putString("CURRENT_STEP", m_stepNumber);
+      
         // System.out.println("DriveForwardCmd finished!");
         var currentPitch = m_drive.getPitch();
         if (!m_reverse) {
+            if (m_toPitch == 0 && currentPitch != 0){
+                return false;
+            }
             if (m_toPitch > 0) {
                 SmartDashboard.putString("BALANCE_STAGE", "Postive");
                 if (currentPitch > m_toPitch) {
@@ -108,9 +114,13 @@ public class DriveToPitch extends CommandBase {
                 SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
                 return true;
             }
+          
         }
 
         if (m_reverse) {
+            if (m_toPitch == 0 && currentPitch != 0){
+                return false;
+            }
             if (m_toPitch < 0) {
                 SmartDashboard.putString("BALANCE_STAGE", "Negative");
                 if (currentPitch < m_toPitch) {
@@ -128,6 +138,7 @@ public class DriveToPitch extends CommandBase {
                 SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
                 return true;
             }
+          
         }
 
         if (m_toPitch == 0 && currentPitch == 0) {
