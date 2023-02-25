@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-// import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystem.DriveSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import frc.robot.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveToPitch extends CommandBase {
@@ -13,7 +13,7 @@ public class DriveToPitch extends CommandBase {
     private double m_speed;
     private boolean m_driveBackwards;
     private boolean m_reverse = false;
-   
+    private Timer m_timer;
 
     public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double pitch, boolean driveBackwards,
             boolean reverse) {
@@ -26,26 +26,17 @@ public class DriveToPitch extends CommandBase {
         if (m_driveBackwards) {
             m_speed *= -1;
         }
+        m_timer = new Timer();
+
         addRequirements(driveSubsystem);
-       
 
     }
-
-    // public DriveToPitch(DriveSubsystem driveSubsystem, double speed, double
-    // pitch) {
-    // m_drive = driveSubsystem;
-    // m_toPitch = pitch;
-    // m_speed = -speed;
-    // m_driveBackwards = false;
-
-    // addRequirements(driveSubsystem);
-    // }
-
-   
 
     @Override
     public void initialize() {
         m_drive.resetEncoders();
+        m_timer = new Timer();
+        m_timer.start();
         _startAngle = m_drive.getHeading();
     }
 
@@ -70,8 +61,6 @@ public class DriveToPitch extends CommandBase {
 
         m_drive.arcadeDrive(moveValue, -turnValue);
 
-        // m_drive.tankDrive(DriveConstants.kAutoDriveForwardSpeed,
-        // DriveConstants.kAutoDriveForwardSpeed);
     }
 
     /**
@@ -79,10 +68,9 @@ public class DriveToPitch extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        // m_drive.stop();
         m_drive.arcadeDrive(0, 0);
         m_drive.applyBrakes();
-     ;
+        ;
     }
 
     /**
@@ -90,11 +78,14 @@ public class DriveToPitch extends CommandBase {
      */
     @Override
     public boolean isFinished() {
-      
-        // System.out.println("DriveForwardCmd finished!");
+
+        if (m_timer.hasElapsed(AutoConstants.kPitchTimeoutSeconds)) {
+            return true;
+        }
+
         var currentPitch = m_drive.getPitch();
         if (!m_reverse) {
-            if (m_toPitch == 0 && currentPitch != 0){
+            if (m_toPitch == 0 && currentPitch != 0) {
                 return false;
             }
             if (m_toPitch > 0) {
@@ -114,11 +105,11 @@ public class DriveToPitch extends CommandBase {
                 SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
                 return true;
             }
-          
+
         }
 
         if (m_reverse) {
-            if (m_toPitch == 0 && currentPitch != 0){
+            if (m_toPitch == 0 && currentPitch != 0) {
                 return false;
             }
             if (m_toPitch < 0) {
@@ -138,7 +129,7 @@ public class DriveToPitch extends CommandBase {
                 SmartDashboard.putString("BALANCE_STAGE", "Pitch Found");
                 return true;
             }
-          
+
         }
 
         if (m_toPitch == 0 && currentPitch == 0) {
