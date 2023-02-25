@@ -23,6 +23,10 @@ public class BalanceCmd extends PIDCommand {
         
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isFinished() {
       // End when the controller is at the reference.

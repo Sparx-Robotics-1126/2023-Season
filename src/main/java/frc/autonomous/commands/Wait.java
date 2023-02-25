@@ -17,6 +17,10 @@ public class Wait extends AutonomousCommand
         try { Thread.sleep(time); } catch (InterruptedException e) {}
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isDone() 
     {

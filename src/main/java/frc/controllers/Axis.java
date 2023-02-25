@@ -60,6 +60,10 @@ public class Axis
 		return outputValue;
 	}
 
+	
+	/** 
+	 * @param newSensitivity
+	 */
 	public void setSensitivity(double newSensitivity)
 	{
 		sensitivity = newSensitivity;

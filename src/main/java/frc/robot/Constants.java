@@ -26,10 +26,12 @@ public final class Constants {
   public static final int DRIVES_LEFT_MOTOR_1 = 24;
   public static final int DRIVES_LEFT_MOTOR_2 = 26;
   
-  public static final int ELEVATIONS_LEFT_MOTOR = 10;
-  public static final int ELEVATIONS_RIGHT_MOTOR = 11;
-  public static final int EXTENDERS_LEFT_MOTOR = 7;
-  public static final int EXTENDERS_RIGHT_MOTOR = 2;
+  public static final int ELEVATIONS_LEFT_MOTOR = 28;
+  public static final int ELEVATIONS_RIGHT_MOTOR = 29;
+  public static final int EXTENDERS_LEFT_MOTOR = 30;
+  public static final int EXTENDERS_RIGHT_MOTOR = 31;
+
+  
   
   /**
    * The maximum amount of current in amps that should be permitted during motor
@@ -55,13 +57,10 @@ public final class Constants {
 
   public static final int ZeroPigeonYaws = XboxController.Button.kA.value;
   public static final int AddPigeonYaws = XboxController.Button.kB.value;
+  public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
+public static final int XBOX_OPERATOR_CONTROLLER_PORT = 0;
 
   public static final class DriveConstants {
-    public static final int kLeftMotor1Port = 27;
-    public static final int kLeftMotor2Port = 25;
-    public static final int kRightMotor1Port = 24;
-    public static final int kRightMotor2Port = 26;
-
     public static final int[] kLeftEncoderPorts = new int[] { 27, 25 };
     public static final int[] kRightEncoderPorts = new int[] { 24, 26 };
     public static final boolean kLeftEncoderReversed = false;
@@ -72,10 +71,10 @@ public final class Constants {
         kTrackwidthMeters);
 
     public static final int kEncoderCPR = 1024;
-    public static final double kGearRatio =8.45;// 10.71;
+    public static final double kGearRatio = 10.75; //8.45;// 10.71;
     public static final double kWheelDiameterInches = 6;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(kWheelDiameterInches);
-    public static final double kEncoderDistanceConversionFactor = ((double) (Math.PI*kWheelDiameterMeters)/(kGearRatio));
+    public static final double kEncoderDistanceConversionFactor = ((double) (Math.PI*kWheelDiameterMeters) / (kGearRatio));
 
 
 
@@ -101,7 +100,7 @@ public final class Constants {
     public static final double kAutoDriveForwardDistance = 1.5;
 
 
-    public static final double ENCODER_MULTIPLIER = 1.2;
+    public static final double ENCODER_MULTIPLIER = 1.105;
 
     public static final double kEncoderTick2Meter = 1.0 / 4096.0 * 0.1 * Math.PI;
 

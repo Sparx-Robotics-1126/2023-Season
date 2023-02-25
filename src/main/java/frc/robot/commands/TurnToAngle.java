@@ -21,7 +21,7 @@ public class TurnToAngle extends PIDCommand {
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot
-        output -> drive.tankDrive(0, output),
+        output -> drive.arcadeDrive(0, output),
         // Require the drive
         drive);
 
@@ -33,6 +33,10 @@ public class TurnToAngle extends PIDCommand {
         .setTolerance(DriveConstants.kTurnToleranceDeg, DriveConstants.kTurnRateToleranceDegPerS);
   }
 
+  
+  /** 
+   * @return boolean
+   */
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.

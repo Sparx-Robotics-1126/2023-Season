@@ -16,7 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import frc.drives.DrivesSensorInterface;
-import frc.drives.DrivesSensors;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
@@ -76,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
     //_drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
-//rightMotors.setInverted(true);
+    leftMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
     leftMotors.burnFlash();
@@ -97,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
 
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("RIGHT DIST", -m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
     SmartDashboard.putNumber("AVG DIST", getAverageEncoderDistance());
   }
 
@@ -126,14 +125,22 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  
+  /** 
+   * @return double
+   */
   public double getEncoderMeters() {
     return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
   }
 
-  public void setMotors(double leftSpeed, double rightSpeed) {
-    leftMotors.set(leftSpeed);
-    rightMotors.set(rightSpeed);
-  }
+  
+  /** 
+   * @return Pose2d
+   */
+  // public void setMotors(double leftSpeed, double rightSpeed) {
+  //   leftMotors.set(leftSpeed);
+  //   rightMotors.set(-rightSpeed);
+  // }
 
 
   /**
@@ -181,6 +188,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_driveDifferential.tankDrive(leftY, rightY, true);
 
   }
+  
+  /** 
+   * @param leftVelocitySetpoint
+   * @param rightVelocitySetpoint
+   */
   public void tankDriveWithFeedforwardPID(double leftVelocitySetpoint, double rightVelocitySetpoint) {
     leftMotors.setVoltage(m_feedforward.calculate(leftVelocitySetpoint)
         + m_leftPID.calculate(m_leftEncoder.getVelocity(), leftVelocitySetpoint));
@@ -252,7 +264,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
 
   public double getRightEncoderDistance() {
-    return m_rightEncoder.getPosition() * -DriveConstants.ENCODER_MULTIPLIER;
+    return m_rightEncoder.getPosition() * DriveConstants.ENCODER_MULTIPLIER;
   }
 
   /**
@@ -289,10 +301,18 @@ public class DriveSubsystem extends SubsystemBase {
     return m_pigeon.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  
+  /** 
+   * @return DrivesSensorInterface
+   */
   public DrivesSensorInterface getDriveSenors() {
     return _drivesSensors;
   }
 
+  
+  /** 
+   * @param inches
+   */
   public void driveDistance(double inches) {
     while (Math.abs(getAverageEncoderDistance()) <= inches) {
       tankDrive(.1, .1);
@@ -300,7 +320,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  public double getPitch() {
+  
+  /** 
+   * @return double
+   */
+  public int getPitch() {
     return m_pigeon.getPitch();
   }
 
@@ -312,13 +336,37 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }
+  
+  /** 
+   * @return double
+   */
   public double getHeadingCW() {
     // Not negating
-    return Math.IEEEremainder(-m_pigeon.getAngle(), 360);
+    return Math.IEEEremainder(m_pigeon.getAngle(), 360);
   }
 
+  
+  /** 
+   * @return double
+   */
   public double getTurnRateCW() {
     // Not negating
     return -m_pigeon.getRate();
   }
+
+  /**
+   * 
+   */
+  public void applyBrakes(){
+    rightMotors.setIdleMode(IdleMode.kBrake);
+    leftMotors.setIdleMode(IdleMode.kBrake);
+    System.out.println("**** Brakes Applied ****");
+  }
+
+  public void setToCoast(){
+    rightMotors.setIdleMode(IdleMode.kCoast);
+    leftMotors.setIdleMode(IdleMode.kCoast);
+  }
+
+ 
 }

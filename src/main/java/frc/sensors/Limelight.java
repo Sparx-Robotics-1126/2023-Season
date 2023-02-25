@@ -18,6 +18,7 @@ public class Limelight
 	NetworkTableEntry tv;
 	NetworkTableEntry ty;
 	NetworkTableEntry ledMode;
+	NetworkTableEntry camMode;
 	
 	public Limelight() 
 	{
@@ -30,6 +31,10 @@ public class Limelight
 		ty = table.getEntry("ty");
 
 		ledMode = table.getEntry("ledMode");
+		camMode = table.getEntry("camMode");
+		camMode.setValue(1);
+
+		
 	}
 	
 	public double getDistanceFromTarget()
@@ -60,6 +65,10 @@ public class Limelight
 			return true;
 		
 		return false;
+	}
+	public void enableVision(){
+		ledMode.setNumber(0);
+		camMode.setValue(1);
 	}
 	
 	public void enable(boolean enable) 
