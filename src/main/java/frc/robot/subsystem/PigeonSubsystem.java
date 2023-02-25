@@ -2,11 +2,15 @@ package frc.robot.subsystem;
 // package frc.subsystem;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
 import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.sensors.BasePigeonSimCollection;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 
 import frc.robot.Constants;
 // import com.ctre.phoenixpro.hardware.Pigeon2;
@@ -28,8 +32,11 @@ public class PigeonSubsystem extends SubsystemBase {
     }
 
     private void initPigeon() {
-        var toApply = new Pigeon2Configuration();
-        _pigeon.configAllSettings(toApply);
+        // Factory default the Pigeon.
+        _pigeon.configAllSettings(new Pigeon2Configuration());
+
+        // Add runtime adjustments to Pigeon configuration below this line.
+        _pigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.PositiveZ);
 
         // used by pro still thinking about it
         // _pigeon2.getConfigurator().apply(toApply);
@@ -40,9 +47,6 @@ public class PigeonSubsystem extends SubsystemBase {
         _pigeon.reset();
         
         _pigeon.setYaw(0);
-        
-        _pigeon.getYaw();
-        _pigeon.getPitch();
         // _pigeon2.setStatusFramePeriod(0,100 )
         // _pigeon2.getGravityVectorZ().setUpdateFrequency(100);
     }
@@ -61,12 +65,10 @@ public class PigeonSubsystem extends SubsystemBase {
 
     
     /** 
-     * @return double
+     * @return The current pitch reported by the Pigeon.
      */
     public int getPitch() {
-        var pitch = Math.round(_pigeon.getPitch());
-        pitch *= -1;
-        return (int)  pitch;
+        return (int) -Math.round(_pigeon.getPitch());
     }
 
     

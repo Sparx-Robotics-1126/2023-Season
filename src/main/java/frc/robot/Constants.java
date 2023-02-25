@@ -59,11 +59,6 @@ public final class Constants {
   public static final int AddPigeonYaws = XboxController.Button.kB.value;
 
   public static final class DriveConstants {
-    public static final int kLeftMotor1Port = 27;
-    public static final int kLeftMotor2Port = 25;
-    public static final int kRightMotor1Port = 24;
-    public static final int kRightMotor2Port = 26;
-
     public static final int[] kLeftEncoderPorts = new int[] { 27, 25 };
     public static final int[] kRightEncoderPorts = new int[] { 24, 26 };
     public static final boolean kLeftEncoderReversed = false;
@@ -74,10 +69,10 @@ public final class Constants {
         kTrackwidthMeters);
 
     public static final int kEncoderCPR = 1024;
-    public static final double kGearRatio =8.45;// 10.71;
+    public static final double kGearRatio = 10.75; //8.45;// 10.71;
     public static final double kWheelDiameterInches = 6;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(kWheelDiameterInches);
-    public static final double kEncoderDistanceConversionFactor = ((double) (Math.PI*kWheelDiameterMeters)/(kGearRatio));
+    public static final double kEncoderDistanceConversionFactor = ((double) (Math.PI*kWheelDiameterMeters) / (kGearRatio));
 
 
 
@@ -103,7 +98,7 @@ public final class Constants {
     public static final double kAutoDriveForwardDistance = 1.5;
 
 
-    public static final double ENCODER_MULTIPLIER = 1.2;
+    public static final double ENCODER_MULTIPLIER = 1.105;
 
     public static final double kEncoderTick2Meter = 1.0 / 4096.0 * 0.1 * Math.PI;
 
