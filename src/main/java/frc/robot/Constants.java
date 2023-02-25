@@ -30,7 +30,7 @@ public final class Constants {
   public static final int ELEVATIONS_RIGHT_MOTOR = 11;
   public static final int EXTENDERS_LEFT_MOTOR = 7;
   public static final int EXTENDERS_RIGHT_MOTOR = 2;
-
+  
   /**
    * The maximum amount of current in amps that should be permitted during motor
    * operation.
@@ -44,10 +44,8 @@ public final class Constants {
 
   public static final double DEAD_BAND = .5;
 
-  // XBOX Controllers
-  public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
-  public static final int XBOX_OPERATOR_CONTROLLER_PORT = 1;
-
+  // XBOX Controller
+  public static final int XBOX_CONTROLLER_PORT = 0;
 
   // SENSORS
   public static final I2C.Port I2C_ONBOARD = I2C.Port.kOnboard;
@@ -128,5 +126,7 @@ public final class Constants {
     // seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    public static final int kPitchTimeoutSeconds = 5;
   }
 }
