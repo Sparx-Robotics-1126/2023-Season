@@ -16,6 +16,8 @@ public class Robot extends TimedRobot {
   // Options for the Sendable Chooser
   private static final String kOption1 = "Option 1";
   private static final String kOption2 = "Option 2";
+  private static final String kDriveMeasure = "Drive Measure";
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   // private final Timer m_timer = new Timer();
@@ -29,6 +31,7 @@ public class Robot extends TimedRobot {
     _robotContainer = new RobotContainer();
     m_chooser.setDefaultOption("Short", kOption1);
     m_chooser.addOption("Long", kOption2);
+    m_chooser.addOption("Measure", kDriveMeasure);
     SmartDashboard.putData("Auto Choices", m_chooser);
   }
 
@@ -80,7 +83,11 @@ public class Robot extends TimedRobot {
     case kOption2:
       m_autonomousCommand = _robotContainer.getLongAutoCommand();
       break;
-  }
+      
+      case kDriveMeasure:
+      m_autonomousCommand = _robotContainer.getDriveMeasurements();
+      break;
+  } 
 
 
     if (m_autonomousCommand != null) {

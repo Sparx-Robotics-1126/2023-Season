@@ -13,6 +13,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.BalanceCmd;
 import frc.robot.commands.BalanceShortRobot;
 import frc.robot.commands.BalanceLongRobot;
+import frc.robot.commands.DriveMeasurements;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.sensors.Limelight;
@@ -158,9 +159,13 @@ public Command getShortAutoCommand(){
         //  return new AutoDistances(m_robotDrive);
 
         return new BalanceLongRobot(m_robotDrive);
-        // An ExampleCommand will run in autonomous
+        // An ExampleCommand will run in autonomous        
     }
 
+        public Command getDriveMeasurements() {
+    
+            return new DriveMeasurements(m_robotDrive);
+        }
     public DriveSubsystem getDrives() {
         return m_robotDrive;
     }

@@ -7,9 +7,6 @@ import com.ctre.phoenix.sensors.Pigeon2_Faults;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.sensors.BasePigeonSimCollection;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 
 import frc.robot.Constants;
 // import com.ctre.phoenixpro.hardware.Pigeon2;
