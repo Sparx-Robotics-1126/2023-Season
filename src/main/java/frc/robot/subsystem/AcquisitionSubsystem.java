@@ -1,29 +1,13 @@
 package frc.robot.subsystem;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import frc.drives.DrivesSensorInterface;
-import frc.drives.DrivesSensors;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
-
-
+import frc.robot.sensors.DrivesSensors;
+import frc.robot.Constants.AcquisitionConstants;
 
 public class AcquisitionSubsystem extends SubsystemBase {
 
@@ -36,31 +20,31 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private TalonSRX yMotorLeft;
     private TalonSRX yMotorRight; // slave of yMotor
 
-        //digital input limits
-    private DigitalInput lowerLimitLeft;   
+    //digital input limits
+    private DigitalInput lowerLimitLeft;
     private DigitalInput lowerLimitRight;
-   
+
     private DigitalInput upperLimitLeft;
     private DigitalInput upperLimitRight;
 
     public AcquisitionSubsystem() {
 
-        xMotorLeft = new TalonSRX(Constants.ELEVATIONS_LEFT_MOTOR);
-        TalonSRX xMotorRight = new TalonSRX(Constants.ELEVATIONS_RIGHT_MOTOR);
+        xMotorLeft = new TalonSRX(AcquisitionConstants.ELEVATIONS_LEFT_MOTOR);
+        TalonSRX xMotorRight = new TalonSRX(AcquisitionConstants.ELEVATIONS_RIGHT_MOTOR);
 
         xMotorLeft.follow(xMotorRight);
         configureMotor(xMotorLeft, xMotorRight);
 
-        yMotorLeft = new TalonSRX(Constants.EXTENDERS_LEFT_MOTOR);
-        TalonSRX yMotorLeft = new TalonSRX(Constants.EXTENDERS_RIGHT_MOTOR);
+        yMotorLeft = new TalonSRX(AcquisitionConstants.EXTENDERS_LEFT_MOTOR);
+        TalonSRX yMotorLeft = new TalonSRX(AcquisitionConstants.EXTENDERS_RIGHT_MOTOR);
 
         yMotorLeft.follow(yMotorLeft);
         configureMotor(xMotorLeft, yMotorLeft);
-           
+
         //digital input limits
         lowerLimitLeft = new DigitalInput(0);
         lowerLimitRight = new DigitalInput(1);
-       
+
         upperLimitLeft = new DigitalInput(2);
         upperLimitRight = new DigitalInput(3);
     }
@@ -86,49 +70,47 @@ public class AcquisitionSubsystem extends SubsystemBase {
             slave.configPeakCurrentLimit(Constants.MAX_CURRENT);
 
         }
-    
+
     }
 
 
     public void setXMotorLeft(double speed) {
-    xMotorLeft.set(ControlMode.PercentOutput, speed);
-}
-
- public void setXMotorRight(double speed) {
-    xMotorRight.set(ControlMode.PercentOutput, speed);
- }
-
- public void setYMotorLeft(double speed) {
-    yMotorLeft.set(ControlMode.PercentOutput, speed);
-}
-
- public void setYMotorRight(double speed) {
-    yMotorRight.set(ControlMode.PercentOutput, speed);
- }
-   
- 
- public boolean getLowerLimitLeft() {
-    return lowerLimitLeft.get();
- }
- 
- public boolean getLowerLimitRight() { 
-    return lowerLimitLeft.get();
- }
- 
- public boolean getUpperLimitLeft() {
-    return upperLimitLeft.get();
- }
- 
- public boolean getUpperLimitRight() {
-    return upperLimitRight.get();
- }
- 
- 
- 
- public void returnToHome() {
-        
+        xMotorLeft.set(ControlMode.PercentOutput, speed);
     }
 
+    public void setXMotorRight(double speed) {
+        xMotorRight.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setYMotorLeft(double speed) {
+        yMotorLeft.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setYMotorRight(double speed) {
+        yMotorRight.set(ControlMode.PercentOutput, speed);
+    }
+
+
+    public boolean getLowerLimitLeft() {
+        return lowerLimitLeft.get();
+    }
+
+    public boolean getLowerLimitRight() {
+        return lowerLimitLeft.get();
+    }
+
+    public boolean getUpperLimitLeft() {
+        return upperLimitLeft.get();
+    }
+
+    public boolean getUpperLimitRight() {
+        return upperLimitRight.get();
+    }
+
+
+    public void returnToHome() {
+
+    }
 
 
 }

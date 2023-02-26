@@ -10,16 +10,14 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.BalanceCmd;
 import frc.robot.commands.BalanceShortRobot;
 import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
 import frc.robot.subsystem.DriveSubsystem;
-import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.robot.commands.Elevate;
-import frc.sensors.Limelight;
+import frc.robot.sensors.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,57 +30,36 @@ import frc.sensors.Limelight;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final PigeonSubsystem _pigeon;
-    // BasePigeonSimCollection m_pigeonSim = _pigeon.getSimCollection();
+    private final PigeonSubsystem m_pigeon;
     private final DriveSubsystem m_robotDrive;
     private final AcquisitionSubsystem m_robotAcquisition;
     private final XboxController m_driverController;
     private final XboxController m_operatorController;
-
-    private double driveSpeed = 0.9;
-    private double triggerSpeed = 0.1;
-
-    private Limelight m_limeLight;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
 
-        m_limeLight = new Limelight();
-        m_limeLight.enableVision();
-        
+        Limelight limeLight = new Limelight();
+        limeLight.enableVision();
+
         m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
-        _pigeon = new PigeonSubsystem();
+        m_pigeon = new PigeonSubsystem();
 
         m_robotAcquisition = new AcquisitionSubsystem();
-        
-        m_robotDrive = new DriveSubsystem(_pigeon);
-        m_robotDrive.setMaxOutput(driveSpeed);
+
+        m_robotDrive = new DriveSubsystem(m_pigeon);
+        m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
                         () -> m_robotDrive.tankDrive(
                                 (m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
 
-        // m_robotDrive.setDefaultCommand(
-
-        // new PIDCommand(
-        // joystickPID,
-        // m_robotDrive::getEncoderMeters,
-        // output -> m_robotDrive.tankDrive(m_driverController.getLeftY()),
-        // m_driverController.getRightY()),
-        // m_robotDrive);
         configureDriverButtonBindings();
         configureOperatorButtons();
-
-        // m_robotAcquisition.setDefaultCommand(
-
-        // new RunCommand(
-        // () -> m_robotAcquisition.elevate()
-
-        // ));
 
     }
 
@@ -96,8 +73,8 @@ public class RobotContainer {
      */
     private void configureDriverButtonBindings() {
         new JoystickButton(m_operatorController, Button.kRightBumper.value)
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(triggerSpeed)))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(driveSpeed)));
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
         // InstantCommand(() -> _pigeon.reset()));
@@ -130,7 +107,7 @@ public class RobotContainer {
         // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
 
         // new JoystickButton(m_operatorController, Button.kY.value)
-                // .whileTrue(new BalanceCmd(m_robotDrive));
+        // .whileTrue(new BalanceCmd(m_robotDrive));
 
         // // new JoystickButton(m_operatorController, Button.kA.value)
         // // .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
@@ -142,26 +119,24 @@ public class RobotContainer {
                 .whileTrue(new Elevate(m_robotAcquisition));
     }
 
-
-
-    /**
-     * @param left
-     * @param right
-     * @param speed
-     */
-    public void tankDrive(double left, double right, double speed) {
-        m_robotDrive.setMaxOutput(speed);
-        m_robotDrive.tankDrive(left, right);
-    }
+//    /**
+//     * @param left
+//     * @param right
+//     * @param speed
+//     */
+//    public void tankDrive(double left, double right, double speed) {
+//        m_robotDrive.setMaxOutput(speed);
+//        m_robotDrive.tankDrive(left, right);
+//    }
 
     public double getPitch() {
-        return _pigeon.getPitch();
+        return m_pigeon.getPitch();
     }
 
-public Command getShortAutoCommand(){
-    return new BalanceShortRobot(m_robotDrive);
+    public Command getShortAutoCommand() {
+        return new BalanceShortRobot(m_robotDrive);
 
-}
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -170,23 +145,23 @@ public Command getShortAutoCommand(){
      */
     public Command getLongAutoCommand() {
 
-        
         // return new SequentialCommandGroup(
         // new DriveDistance(m_robotDrive, 2, .8),
         // new DriveToPitch(m_robotDrive, .2, 1),
         // new DriveToPitch(m_robotDrive, .2, -1)
         // );
 
-        //  return new AutoDistances(m_robotDrive);
+        // return new AutoDistances(m_robotDrive);
 
         return new BalanceLongRobot(m_robotDrive);
-        // An ExampleCommand will run in autonomous        
+        // An ExampleCommand will run in autonomous
     }
 
-        public Command getDriveMeasurements() {
-    
-            return new DriveMeasurements(m_robotDrive);
-        }
+    public Command getDriveMeasurements() {
+
+        return new DriveMeasurements(m_robotDrive);
+    }
+
     public DriveSubsystem getDrives() {
         return m_robotDrive;
     }
@@ -202,6 +177,7 @@ public Command getShortAutoCommand(){
     public void reset() {
         m_robotDrive.reset();
     }
+
     public AcquisitionSubsystem getAcquisition() {
         return m_robotAcquisition;
     }
