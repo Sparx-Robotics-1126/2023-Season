@@ -1,4 +1,4 @@
-package frc.drives;
+package frc.sensors;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.revrobotics.RelativeEncoder;
