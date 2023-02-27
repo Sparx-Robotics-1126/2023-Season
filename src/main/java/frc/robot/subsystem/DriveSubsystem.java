@@ -15,13 +15,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import frc.drives.DrivesSensorInterface;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  private DrivesSensorInterface _drivesSensors;
 
   // Put motor initialization here.
   CANSparkMax rightMotors;
@@ -51,11 +49,11 @@ public class DriveSubsystem extends SubsystemBase {
     //stop();
     m_pigeon = pigeon;
 
-    rightMotors = new CANSparkMax(Constants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-    CANSparkMax rightMotorSlave = new CANSparkMax(Constants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+    rightMotors = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+    CANSparkMax rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
-    leftMotors = new CANSparkMax(Constants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-    CANSparkMax leftMotorSlave = new CANSparkMax(Constants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+    leftMotors = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+    CANSparkMax leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
 
     configureMotor(rightMotors, rightMotorSlave);
     configureMotor(leftMotors, leftMotorSlave);
@@ -301,13 +299,6 @@ public class DriveSubsystem extends SubsystemBase {
     return m_pigeon.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  
-  /** 
-   * @return DrivesSensorInterface
-   */
-  public DrivesSensorInterface getDriveSenors() {
-    return _drivesSensors;
-  }
 
   
   /** 

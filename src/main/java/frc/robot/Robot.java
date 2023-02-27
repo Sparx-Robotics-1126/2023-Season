@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ChooserOptions;
 
 
 /**
@@ -14,12 +15,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
 
   // Options for the Sendable Chooser
-  private static final String kOption1 = "Option 1";
-  private static final String kOption2 = "Option 2";
-  private static final String kDriveMeasure = "Drive Measure";
 
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private String _autoSelected;
+  private final SendableChooser<String> _chooser = new SendableChooser<>();
   // private final Timer m_timer = new Timer();
   private Command m_autonomousCommand;
 
@@ -29,10 +28,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     _robotContainer = new RobotContainer();
-    m_chooser.setDefaultOption("Short", kOption1);
-    m_chooser.addOption("Long", kOption2);
-    m_chooser.addOption("Measure", kDriveMeasure);
-    SmartDashboard.putData("Auto Choices", m_chooser);
+    _chooser.setDefaultOption("Short", ChooserOptions.kAutoShort);
+    _chooser.addOption("Long", ChooserOptions.kAutoLong);
+    _chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
+    SmartDashboard.putData("Auto Choices", _chooser);
   }
 
   @Override
@@ -69,51 +68,34 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     System.out.println("********** AUTONOMOUS STARTED ************");
-   
+
     _robotContainer.reset();
 
-   m_autoSelected = m_chooser.getSelected();
-  //  System.out.println("Auto Selected: " + m_autoSelected);
-  switch (m_autoSelected) {
+    _autoSelected = _chooser.getSelected();
+    //  System.out.println("Auto Selected: " + m_autoSelected);
+    switch (_autoSelected) {
 
-    case kOption1:
-      m_autonomousCommand = _robotContainer.getShortAutoCommand();
-      break;
+      case ChooserOptions.kAutoShort:
+        m_autonomousCommand = _robotContainer.getShortAutoCommand();
+        break;
 
-    case kOption2:
-      m_autonomousCommand = _robotContainer.getLongAutoCommand();
-      break;
-      
-      case kDriveMeasure:
-      m_autonomousCommand = _robotContainer.getDriveMeasurements();
-      break;
-  } 
+      case ChooserOptions.kAutoLong:
+        m_autonomousCommand = _robotContainer.getLongAutoCommand();
+        break;
+
+      case ChooserOptions.kDriveMeasure:
+        m_autonomousCommand = _robotContainer.getDriveMeasurements();
+        break;
+    }
 
 
     if (m_autonomousCommand != null) {
       _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
-
-    // m_autonomousCommand = _robotContainer.getAutonomousCommand();
   }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
 
-    // Drive for 2 seconds
-    // if (m_timer.get() < 2.0) {
-    // System.out.println("Moving forward");
-    // // Drive forwards half speed, make sure to turn input squaring off
-    // _robotContainer.tankDrive(-0.1, .1, .1);
-    // } else {
-    // System.out.println("Moving stopped");;
-    // _robotContainer.tankDrive(0, 0, 0); // stop robot
-    // }
-
-  
-  }
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -140,10 +122,6 @@ public class Robot extends TimedRobot {
     // disabledStarted();
   }
 
-  /** This function is called periodically when disabled. */
-  @Override
-  public void disabledPeriodic() {
-  }
 
   /** This function is called once when test mode is enabled. */
   @Override
@@ -156,45 +134,6 @@ public class Robot extends TimedRobot {
 
   }
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
-  }
 
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-  }
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-  }
-
-  /**
-   * Called when autonomous begins.
-   */
-  // private void autoStarted() {
-
-  // // m_autonomousCommand = _robotContainer.getAutonomousCommand();
-  // // currentController = autoControls;
-  // // state = RobotState.AUTO;
-  // // m_timer.reset();
-  // // m_timer.start();
-
-  // // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-  // /*
-  // * String autoSelected = SmartDashboard.getString("Auto Selector",
-  // * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-  // * = new MyAutoCommand(); break; case "Default Auto": default:
-  // * autonomousCommand = new ExampleCommand(); break; }
-  // */
-
-  // // schedule the autonomous command (example)
-  // if (m_autonomousCommand != null) {
-  // m_autonomousCommand.schedule();
-  // }
-  // }
 
 }
