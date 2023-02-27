@@ -97,7 +97,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public boolean getLowerLimitRight() {
-        return lowerLimitLeft.get();
+        return lowerLimitRight.get();
     }
 
     public boolean getUpperLimitLeft() {
