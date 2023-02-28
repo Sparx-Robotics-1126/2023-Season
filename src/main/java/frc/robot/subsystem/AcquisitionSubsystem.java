@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import frc.robot.sensors.DrivesSensors;
+// import frc.robot.sensors.DrivesSensors;
 import frc.robot.Constants;
 import frc.robot.Constants.AcquisitionConstants;
 
 public class AcquisitionSubsystem extends SubsystemBase {
 
-    private DrivesSensors _acquisitionsSensors;
+    // private DrivesSensors _acquisitionsSensors;
 
     // motors for elevations (X) and extenders (Y).
     private TalonSRX xMotorLeft;
@@ -29,7 +29,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DigitalInput upperLimitRight;
 
     public AcquisitionSubsystem() {
-
+        
+        // _acquisitionsSensors = new DrivesSensors();
         xMotorLeft = new TalonSRX(AcquisitionConstants.ELEVATIONS_LEFT_MOTOR);
         TalonSRX xMotorRight = new TalonSRX(AcquisitionConstants.ELEVATIONS_RIGHT_MOTOR);
 
@@ -110,7 +111,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
 
     public void returnToHome() {
-
     }
 
 
