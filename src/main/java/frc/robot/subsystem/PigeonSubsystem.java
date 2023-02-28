@@ -18,17 +18,17 @@ public class PigeonSubsystem extends SubsystemBase {
     private final WPI_Pigeon2 _pigeon;
 
     // private Pigeon2 _test;
-    private static Pigeon2_Faults _pigeonFaults = new Pigeon2_Faults();
+    private static Pigeon2_Faults _pigeonFaults;
     // private BasePigeon m_basePigeon;
 
     public PigeonSubsystem() {
         _pigeon = new WPI_Pigeon2(Constants.Pigeon2ID);
         _pigeonFaults = new Pigeon2_Faults();
-        // _test = new Pigeon2(4);
         initPigeon();
     }
 
     private void initPigeon() {
+        // _pigeon.reset();
         // Factory default the Pigeon.
         _pigeon.configAllSettings(new Pigeon2Configuration());
 
@@ -41,7 +41,7 @@ public class PigeonSubsystem extends SubsystemBase {
         /* Speed up signals to an appropriate rate */
         // _pigeon2.getYaw().setUpdateFrequency(100);
         // _pigeon2.getPitch().setUpdateFrequency(100);
-        _pigeon.reset();
+       
         
         _pigeon.setYaw(0);
         // _pigeon2.setStatusFramePeriod(0,100 )

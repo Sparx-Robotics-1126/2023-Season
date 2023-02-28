@@ -31,35 +31,35 @@ import frc.robot.sensors.Limelight;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem m_pigeon;
-    private final DriveSubsystem m_robotDrive;
-    private final AcquisitionSubsystem m_robotAcquisition;
-    private final XboxController m_driverController;
-    private final XboxController m_operatorController;
+    // private final DriveSubsystem m_robotDrive;
+    // private final AcquisitionSubsystem m_robotAcquisition;
+    // private final XboxController m_driverController;
+    // private final XboxController m_operatorController;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
 
-        Limelight limeLight = new Limelight();
-        limeLight.enableVision();
+        // Limelight limeLight = new Limelight();
+        // limeLight.enableVision();
 
-        m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
-        m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
+        // m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
+        // m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = new PigeonSubsystem();
 
-        m_robotAcquisition = new AcquisitionSubsystem();
+        // m_robotAcquisition = new AcquisitionSubsystem();
 
-        m_robotDrive = new DriveSubsystem(m_pigeon);
-        m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
-        m_robotDrive.setDefaultCommand(
-                new RunCommand(
-                        () -> m_robotDrive.tankDrive(
-                                (m_driverController.getLeftY()), m_driverController.getRightY()),
-                        m_robotDrive));
+        // m_robotDrive = new DriveSubsystem(m_pigeon);
+        // m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
+        // m_robotDrive.setDefaultCommand(
+        //         new RunCommand(
+        //                 () -> m_robotDrive.tankDrive(
+        //                         (m_driverController.getLeftY()), m_driverController.getRightY()),
+        //                 m_robotDrive));
 
-        configureDriverButtonBindings();
-        configureOperatorButtons();
+        // configureDriverButtonBindings();
+        // configureOperatorButtons();
 
     }
 
@@ -72,29 +72,33 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureDriverButtonBindings() {
-        new JoystickButton(m_operatorController, Button.kRightBumper.value)
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
+        /* These commands are what we use for the flat bot */
+        // new JoystickButton(m_operatorController, Button.kRightBumper.value)
+        //         .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
+        //         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
+
+      
+        // // Stabilize robot to drive straight with gyro when left bumper is held
+        // new JoystickButton(m_operatorController, Button.kLeftBumper.value)
+        //         .whileTrue(
+        //                 new PIDCommand(
+        //                         new PIDController(
+        //                                 DriveConstants.kStabilizationP,
+        //                                 DriveConstants.kStabilizationI,
+        //                                 DriveConstants.kStabilizationD),
+        //                         // Close the loop on the turn rate
+        //                         m_robotDrive::getTurnRate,
+        //                         // Setpoint is 0
+        //                         0,
+        //                         // Pipe the output to the turning controls
+        //                         output -> m_robotDrive.arcadeDrive(-m_operatorController.getLeftY(), output),
+        //                         // Require the robot drive
+        //                         m_robotDrive));
+
+/*Code below is left as examples */
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
         // InstantCommand(() -> _pigeon.reset()));
-
-        // Stabilize robot to drive straight with gyro when left bumper is held
-        new JoystickButton(m_operatorController, Button.kLeftBumper.value)
-                .whileTrue(
-                        new PIDCommand(
-                                new PIDController(
-                                        DriveConstants.kStabilizationP,
-                                        DriveConstants.kStabilizationI,
-                                        DriveConstants.kStabilizationD),
-                                // Close the loop on the turn rate
-                                m_robotDrive::getTurnRate,
-                                // Setpoint is 0
-                                0,
-                                // Pipe the output to the turning controls
-                                output -> m_robotDrive.arcadeDrive(-m_operatorController.getLeftY(), output),
-                                // Require the robot drive
-                                m_robotDrive));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         // new JoystickButton(_driverController, Button.kX.value)
@@ -115,8 +119,8 @@ public class RobotContainer {
     }
 
     private void configureOperatorButtons() {
-        new JoystickButton(m_operatorController, Button.kY.value)
-                .whileTrue(new Elevate(m_robotAcquisition));
+        // new JoystickButton(m_operatorController, Button.kY.value)
+        //         .whileTrue(new Elevate(m_robotAcquisition));
     }
 
 //    /**
@@ -134,7 +138,8 @@ public class RobotContainer {
     }
 
     public Command getShortAutoCommand() {
-        return new BalanceShortRobot(m_robotDrive);
+        // return new BalanceShortRobot(m_robotDrive);
+        return null;
 
     }
 
@@ -152,33 +157,35 @@ public class RobotContainer {
         // );
 
         // return new AutoDistances(m_robotDrive);
-
-        return new BalanceLongRobot(m_robotDrive);
+return null;
+        // return new BalanceLongRobot(m_robotDrive);
         // An ExampleCommand will run in autonomous
     }
 
     public Command getDriveMeasurements() {
-
-        return new DriveMeasurements(m_robotDrive);
+return null;
+        // return new DriveMeasurements(m_robotDrive);
     }
 
     public DriveSubsystem getDrives() {
-        return m_robotDrive;
+        return null;
+        // return m_robotDrive;
     }
 
     public void applyBrakes() {
-        m_robotDrive.applyBrakes();
+        // m_robotDrive.applyBrakes();
     }
 
     public void setToCoast() {
-        m_robotDrive.setToCoast();
+        // m_robotDrive.setToCoast();
     }
 
     public void reset() {
-        m_robotDrive.reset();
+        // m_robotDrive.reset();
     }
 
     public AcquisitionSubsystem getAcquisition() {
-        return m_robotAcquisition;
+        return null;
+        // return m_robotAcquisition;
     }
 }

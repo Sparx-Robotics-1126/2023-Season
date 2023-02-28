@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 
 
     if (m_autonomousCommand != null) {
-      _robotContainer.setToCoast();
+      // _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
   }
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     }
 
     _robotContainer.reset();
-    _robotContainer.setToCoast();
+    // _robotContainer.setToCoast();
   }
 
   /** This function is called once when the robot is disabled. */
