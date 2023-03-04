@@ -31,7 +31,9 @@ public class Robot extends TimedRobot {
     _chooser.setDefaultOption("Short", ChooserOptions.kAutoShort);
     _chooser.addOption("Long", ChooserOptions.kAutoLong);
     _chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
-    SmartDashboard.putData("Auto Choices", _chooser);
+    SmartDashboard.putData("AUTO CHOICES", _chooser);
+
+    
   }
 
   @Override
@@ -44,7 +46,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
   }
 
   /**

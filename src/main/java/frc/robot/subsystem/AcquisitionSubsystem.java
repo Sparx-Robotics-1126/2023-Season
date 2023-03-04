@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 // import frc.robot.sensors.DrivesSensors;
 import frc.robot.Constants;
 import frc.robot.Constants.AcquisitionConstants;
@@ -34,14 +37,10 @@ public class AcquisitionSubsystem extends SubsystemBase {
         xMotorLeft = new TalonSRX(AcquisitionConstants.ELEVATIONS_LEFT_MOTOR);
         TalonSRX xMotorRight = new TalonSRX(AcquisitionConstants.ELEVATIONS_RIGHT_MOTOR);
 
-        xMotorLeft.follow(xMotorRight);
-        configureMotor(xMotorLeft, xMotorRight);
-
         yMotorLeft = new TalonSRX(AcquisitionConstants.EXTENDERS_LEFT_MOTOR);
-        TalonSRX yMotorLeft = new TalonSRX(AcquisitionConstants.EXTENDERS_RIGHT_MOTOR);
+        TalonSRX yMotorRight = new TalonSRX(AcquisitionConstants.EXTENDERS_RIGHT_MOTOR);
 
-        yMotorLeft.follow(yMotorLeft);
-        configureMotor(xMotorLeft, yMotorLeft);
+        configureMotors(xMotorLeft, xMotorRight, yMotorLeft, yMotorRight);
 
         //digital input limits
         lowerLimitLeft = new DigitalInput(0);
@@ -54,27 +53,26 @@ public class AcquisitionSubsystem extends SubsystemBase {
     public void elevate() {
         System.out.println("elevate");
     }
-
+    
+    @Override
     public void periodic() {
 
     }
 
-    private static void configureMotor(TalonSRX master, TalonSRX... slavesSrxs) {
-        master.configAllSettings(new TalonSRXConfiguration());
-        // speed command
-        master.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
-        master.configPeakCurrentLimit(Constants.MAX_CURRENT);
+    private static void configureMotors(TalonSRX... controllers) {
+        TalonSRXConfiguration config = new TalonSRXConfiguration();
+        TalonSRXPIDSetConfiguration pidConfig = new TalonSRXPIDSetConfiguration();
 
-        for (TalonSRX slave : slavesSrxs) {
-            slave.configAllSettings(new TalonSRXConfiguration());
-            // set speed command
-            slave.configVoltageCompSaturation(Constants.NOMINAL_VOLTAGE);
-            slave.configPeakCurrentLimit(Constants.MAX_CURRENT);
+        pidConfig.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
+        // This will automatically convert the encoder's raw units to meters.
+        pidConfig.selectedFeedbackCoefficient = AcquisitionConstants.TICKS_TO_METERS;
+        config.primaryPID = pidConfig;
+        config.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
+        config.peakCurrentLimit = Constants.MAX_CURRENT;
 
-        }
-
+        for (TalonSRX controller : controllers)
+            controller.configAllSettings(config);
     }
-
 
     public void setXMotorLeft(double speed) {
         xMotorLeft.set(ControlMode.PercentOutput, speed);
@@ -92,7 +90,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yMotorRight.set(ControlMode.PercentOutput, speed);
     }
 
-
     public boolean getLowerLimitLeft() {
         return lowerLimitLeft.get();
     }
@@ -109,10 +106,45 @@ public class AcquisitionSubsystem extends SubsystemBase {
         return upperLimitRight.get();
     }
 
-
-    public void returnToHome() {
+    public void xMoveTo(double meters)
+    {
+        xMotorLeft.set(ControlMode.Position, meters);
+        xMotorRight.set(ControlMode.Position, meters);
     }
 
+    public void yMoveTo(double meters)
+    {
+        yMotorLeft.set(ControlMode.Position, meters);
+        yMotorRight.set(ControlMode.Position, meters);
+    }
 
+    /**
+     * @return Average Y encoder position in meters.
+     */
+    public double getYPos()
+    {
+        return (yMotorLeft.getSelectedSensorPosition() 
+            + yMotorRight.getSelectedSensorPosition()) / 2;
+    }
 
+    /**
+     * @return Average X encoder position in meters.
+     */
+    public double getXPos()
+    {
+        return (xMotorLeft.getSelectedSensorPosition() 
+            + xMotorRight.getSelectedSensorPosition()) / 2;
+    }
+
+    public void reset()
+    {
+        xMotorLeft.setSelectedSensorPosition(0);
+        xMotorRight.setSelectedSensorPosition(0);
+        yMotorLeft.setSelectedSensorPosition(0);
+        yMotorRight.setSelectedSensorPosition(0);
+    }
+
+    public void returnToHome() {
+        // TODO: Set command to ReturnToHome
+    }
 }
