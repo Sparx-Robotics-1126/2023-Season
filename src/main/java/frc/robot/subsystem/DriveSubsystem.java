@@ -112,14 +112,14 @@ public class DriveSubsystem extends SubsystemBase {
     master.setIdleMode(IdleMode.kCoast);
     master.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
     master.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-    master.setOpenLoopRampRate(1);
+    //master.setOpenLoopRampRate(1);
 
     for (CANSparkMax slave : slaves) {
       slave.restoreFactoryDefaults();
       slave.follow(master);
       slave.setIdleMode(IdleMode.kCoast);
       slave.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-      slave.setOpenLoopRampRate(1);
+      //slave.setOpenLoopRampRate(1);
     }
   }
 
