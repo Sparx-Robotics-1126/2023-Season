@@ -1,23 +1,23 @@
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.BalanceShortRobot;
+import frc.robot.commands.ApplyBrakes;
 import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
+import frc.robot.commands.SetToCoast;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
-import frc.robot.commands.Elevate;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.sensors.Limelight;
 
 /**
@@ -36,15 +36,14 @@ public class RobotContainer {
     // private final AcquisitionSubsystem m_robotAcquisition;
     private final XboxController m_driverController;
     private final XboxController m_operatorController;
-public DigitalInput testSwitch;
+    private final Timer m_Timer;
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-testSwitch = new DigitalInput(0);
+        m_Timer = new Timer();
         Limelight limeLight = new Limelight();
         limeLight.enableVision();
-        
 
         m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
@@ -74,7 +73,7 @@ testSwitch = new DigitalInput(0);
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureDriverButtonBindings() {
-        new JoystickButton(m_operatorController, Button.kRightBumper.value)
+        new JoystickButton(m_driverController, Button.kRightBumper.value)
                 .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
@@ -82,25 +81,29 @@ testSwitch = new DigitalInput(0);
         // InstantCommand(() -> _pigeon.reset()));
 
         // Stabilize robot to drive straight with gyro when left bumper is held
-        new JoystickButton(m_operatorController, Button.kLeftBumper.value)
-                .whileTrue(
-                        new PIDCommand(
-                                new PIDController(
-                                        DriveConstants.kStabilizationP,
-                                        DriveConstants.kStabilizationI,
-                                        DriveConstants.kStabilizationD),
-                                // Close the loop on the turn rate
-                                m_robotDrive::getTurnRate,
-                                // Setpoint is 0
-                                0,
-                                // Pipe the output to the turning controls
-                                output -> m_robotDrive.arcadeDrive(-m_operatorController.getLeftY(), output),
-                                // Require the robot drive
-                                m_robotDrive));
+        // new JoystickButton(m_operatorController, Button.kLeftBumper.value)
+        // .whileTrue(
+        // new PIDCommand(
+        // new PIDController(
+        // DriveConstants.kStabilizationP,
+        // DriveConstants.kStabilizationI,
+        // DriveConstants.kStabilizationD),
+        // // Close the loop on the turn rate
+        // m_robotDrive::getTurnRate,
+        // // Setpoint is 0
+        // 0,
+        // // Pipe the output to the turning controls
+        // output -> m_robotDrive.arcadeDrive(-m_operatorController.getLeftY(), output),
+        // // Require the robot drive
+        // m_robotDrive));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        // new JoystickButton(_driverController, Button.kX.value)
-        // .onTrue(new TurnToAngle(90, _robotDrive).withTimeout(5));
+        new JoystickButton(m_driverController, Button.kX.value)
+                .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
+
+        new JoystickButton(m_driverController, Button.kY.value)
+        .onTrue(new ApplyBrakes(m_robotDrive,m_Timer,30))
+        .onFalse(new SetToCoast(m_robotDrive));
 
         // // Turn to -90 degrees with a profile when the Circle button is pressed, with
         // a
@@ -118,22 +121,18 @@ testSwitch = new DigitalInput(0);
 
     private void configureOperatorButtons() {
         // new JoystickButton(m_operatorController, Button.kY.value)
-        //         .whileTrue(new Elevate(m_robotAcquisition));
+        // .whileTrue(new Elevate(m_robotAcquisition));
     }
 
-//    /**
-//     * @param left
-//     * @param right
-//     * @param speed
-//     */
-//    public void tankDrive(double left, double right, double speed) {
-//        m_robotDrive.setMaxOutput(speed);
-//        m_robotDrive.tankDrive(left, right);
-//    }
-
-public boolean getSwitch(){
-    return testSwitch.get();
-}
+    // /**
+    // * @param left
+    // * @param right
+    // * @param speed
+    // */
+    // public void tankDrive(double left, double right, double speed) {
+    // m_robotDrive.setMaxOutput(speed);
+    // m_robotDrive.tankDrive(left, right);
+    // }
 
     public double getPitch() {
         return m_pigeon.getPitch();
@@ -142,6 +141,21 @@ public boolean getSwitch(){
     public Command getShortAutoCommand() {
         return new BalanceShortRobot(m_robotDrive);
 
+    }
+    public double getTimerSeconds(){
+        return m_Timer.get();
+    }
+
+    public void startTimer(){
+        m_Timer.start();
+    }
+
+    public void restartTimer(){
+        m_Timer.restart();
+    }
+
+    public void stopTimer(){
+        m_Timer.stop();
     }
 
     /**

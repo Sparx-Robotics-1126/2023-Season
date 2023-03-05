@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ChooserOptions;
 
-
 /**
  * The main controlling class of the Robot. Controls all subsystems via
  * specialized Controllers.
@@ -15,7 +14,6 @@ import frc.robot.Constants.ChooserOptions;
 public class Robot extends TimedRobot {
 
   // Options for the Sendable Chooser
-
 
   private String _autoSelected;
   private final SendableChooser<String> _chooser = new SendableChooser<>();
@@ -33,7 +31,6 @@ public class Robot extends TimedRobot {
     _chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
     SmartDashboard.putData("AUTO CHOICES", _chooser);
 
-    
   }
 
   @Override
@@ -45,8 +42,9 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
-SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
+   // SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
   }
 
   /**
@@ -74,7 +72,7 @@ SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
     _robotContainer.reset();
 
     _autoSelected = _chooser.getSelected();
-    //  System.out.println("Auto Selected: " + m_autoSelected);
+    // System.out.println("Auto Selected: " + m_autoSelected);
     switch (_autoSelected) {
 
       case ChooserOptions.kAutoShort:
@@ -90,14 +88,11 @@ SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
         break;
     }
 
-
     if (m_autonomousCommand != null) {
       _robotContainer.setToCoast();
       m_autonomousCommand.schedule();
     }
   }
-
-
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -112,7 +107,8 @@ SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
+    
+    _robotContainer.startTimer();
     _robotContainer.reset();
     _robotContainer.setToCoast();
   }
@@ -121,9 +117,9 @@ SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
   @Override
   public void disabledInit() {
     System.out.println("********** ROBOT DISABLED ************");
+    _robotContainer.stopTimer();
     // disabledStarted();
   }
-
 
   /** This function is called once when test mode is enabled. */
   @Override
@@ -135,7 +131,5 @@ SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
     CommandScheduler.getInstance().cancelAll();
 
   }
-
-
 
 }

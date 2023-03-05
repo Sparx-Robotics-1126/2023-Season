@@ -25,7 +25,7 @@ public final class Constants {
     public static final double DEAD_BAND = .5;
     public static final int Pigeon2ID = 4;
     public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
-    public static final int XBOX_OPERATOR_CONTROLLER_PORT = 0;
+    public static final int XBOX_OPERATOR_CONTROLLER_PORT = 1;
 
     public static final class DriveConstants {
         // MOTORS

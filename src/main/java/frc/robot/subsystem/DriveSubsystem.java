@@ -24,6 +24,10 @@ public class DriveSubsystem extends SubsystemBase {
   // Put motor initialization here.
   CANSparkMax rightMotors;
   CANSparkMax leftMotors;
+  CANSparkMax rightMotorSlave;
+  CANSparkMax leftMotorSlave;
+
+  
 
   // The robot's drive
   public final DifferentialDrive m_driveDifferential;
@@ -50,10 +54,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_pigeon = pigeon;
 
     rightMotors = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-    CANSparkMax rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+     rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
     leftMotors = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-    CANSparkMax leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+     leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
 
     configureMotor(rightMotors, rightMotorSlave);
     configureMotor(leftMotors, leftMotorSlave);
@@ -348,15 +352,23 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * 
    */
-  public void applyBrakes(){
+  public boolean applyBrakes(){
+   
     rightMotors.setIdleMode(IdleMode.kBrake);
     leftMotors.setIdleMode(IdleMode.kBrake);
-    System.out.println("**** Brakes Applied ****");
+    rightMotorSlave.setIdleMode(IdleMode.kBrake);
+    leftMotorSlave.setIdleMode(IdleMode.kBrake);
+    
+    SmartDashboard.putString("BRAKES", "ON");
+    return true;
   }
 
   public void setToCoast(){
     rightMotors.setIdleMode(IdleMode.kCoast);
     leftMotors.setIdleMode(IdleMode.kCoast);
+    rightMotorSlave.setIdleMode(IdleMode.kCoast);
+    leftMotorSlave.setIdleMode(IdleMode.kCoast);
+    SmartDashboard.putString("BRAKES", "OFF");
   }
 
  
