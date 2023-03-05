@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -32,23 +33,24 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem m_pigeon;
     private final DriveSubsystem m_robotDrive;
-    private final AcquisitionSubsystem m_robotAcquisition;
+    // private final AcquisitionSubsystem m_robotAcquisition;
     private final XboxController m_driverController;
     private final XboxController m_operatorController;
-
+public DigitalInput testSwitch;
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-
+testSwitch = new DigitalInput(0);
         Limelight limeLight = new Limelight();
         limeLight.enableVision();
+        
 
         m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = new PigeonSubsystem();
 
-        m_robotAcquisition = new AcquisitionSubsystem();
+        // m_robotAcquisition = new AcquisitionSubsystem();
 
         m_robotDrive = new DriveSubsystem(m_pigeon);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
@@ -115,8 +117,8 @@ public class RobotContainer {
     }
 
     private void configureOperatorButtons() {
-        new JoystickButton(m_operatorController, Button.kY.value)
-                .whileTrue(new Elevate(m_robotAcquisition));
+        // new JoystickButton(m_operatorController, Button.kY.value)
+        //         .whileTrue(new Elevate(m_robotAcquisition));
     }
 
 //    /**
@@ -128,6 +130,10 @@ public class RobotContainer {
 //        m_robotDrive.setMaxOutput(speed);
 //        m_robotDrive.tankDrive(left, right);
 //    }
+
+public boolean getSwitch(){
+    return testSwitch.get();
+}
 
     public double getPitch() {
         return m_pigeon.getPitch();
@@ -179,6 +185,7 @@ public class RobotContainer {
     }
 
     public AcquisitionSubsystem getAcquisition() {
-        return m_robotAcquisition;
+        return null;
+        // return m_robotAcquisition;
     }
 }
