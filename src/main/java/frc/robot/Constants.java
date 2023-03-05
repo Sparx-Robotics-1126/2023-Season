@@ -80,6 +80,14 @@ public final class Constants {
         public static final int EXTENDERS_LEFT_MOTOR = 8;
         public static final int EXTENDERS_RIGHT_MOTOR = 9;
 
+        public static final double X_MAX_METERS = 0;
+        public static final double Y_MAX_METERS = 0;
+
+        public static final double POSITION_EPSILON_METERS = 1;
+
+        public static final double MOTOR_SPEED = 0.05;
+        public static final double TICKS_TO_METERS =0.01;
+
     }
 
     public static final class ChooserOptions{
