@@ -75,10 +75,10 @@ public final class Constants {
     }
 
     public static final class AcquisitionConstants {
-        public static final int ELEVATIONS_LEFT_MOTOR = 28;
-        public static final int ELEVATIONS_RIGHT_MOTOR = 29;
-        public static final int EXTENDERS_LEFT_MOTOR = 30;
-        public static final int EXTENDERS_RIGHT_MOTOR = 31;
+        public static final int ELEVATIONS_LEFT_MOTOR = 10;
+        public static final int ELEVATIONS_RIGHT_MOTOR = 7;
+        public static final int EXTENDERS_LEFT_MOTOR = 8;
+        public static final int EXTENDERS_RIGHT_MOTOR = 9;
 
     }
 

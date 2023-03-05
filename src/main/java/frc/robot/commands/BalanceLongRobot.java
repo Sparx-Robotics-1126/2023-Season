@@ -22,7 +22,7 @@ public class BalanceLongRobot extends SequentialCommandGroup {
     // // //drive until pitch is 2 backwards
     addCommands(new DriveToPitch(drive, .35, 2, true, false));
     //drive forward and balance to 0.
-    addCommands(new DriveToPitch(drive, .25, 0, false, false));
+    addCommands(new DriveToPitch(drive, .28, 0, false, false));
   }
 }
 
