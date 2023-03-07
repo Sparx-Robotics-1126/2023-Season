@@ -36,6 +36,7 @@ public final class Constants {
 
         public static double MAX_DRIVE_SPEED = 0.9;
         public static double MAX_TRIGGER_SPEED = 0.1;
+        public static double kTurnFriction = .3;
 
 
         public static final int kEncoderCPR = 1024;
@@ -72,6 +73,7 @@ public final class Constants {
         public static final double kPDriveVel = 2.24;  //2.4
 
         public static final boolean kGyroReversed = false;
+        public static final double EndGameSeconds = 15;
     }
 
     public static final class AcquisitionConstants {

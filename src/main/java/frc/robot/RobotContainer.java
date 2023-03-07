@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.BalanceShortRobot;
-import frc.robot.commands.ApplyBrakes;
 import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
@@ -18,6 +17,7 @@ import frc.robot.commands.SetToCoast;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.sensors.Limelight;
 
 /**
@@ -51,7 +51,7 @@ public class RobotContainer {
 
         // m_robotAcquisition = new AcquisitionSubsystem();
 
-        m_robotDrive = new DriveSubsystem(m_pigeon);
+        m_robotDrive = new DriveSubsystem(m_pigeon, m_Timer);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
@@ -101,9 +101,14 @@ public class RobotContainer {
         new JoystickButton(m_driverController, Button.kX.value)
                 .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
 
+                new JoystickButton(m_driverController, Button.kA.value)
+                .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
+
         new JoystickButton(m_driverController, Button.kY.value)
-        .onTrue(new ApplyBrakes(m_robotDrive,m_Timer,30))
-        .onFalse(new SetToCoast(m_robotDrive));
+        .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
+        
+        // .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
+
 
         // // Turn to -90 degrees with a profile when the Circle button is pressed, with
         // a

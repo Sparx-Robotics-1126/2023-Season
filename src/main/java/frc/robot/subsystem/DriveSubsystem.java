@@ -1,5 +1,6 @@
 package frc.robot.subsystem;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,14 +21,11 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-
   // Put motor initialization here.
   CANSparkMax rightMotors;
   CANSparkMax leftMotors;
   CANSparkMax rightMotorSlave;
   CANSparkMax leftMotorSlave;
-
-  
 
   // The robot's drive
   public final DifferentialDrive m_driveDifferential;
@@ -47,23 +45,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final DifferentialDriveOdometry m_odometry;
   // private final WPI_Pigeon2 _pigeon2;
+  private final Timer m_timer;
+  private  Boolean m_brakesOn;
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(PigeonSubsystem pigeon) {
-    //stop();
+  public DriveSubsystem(PigeonSubsystem pigeon, Timer timer) {
+    // stop();
     m_pigeon = pigeon;
+    m_timer = timer;
 
     rightMotors = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-     rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+    rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
     leftMotors = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-     leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+    leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
 
     configureMotor(rightMotors, rightMotorSlave);
     configureMotor(leftMotors, leftMotorSlave);
 
     m_driveDifferential = new DifferentialDrive(leftMotors, rightMotors);
-    //m_driveDifferential.setDeadband(Constants.DEAD_BAND);
+    // m_driveDifferential.setDeadband(Constants.DEAD_BAND);
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
@@ -76,7 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    //_drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
+    // _drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
     leftMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
@@ -88,21 +89,20 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
         m_rightEncoder.getPosition());
+    m_brakesOn = false;
 
   }
 
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-      Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),- m_rightEncoder.getPosition());
+        Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
     SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
 
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
     SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
     SmartDashboard.putNumber("AVG DIST", getAverageEncoderDistance());
   }
-
-
 
   /**
    * Configures motors to follow one controller.
@@ -116,34 +116,31 @@ public class DriveSubsystem extends SubsystemBase {
     master.setIdleMode(IdleMode.kCoast);
     master.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
     master.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-    //master.setOpenLoopRampRate(1);
+    // master.setOpenLoopRampRate(1);
 
     for (CANSparkMax slave : slaves) {
       slave.restoreFactoryDefaults();
       slave.follow(master);
       slave.setIdleMode(IdleMode.kCoast);
       slave.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-      //slave.setOpenLoopRampRate(1);
+      // slave.setOpenLoopRampRate(1);
     }
   }
 
-  
-  /** 
+  /**
    * @return double
    */
   public double getEncoderMeters() {
     return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
   }
 
-  
-  /** 
+  /**
    * @return Pose2d
    */
   // public void setMotors(double leftSpeed, double rightSpeed) {
-  //   leftMotors.set(leftSpeed);
-  //   rightMotors.set(-rightSpeed);
+  // leftMotors.set(leftSpeed);
+  // rightMotors.set(-rightSpeed);
   // }
-
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -190,8 +187,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_driveDifferential.tankDrive(leftY, rightY, true);
 
   }
-  
-  /** 
+
+  /**
    * @param leftVelocitySetpoint
    * @param rightVelocitySetpoint
    */
@@ -200,8 +197,9 @@ public class DriveSubsystem extends SubsystemBase {
         + m_leftPID.calculate(m_leftEncoder.getVelocity(), leftVelocitySetpoint));
     rightMotors.setVoltage(m_feedforward.calculate(rightVelocitySetpoint)
         + m_rightPID.calculate(-m_rightEncoder.getVelocity(), rightVelocitySetpoint));
-        m_driveDifferential.feed();
-}
+    m_driveDifferential.feed();
+  }
+
   /**
    * Drives the robot using arcade controls.
    *
@@ -215,8 +213,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void reset() {
     zeroHeading();
     resetEncoders();
-    m_odometry.resetPosition( Rotation2d.fromDegrees(getHeading()),m_leftEncoder.getPosition(),
-    m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
+        m_rightEncoder.getPosition(), new Pose2d());
 
   }
 
@@ -303,9 +301,7 @@ public class DriveSubsystem extends SubsystemBase {
     return m_pigeon.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-
-  
-  /** 
+  /**
    * @param inches
    */
   public void driveDistance(double inches) {
@@ -315,8 +311,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  
-  /** 
+  /**
    * @return double
    */
   public int getPitch() {
@@ -331,8 +326,8 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }
-  
-  /** 
+
+  /**
    * @return double
    */
   public double getHeadingCW() {
@@ -340,8 +335,7 @@ public class DriveSubsystem extends SubsystemBase {
     return Math.IEEEremainder(m_pigeon.getAngle(), 360);
   }
 
-  
-  /** 
+  /**
    * @return double
    */
   public double getTurnRateCW() {
@@ -352,24 +346,37 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * 
    */
-  public boolean applyBrakes(){
-   
+  public void applyBrakesEndGame() {
+
+    if (m_timer.get() > DriveConstants.EndGameSeconds) {
+      if (m_brakesOn){
+        setToCoast();
+      }
+      else{
+        applyBrakes();
+      }
+    }
+
+  }
+
+  public boolean applyBrakes() {
+
     rightMotors.setIdleMode(IdleMode.kBrake);
     leftMotors.setIdleMode(IdleMode.kBrake);
     rightMotorSlave.setIdleMode(IdleMode.kBrake);
     leftMotorSlave.setIdleMode(IdleMode.kBrake);
-    
+    m_brakesOn = true;
     SmartDashboard.putString("BRAKES", "ON");
     return true;
   }
 
-  public void setToCoast(){
+  public void setToCoast() {
     rightMotors.setIdleMode(IdleMode.kCoast);
     leftMotors.setIdleMode(IdleMode.kCoast);
     rightMotorSlave.setIdleMode(IdleMode.kCoast);
     leftMotorSlave.setIdleMode(IdleMode.kCoast);
+    m_brakesOn = false;
     SmartDashboard.putString("BRAKES", "OFF");
   }
 
- 
 }
