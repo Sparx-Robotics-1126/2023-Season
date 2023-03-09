@@ -25,7 +25,7 @@ public final class Constants {
     public static final double DEAD_BAND = .5;
     public static final int Pigeon2ID = 4;
     public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
-    public static final int XBOX_OPERATOR_CONTROLLER_PORT = 1;
+    public static final int XBOX_OPERATOR_CONTROLLER_PORT = 0;
 
     public static final class DriveConstants {
         // MOTORS
@@ -36,7 +36,6 @@ public final class Constants {
 
         public static double MAX_DRIVE_SPEED = 0.9;
         public static double MAX_TRIGGER_SPEED = 0.1;
-        public static double kTurnFriction = .3;
 
 
         public static final int kEncoderCPR = 1024;
@@ -73,7 +72,8 @@ public final class Constants {
         public static final double kPDriveVel = 2.24;  //2.4
 
         public static final boolean kGyroReversed = false;
-        public static final double EndGameSeconds = 15;
+        
+        public static final int EndGameSeconds = 0;
     }
 
     public static final class AcquisitionConstants {
@@ -81,14 +81,17 @@ public final class Constants {
         public static final int ELEVATIONS_RIGHT_MOTOR = 7;
         public static final int EXTENDERS_LEFT_MOTOR = 8;
         public static final int EXTENDERS_RIGHT_MOTOR = 9;
+        
+        public static final int X_MAX_METERS = 0;
+        public static final int Y_MAX_METERS = 0;
+        public static final int POSITION_EPSILON_METERS = 0;
+        
+        public static final int MOTOR_SPEED = 0;
+        
+        public static final int TICKS_TO_METERS = 0;
 
-        public static final double X_MAX_METERS = 0;
-        public static final double Y_MAX_METERS = 0;
-
-        public static final double POSITION_EPSILON_METERS = 1;
-
-        public static final double MOTOR_SPEED = 0.05;
-        public static final double TICKS_TO_METERS =0.01;
+        public static final int MIN_PRESSURE = 0;
+        public static final int MAX_PRESSURE = 0;
 
     }
 

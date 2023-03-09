@@ -1,7 +1,12 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -24,15 +29,20 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private TalonSRX yMotorLeft;
     private TalonSRX yMotorRight; // slave of yMotor
 
-    //digital input limits
+    // digital input limits
     private DigitalInput lowerLimitLeft;
     private DigitalInput lowerLimitRight;
 
     private DigitalInput upperLimitLeft;
     private DigitalInput upperLimitRight;
 
+    // Pneumatic Compressors
+    private Compressor pcmCompressor;
+
+    private DoubleSolenoid DoublePCM;
+
     public AcquisitionSubsystem() {
-        
+
         // _acquisitionsSensors = new DrivesSensors();
         xMotorLeft = new TalonSRX(AcquisitionConstants.ELEVATIONS_LEFT_MOTOR);
         TalonSRX xMotorRight = new TalonSRX(AcquisitionConstants.ELEVATIONS_RIGHT_MOTOR);
@@ -42,21 +52,27 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         configureMotors(xMotorLeft, xMotorRight, yMotorLeft, yMotorRight);
 
-        //digital input limits
+        // digital input limits
         lowerLimitLeft = new DigitalInput(0);
         lowerLimitRight = new DigitalInput(1);
 
         upperLimitLeft = new DigitalInput(2);
         upperLimitRight = new DigitalInput(3);
+
+        // Compressors
+        pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+        
+
     }
 
     public void elevate() {
         System.out.println("elevate");
     }
-    
+
     @Override
     public void periodic() {
-
+        SmartDashboard.putNumber("PRESSURE", getPressure());
     }
 
     private static void configureMotors(TalonSRX... controllers) {
@@ -106,38 +122,62 @@ public class AcquisitionSubsystem extends SubsystemBase {
         return upperLimitRight.get();
     }
 
-    public void xMoveTo(double meters)
-    {
+    public void xMoveTo(double meters) {
         xMotorLeft.set(ControlMode.Position, meters);
         xMotorRight.set(ControlMode.Position, meters);
     }
 
-    public void yMoveTo(double meters)
-    {
+    public void yMoveTo(double meters) {
         yMotorLeft.set(ControlMode.Position, meters);
         yMotorRight.set(ControlMode.Position, meters);
+    }
+
+    public void solonoidOff() {
+
+        DoublePCM.set(Value.kOff);
+    }
+
+    public void solonoidForward() {
+
+        DoublePCM.set(Value.kForward);
+    }
+
+    public void solonoidReverse() {
+
+        DoublePCM.set(Value.kReverse);
     }
 
     /**
      * @return Average Y encoder position in meters.
      */
-    public double getYPos()
-    {
-        return (yMotorLeft.getSelectedSensorPosition() 
-            + yMotorRight.getSelectedSensorPosition()) / 2;
+    public double getYPos() {
+        return (yMotorLeft.getSelectedSensorPosition()
+                + yMotorRight.getSelectedSensorPosition()) / 2;
     }
 
     /**
      * @return Average X encoder position in meters.
      */
-    public double getXPos()
-    {
-        return (xMotorLeft.getSelectedSensorPosition() 
-            + xMotorRight.getSelectedSensorPosition()) / 2;
+    public double getXPos() {
+        return (xMotorLeft.getSelectedSensorPosition()
+                + xMotorRight.getSelectedSensorPosition()) / 2;
     }
 
-    public void reset()
-    {
+    public double getPressure() {
+
+        return pcmCompressor.getPressure();
+    }
+
+    public void compressorDisable() {
+
+         pcmCompressor.disable();
+    }
+
+    public void compressorEnable(){
+        pcmCompressor.enableAnalog(AcquisitionConstants.MIN_PRESSURE, AcquisitionConstants.MAX_PRESSURE);
+    }
+
+    public void reset() {
         xMotorLeft.setSelectedSensorPosition(0);
         xMotorRight.setSelectedSensorPosition(0);
         yMotorLeft.setSelectedSensorPosition(0);

@@ -207,4 +207,13 @@ public class RobotContainer {
         return null;
         // return m_robotAcquisition;
     }
+
+    public double getPressure(){
+        return 0;
+      //  m_robotAcquisition.getPressure();
+    }
+
+    public void compressorEnable() {
+       // m_robotAcquisition.compressorEnable();
+    }
 }
