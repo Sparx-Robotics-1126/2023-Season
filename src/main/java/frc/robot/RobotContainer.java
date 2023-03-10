@@ -13,6 +13,7 @@ import frc.robot.commands.BalanceShortRobot;
 import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
+import frc.robot.commands.ScoreCommunity;
 import frc.robot.commands.SetToCoast;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
@@ -145,7 +146,10 @@ public class RobotContainer {
 
     public Command getShortAutoCommand() {
         return new BalanceShortRobot(m_robotDrive);
+    }
 
+    public Command getScoreCommunityCommand() {
+        return new ScoreCommunity(m_robotDrive);
     }
     public double getTimerSeconds(){
         return m_Timer.get();

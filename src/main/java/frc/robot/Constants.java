@@ -99,7 +99,7 @@ public final class Constants {
         static final String kAutoShort = "Short";
          static final String kAutoLong = "Long";
          static final String kDriveMeasure = "Drive Measure";
-
+         static final String kScoreCommunity = "Score and Leave Community";
     }
 
     public static final class AutoConstants {

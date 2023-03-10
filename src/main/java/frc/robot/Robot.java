@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     _chooser.setDefaultOption("Short", ChooserOptions.kAutoShort);
     _chooser.addOption("Long", ChooserOptions.kAutoLong);
     _chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
+    _chooser.addOption("Score and Leave Community",ChooserOptions.kScoreCommunity);
     SmartDashboard.putData("AUTO CHOICES", _chooser);
 
   }
@@ -107,7 +108,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+
     _robotContainer.startTimer();
     _robotContainer.reset();
     _robotContainer.setToCoast();
