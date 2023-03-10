@@ -17,11 +17,19 @@ public class TurnToAngle extends PIDCommand {
     super(
         new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD),
         // Close loop on heading
-        drive::getHeading,
+        () -> -drive.getHeading(),
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot
-        output ->  drive.arcadeDrive(0, output),
+        output -> {
+          if (output > 0) {
+            drive.arcadeDrive(0, output + DriveConstants.kTurnFriction);
+          } else if (output < 0) {
+            drive.arcadeDrive(0, output - DriveConstants.kTurnFriction);
+          } else {
+            drive.arcadeDrive(0, output);
+          }
+        },
         // Require the drive
         drive);
 

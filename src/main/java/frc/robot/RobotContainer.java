@@ -102,7 +102,7 @@ public class RobotContainer {
                 .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
 
                 new JoystickButton(m_driverController, Button.kA.value)
-                .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
+                .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
         .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));

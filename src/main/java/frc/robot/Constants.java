@@ -34,8 +34,9 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_1 = 24;
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
-        public static double MAX_DRIVE_SPEED = 0.9;
+        public static double MAX_DRIVE_SPEED = 0.3;
         public static double MAX_TRIGGER_SPEED = 0.1;
+        public static double kTurnFriction = 0.3;
 
 
         public static final int kEncoderCPR = 1024;
@@ -73,7 +74,18 @@ public final class Constants {
 
         public static final boolean kGyroReversed = false;
         
-        public static final int EndGameSeconds = 0;
+        public static final int EndGameSeconds = 105;
+        public static final double kRelTurnP = .1;
+        public static final double kRelTurnI = 0;
+        public static final double kRelTurnD = 0.15;
+        public static final double kRelTurnFriction = 0.3;
+        
+        public static final double kMaxRelTurnRateDegPerS = 20;
+        public static final double kMaxRelTurnAccelerationDegPerSSquared = 300;
+
+        public static final double kRelTurnToleranceDeg = 1;
+        public static final double kRelTurnRateToleranceDegPerS = 3; // degrees per second
+
     }
 
     public static final class AcquisitionConstants {
