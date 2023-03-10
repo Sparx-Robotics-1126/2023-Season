@@ -9,10 +9,10 @@ public class ScoreCommunity extends SequentialCommandGroup {
     public ScoreCommunity(DriveSubsystem drive) {
 
         //moving forward to score cone
-        addCommands(new DriveDistance(drive, .5, .7));
+        addCommands(new DriveDistance(drive, .5, .7).withTimeout(5));
         addCommands(new WaitCommand(1));
 //moving backward to leave commmunity
-        addCommands(new DriveDistance(drive, 3, -.7));
+        addCommands(new DriveDistance(drive, -3, .7).withTimeout(10));
 
     }
 }

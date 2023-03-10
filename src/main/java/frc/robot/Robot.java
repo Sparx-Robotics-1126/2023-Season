@@ -87,6 +87,10 @@ public class Robot extends TimedRobot {
       case ChooserOptions.kDriveMeasure:
         m_autonomousCommand = _robotContainer.getDriveMeasurements();
         break;
+
+        case ChooserOptions.kScoreCommunity:
+        m_autonomousCommand = _robotContainer.getScoreCommunityCommand();
+        break;
     }
 
     if (m_autonomousCommand != null) {
