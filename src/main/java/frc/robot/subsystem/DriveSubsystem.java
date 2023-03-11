@@ -294,6 +294,10 @@ public class DriveSubsystem extends SubsystemBase {
     // return _pigeon.getRotation2d().getDegrees();
   }
 
+public double getRotation(){
+  return m_pigeon.getRotation2d().getDegrees();
+}
+
   /**
    * Returns the turn rate of the robot.
    *

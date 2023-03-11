@@ -20,9 +20,9 @@ public class TurnToRelativeAngle extends PIDCommand {
       super(
           new PIDController(DriveConstants.kRelTurnP, DriveConstants.kRelTurnI, DriveConstants.kRelTurnD),
           // Close loop on heading
-          () -> -drive.getHeading(),
+          () -> drive.getRotation(),
           // Set reference to target
-          -drive.getHeading() - targetRelativeAngleDegrees,
+          drive.getRotation() - targetRelativeAngleDegrees,
           // Pipe output to turn robot
           output -> {
             if (output > 0) {
