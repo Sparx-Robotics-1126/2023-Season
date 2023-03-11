@@ -2,12 +2,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.AcquisitionSubsystem;
-import frc.robot.Constants.AcquisitionConstants;
 
-public class ReturnToHome extends CommandBase {
-    
-   
-
+public class ReturnToHome extends CommandBase 
+{
     private AcquisitionSubsystem acquisition;
 
     public ReturnToHome(AcquisitionSubsystem acquisitionSubsystem) {
@@ -17,37 +14,29 @@ public class ReturnToHome extends CommandBase {
    
     @Override
     public void execute() {
-        if (!acquisition.getLowerLimitLeft()) {
-            acquisition.setXMotorLeft(-1);
-        } else {
-            acquisition.setXMotorLeft(0); 
-        }
-
-        if(!acquisition.getLowerLimitRight()) {
-            acquisition.setXMotorRight(-1);
-        } else {
-            acquisition.setXMotorRight(0); 
-        }
+        if (acquisition.getUpperLimit())
+            acquisition.setXMotor(0);
+        else
+            acquisition.setXMotor(-1);
         
-        if(!acquisition.getUpperLimitLeft()) {
+        if (acquisition.getLowerLimitLeft())
             acquisition.setYMotorLeft(-1);
-        } else {
+        else
             acquisition.setYMotorLeft(0);
-        }
-
-        if(!acquisition.getUpperLimitRight()) {
+        
+        if (acquisition.getLowerLimitRight())
             acquisition.setYMotorRight(-1);
-        } else {
+        else
             acquisition.setYMotorRight(0);
-        }
     }
     
     @Override
     public boolean isFinished() {
-     if (acquisition.getLowerLimitLeft() && acquisition.getLowerLimitRight() && acquisition.getUpperLimitLeft() && acquisition.getUpperLimitRight()) {
+        if (acquisition.getLowerLimitLeft() && acquisition.getLowerLimitRight() && acquisition.getUpperLimit()) {
         acquisition.reset();
         return true;
-     }
-     return false;
+        }
+
+        return false;
     }
 }

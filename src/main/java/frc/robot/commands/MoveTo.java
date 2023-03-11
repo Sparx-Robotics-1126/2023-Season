@@ -1,11 +1,15 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystem.AcquisitionSubsystem;
-import frc.robot.Constants.AcquisitionConstants;
+import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class MoveTo extends CommandBase {
     private AcquisitionSubsystem acquisition;
+    private PIDController xController;
+    private PIDController yController;
 
     /**
      * In meters.
@@ -18,26 +22,41 @@ public class MoveTo extends CommandBase {
     private double yPos;
     
     public MoveTo(AcquisitionSubsystem acquisition, double xPosition, double yPosition){
-        if (xPosition < 0 || xPosition > AcquisitionConstants.X_MAX_METERS
-            || yPosition < 0 || yPosition > AcquisitionConstants.Y_MAX_METERS)
+        if (xPosition < 0 || xPosition > X_MAX_METERS
+            || yPosition < 0 || yPosition > Y_MAX_METERS)
             throw new IllegalArgumentException("Invalid positions.");
 
         this.acquisition = acquisition;
         xPos = xPosition;
         yPos = yPosition;
+
+        xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+
+        xController.setTolerance(POSITION_EPSILON_METERS);
+        yController.setTolerance(POSITION_EPSILON_METERS);
     }
 
     @Override
     public void initialize()
     {
-        acquisition.xMoveTo(xPos);
-        acquisition.yMoveTo(yPos);
+        xController.setSetpoint(xPos);
+        yController.setSetpoint(yPos);
+    }
+
+    @Override
+    public void execute()
+    {
+        double xOut = xController.calculate(acquisition.getXPos());
+        double yOut = yController.calculate(acquisition.getYPos());
+
+        acquisition.setXMotor(xOut);
+        acquisition.setYMotorLeft(yOut);
+        acquisition.setYMotorRight(yOut);
     }
 
     @Override
     public boolean isFinished() {
-        // TalonSRXs should be closed loop and stop themselves automatically, this is just to satisfy the command framework.
-        return (Math.abs(xPos - acquisition.getXPos()) <= AcquisitionConstants.POSITION_EPSILON_METERS
-            && Math.abs(yPos - acquisition.getYPos()) <= AcquisitionConstants.POSITION_EPSILON_METERS);
+        return xController.atSetpoint() && yController.atSetpoint();
     }
 }

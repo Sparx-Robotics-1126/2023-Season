@@ -89,12 +89,26 @@ public final class Constants {
     }
 
     public static final class AcquisitionConstants {
+        // TODO: Update and verify all of these values.
+
         public static final int ELEVATIONS_LEFT_MOTOR = 10;
         public static final int ELEVATIONS_RIGHT_MOTOR = 7;
-        public static final int EXTENDERS_LEFT_MOTOR = 8;
-        public static final int EXTENDERS_RIGHT_MOTOR = 9;
-        
-        // TODO: Update these values.
+        public static final int EXTENDERS_MOTOR = 8;
+
+        public static final int ELEVATIONS_LEFT_LIMIT = 1;
+        public static final int ELEVATIONS_RIGHT_LIMIT = 2;
+        public static final int EXTENDERS_LIMIT = 3;
+
+        public static final int ELEVATIONS_LEFT_ENCODER_A = 4;
+        public static final int ELEVATIONS_LEFT_ENCODER_B = 5;
+        public static final int ELEVATIONS_RIGHT_ENCODER_A = 6;
+        public static final int ELEVATIONS_RIGHT_ENCODER_B = 7;
+        public static final int EXTENDERS_ENCODER_A = 8;
+        public static final int EXTENDERS_ENCODER_B = 9;
+
+        public static final int MOTOR_P = 0;
+        public static final int MOTOR_I = 0;
+        public static final int MOTOR_D = 0;
 
         public static final double X_MAX_METERS = 0;
         public static final double Y_MAX_METERS = 0;
@@ -102,7 +116,9 @@ public final class Constants {
         
         public static final double MAX_MOTOR_POWER = 0.05;
         
-        public static final double TICKS_TO_METERS = 1;
+        public static final double PULSES_TO_REVOLUTION = 1.0 / 7;
+        public static final double REVOLUTIONS_TO_METERS = 0.135;
+        public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTION * REVOLUTIONS_TO_METERS;
 
         public static final double MIN_PRESSURE = 0;
         public static final double MAX_PRESSURE = 0;
