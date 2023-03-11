@@ -66,9 +66,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
         grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
     }
-    public void elevate() {
-        System.out.println("elevate");
-    }
 
     @Override
     public void periodic() {
