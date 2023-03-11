@@ -40,6 +40,8 @@ public class MoveTo extends CommandBase {
     @Override
     public void initialize()
     {
+        xController.reset();
+        yController.reset();
         xController.setSetpoint(xPos);
         yController.setSetpoint(yPos);
     }
