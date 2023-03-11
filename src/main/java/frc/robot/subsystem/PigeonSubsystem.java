@@ -192,6 +192,7 @@ public class PigeonSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("PIGEON_ANGLE", getAngle());
         SmartDashboard.putNumber("PIGEON_RATE", getRate());
         SmartDashboard.putNumber("PIGEON_YAW", getYaw());
+        SmartDashboard.putNumber("PIGEON_ROTATION", getRotation2d().getDegrees());
     }
 
     

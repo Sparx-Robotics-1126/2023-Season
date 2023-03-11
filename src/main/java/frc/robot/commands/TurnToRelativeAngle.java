@@ -20,19 +20,12 @@ public class TurnToRelativeAngle extends PIDCommand {
       super(
           new PIDController(DriveConstants.kRelTurnP, DriveConstants.kRelTurnI, DriveConstants.kRelTurnD),
           // Close loop on heading
-          () -> drive.getRotation(),
+          drive::getRotation,
           // Set reference to target
-          drive.getRotation() - targetRelativeAngleDegrees,
+          targetRelativeAngleDegrees,
           // Pipe output to turn robot
-          output -> {
-            if (output > 0) {
-                drive.arcadeDrive(0, output + DriveConstants.kRelTurnFriction);
-            } else if (output < 0) {
-                drive.arcadeDrive(0, output - DriveConstants.kRelTurnFriction);
-            } else {
-                drive.arcadeDrive(0, output);
-            }
-          },
+          output -> 
+                drive.arcadeDrive(0, output),
           // Require the drive
           drive);
       this.drive = drive;
@@ -50,11 +43,11 @@ public class TurnToRelativeAngle extends PIDCommand {
       return controller.atSetpoint();
     }
   
-    public double getPositionError() {
-      return controller.getPositionError();
-    }
+  //   public double getPositionError() {
+  //     return controller.getPositionError();
+  //   }
   
-    public double getVelocityError() {
-      return controller.getVelocityError();
-    }
-  }
+  //   public double getVelocityError() {
+  //     return controller.getVelocityError();
+  //   }
+   }

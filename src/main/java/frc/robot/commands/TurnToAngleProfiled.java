@@ -24,7 +24,7 @@ public class TurnToAngleProfiled extends ProfiledPIDCommand {
                 DriveConstants.kMaxTurnRateDegPerS,
                 DriveConstants.kMaxTurnAccelerationDegPerSSquared)),
         // Close loop on heading
-        drive::getHeading,
+        drive::getRotation,
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot

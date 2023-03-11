@@ -75,9 +75,9 @@ public final class Constants {
         public static final boolean kGyroReversed = false;
         
         public static final int EndGameSeconds = 105;
-        public static final double kRelTurnP = .1;
+        public static final double kRelTurnP = .01;
         public static final double kRelTurnI = 0;
-        public static final double kRelTurnD = 0.15;
+        public static final double kRelTurnD = 0;
         public static final double kRelTurnFriction = 0.3;
         
         public static final double kMaxRelTurnRateDegPerS = 20;
