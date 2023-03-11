@@ -18,25 +18,25 @@ public class ReturnToHome extends CommandBase {
     @Override
     public void execute() {
         if (!acquisition.getLowerLimitLeft()) {
-            acquisition.setXMotorLeft(-AcquisitionConstants.MOTOR_SPEED);
+            acquisition.setXMotorLeft(-1);
         } else {
             acquisition.setXMotorLeft(0); 
         }
 
         if(!acquisition.getLowerLimitRight()) {
-            acquisition.setXMotorRight(-AcquisitionConstants.MOTOR_SPEED);
+            acquisition.setXMotorRight(-1);
         } else {
             acquisition.setXMotorRight(0); 
         }
         
         if(!acquisition.getUpperLimitLeft()) {
-            acquisition.setYMotorLeft(-AcquisitionConstants.MOTOR_SPEED);
+            acquisition.setYMotorLeft(-1);
         } else {
             acquisition.setYMotorLeft(0);
         }
 
         if(!acquisition.getUpperLimitRight()) {
-            acquisition.setYMotorRight(-AcquisitionConstants.MOTOR_SPEED);
+            acquisition.setYMotorRight(-1);
         } else {
             acquisition.setYMotorRight(0);
         }
