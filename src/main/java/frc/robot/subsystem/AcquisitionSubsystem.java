@@ -17,10 +17,7 @@ import frc.robot.Constants;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class AcquisitionSubsystem extends SubsystemBase {
-
-    // private DrivesSensors _acquisitionsSensors;
-
-    // motors for elevations (X) and extenders (Y).
+    // Motors for elevations (X) and extenders (Y).
     private TalonSRX xMotor;
 
     private TalonSRX yMotorLeft;
@@ -31,16 +28,16 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     private Encoder xEncoder;
 
-    // digital input limits
+    // Limit switches
     private DigitalInput yLimitLeft;
     private DigitalInput yLimitRight;
 
     private DigitalInput xLimit;
 
-    // Pneumatic Compressors
-    private Compressor pcmCompressor;
+    // Pneumatics
+    private Compressor compressor;
 
-    private DoubleSolenoid DoublePCM;
+    private DoubleSolenoid grabberSolenoid;
 
     public AcquisitionSubsystem() {
 
@@ -65,9 +62,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         xLimit = new DigitalInput(X_LIMIT);
 
-        // Compressors
-        pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+        // Pneumatics
+        compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
     }
     public void elevate() {
         System.out.println("elevate");
@@ -120,19 +117,16 @@ public class AcquisitionSubsystem extends SubsystemBase {
         return xLimit.get();
     }
 
-    public void solonoidOff() {
-
-        DoublePCM.set(Value.kOff);
+    public void grabberOff() {
+        grabberSolenoid.set(Value.kOff);
     }
 
-    public void solonoidForward() {
-
-        DoublePCM.set(Value.kForward);
+    public void grabberClose() {
+        grabberSolenoid.set(Value.kForward);
     }
 
-    public void solonoidReverse() {
-
-        DoublePCM.set(Value.kReverse);
+    public void grabberOpen() {
+        grabberSolenoid.set(Value.kReverse);
     }
 
     /**
@@ -151,17 +145,15 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public double getPressure() {
-
-        return pcmCompressor.getPressure();
+        return compressor.getPressure();
     }
 
     public void compressorDisable() {
-
-         pcmCompressor.disable();
+        compressor.disable();
     }
 
     public void compressorEnable(){
-        pcmCompressor.enableAnalog(MIN_PRESSURE, MAX_PRESSURE);
+        compressor.enableAnalog(MIN_PRESSURE, MAX_PRESSURE);
     }
 
     public void reset() {
