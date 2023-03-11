@@ -32,9 +32,10 @@ public class ReturnToHome extends CommandBase
     
     @Override
     public boolean isFinished() {
-        if (acquisition.getLowerLimitLeft() && acquisition.getLowerLimitRight() && acquisition.getUpperLimit()) {
-        acquisition.reset();
-        return true;
+        if (acquisition.getLowerLimitLeft() && acquisition.getLowerLimitRight() && acquisition.getUpperLimit()) 
+        {
+            acquisition.reset();
+            return true;
         }
 
         return false;

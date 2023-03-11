@@ -101,10 +101,10 @@ public class RobotContainer {
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         new JoystickButton(m_driverController, Button.kX.value)
-                .onTrue(new TurnToRelativeAngle(90, m_robotDrive).withTimeout(.4));
+                .onTrue(new TurnToRelativeAngle(90, m_robotDrive).withTimeout(2));
 
-                new JoystickButton(m_driverController, Button.kA.value)
-                .onTrue(new TurnToRelativeAngle(-90, m_robotDrive).withTimeout(.4));
+                new JoystickButton(m_driverController, Button.kB.value)
+                .onTrue(new TurnToRelativeAngle(-90, m_robotDrive).withTimeout(2));
 
         new JoystickButton(m_driverController, Button.kY.value)
         .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));

@@ -34,7 +34,7 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_1 = 24;
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
-        public static double MAX_DRIVE_SPEED = 0.8;
+        public static double MAX_DRIVE_SPEED = 0.3;
         public static double MAX_TRIGGER_SPEED = 0.1;
         public static double kTurnFriction = 0.3;
 

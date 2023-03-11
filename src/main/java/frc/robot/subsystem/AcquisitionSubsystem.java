@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import frc.robot.Constants;
 import static frc.robot.Constants.AcquisitionConstants.*;
@@ -71,7 +69,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
         DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
     }
-
     public void elevate() {
         System.out.println("elevate");
     }
