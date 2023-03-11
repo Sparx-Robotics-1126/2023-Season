@@ -27,7 +27,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private TalonSRX xMotorRight; // slave of xMotor
 
     private TalonSRX yMotorLeft;
-    private TalonSRX yMotorRight; // slave of yMotor
+
 
     // digital input limits
     private DigitalInput lowerLimitLeft;
@@ -48,9 +48,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
         TalonSRX xMotorRight = new TalonSRX(AcquisitionConstants.ELEVATIONS_RIGHT_MOTOR);
 
         yMotorLeft = new TalonSRX(AcquisitionConstants.EXTENDERS_LEFT_MOTOR);
-        TalonSRX yMotorRight = new TalonSRX(AcquisitionConstants.EXTENDERS_RIGHT_MOTOR);
+        
 
-        configureMotors(xMotorLeft, xMotorRight, yMotorLeft, yMotorRight);
+        configureMotors(xMotorLeft, xMotorRight, yMotorLeft);
 
         // digital input limits
         lowerLimitLeft = new DigitalInput(0);
@@ -65,7 +65,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         
 
     }
-
     public void elevate() {
         System.out.println("elevate");
     }
@@ -103,11 +102,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     public void setYMotorLeft(double speed) {
         yMotorLeft.set(ControlMode.PercentOutput, speed);
     }
-
-    public void setYMotorRight(double speed) {
-        yMotorRight.set(ControlMode.PercentOutput, speed);
-    }
-
+    
     public boolean getLowerLimitLeft() {
         return lowerLimitLeft.get();
     }
@@ -131,7 +126,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     public void yMoveTo(double meters) {
         yMotorLeft.set(ControlMode.Position, meters);
-        yMotorRight.set(ControlMode.Position, meters);
     }
 
     public void solonoidOff() {
@@ -153,8 +147,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
      * @return Average Y encoder position in meters.
      */
     public double getYPos() {
-        return (yMotorLeft.getSelectedSensorPosition()
-                + yMotorRight.getSelectedSensorPosition()) / 2;
+        return (yMotorLeft.getSelectedSensorPosition());
     }
 
     /**
@@ -183,7 +176,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         xMotorLeft.setSelectedSensorPosition(0);
         xMotorRight.setSelectedSensorPosition(0);
         yMotorLeft.setSelectedSensorPosition(0);
-        yMotorRight.setSelectedSensorPosition(0);
     }
 
     public void returnToHome() {

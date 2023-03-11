@@ -35,11 +35,6 @@ public class ReturnToHome extends CommandBase {
             acquisition.setYMotorLeft(0);
         }
 
-        if(!acquisition.getUpperLimitRight()) {
-            acquisition.setYMotorRight(-1);
-        } else {
-            acquisition.setYMotorRight(0);
-        }
     }
     
     @Override
