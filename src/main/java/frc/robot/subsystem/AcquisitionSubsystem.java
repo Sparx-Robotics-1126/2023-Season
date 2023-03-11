@@ -85,6 +85,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
         config.primaryPID = pidConfig;
         config.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
         config.peakCurrentLimit = Constants.MAX_CURRENT;
+        config.peakOutputForward = AcquisitionConstants.MAX_MOTOR_POWER;
+        config.peakOutputReverse = -AcquisitionConstants.MAX_MOTOR_POWER;
 
         for (TalonSRX controller : controllers)
             controller.configAllSettings(config);

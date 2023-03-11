@@ -94,16 +94,18 @@ public final class Constants {
         public static final int EXTENDERS_LEFT_MOTOR = 8;
         public static final int EXTENDERS_RIGHT_MOTOR = 9;
         
-        public static final int X_MAX_METERS = 0;
-        public static final int Y_MAX_METERS = 0;
-        public static final int POSITION_EPSILON_METERS = 0;
-        
-        public static final int MOTOR_SPEED = 0;
-        
-        public static final int TICKS_TO_METERS = 0;
+        // TODO: Update these values.
 
-        public static final int MIN_PRESSURE = 0;
-        public static final int MAX_PRESSURE = 0;
+        public static final double X_MAX_METERS = 0;
+        public static final double Y_MAX_METERS = 0;
+        public static final double POSITION_EPSILON_METERS = 0.01;
+        
+        public static final double MAX_MOTOR_POWER = 0.05;
+        
+        public static final double TICKS_TO_METERS = 1;
+
+        public static final double MIN_PRESSURE = 0;
+        public static final double MAX_PRESSURE = 0;
 
     }
 
