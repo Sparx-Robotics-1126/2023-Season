@@ -40,8 +40,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DoubleSolenoid grabberSolenoid;
 
     public AcquisitionSubsystem() {
-
-        // _acquisitionsSensors = new DrivesSensors();
         xMotor = new TalonSRX(X_MOTOR);
 
         yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
@@ -56,7 +54,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
-        // digital input limits
+        // Limit switches
         yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
         yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
 
