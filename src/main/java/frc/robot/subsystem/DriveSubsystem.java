@@ -288,6 +288,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
+    
     return m_pigeon.getAngle();
     //return Math.IEEEremainder(m_pigeon.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     // return _pigeon.getRotation2d().getDegrees();
@@ -357,7 +358,7 @@ public class DriveSubsystem extends SubsystemBase {
         applyBrakes();
       }
     }
-    
+
 
   }
 
