@@ -114,15 +114,15 @@ public final class Constants {
         public static final double Y_MAX_METERS = 0.75;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
-        public static final double MAX_MOTOR_POWER = 0.05;
+        public static final double MAX_MOTOR_POWER = 1;
+        public static final double Y_FEEDFORWARD = 0.5;
         
-        public static final double PULSES_TO_REVOLUTION = 1.0 / 7;
+        public static final double PULSES_TO_REVOLUTIONS = 1.0 / 7;
         public static final double REVOLUTIONS_TO_METERS = 0.135;
-        public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTION * REVOLUTIONS_TO_METERS;
+        public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTIONS * REVOLUTIONS_TO_METERS;
 
         public static final double MIN_PRESSURE = 0;
         public static final double MAX_PRESSURE = 0;
-
     }
 
     /**
