@@ -34,7 +34,7 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_1 = 24;
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
-        public static double MAX_DRIVE_SPEED = 0.3;
+        public static double MAX_DRIVE_SPEED = 0.8;
         public static double MAX_TRIGGER_SPEED = 0.1;
         public static double kTurnFriction = 0.3;
 
@@ -49,7 +49,7 @@ public final class Constants {
         public static final double kStabilizationI = 0.5;
         public static final double kStabilizationD = 0;
 
-        public static final double kTurnP = 1;
+        public static final double kTurnP = .00422125;
         public static final double kTurnI = 0;
         public static final double kTurnD = 0;
 
@@ -57,7 +57,7 @@ public final class Constants {
         public static final double kMaxTurnAccelerationDegPerSSquared = 300;
 
         public static final double kTurnToleranceDeg = 5;
-        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
+        public static final double kTurnRateToleranceDegPerS = 5; // degrees per second
 
         public static final double kAutoDriveForwardSpeed = 0.15;
 
@@ -78,7 +78,7 @@ public final class Constants {
         public static final double kRelTurnP = .001;
         public static final double kRelTurnI = 0;
         public static final double kRelTurnD = 0;
-        public static final double kRelTurnFriction = 0.3;
+        public static final double kRelTurnFriction = 0.8;
         
         public static final double kMaxRelTurnRateDegPerS = 20;
         public static final double kMaxRelTurnAccelerationDegPerSSquared = 300;

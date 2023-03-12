@@ -1,9 +1,11 @@
 package frc.robot.subsystem;
 // package frc.subsystem;
 
-// import com.ctre.phoenix.sensors.WPI_Pigeon2;
-// import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
-// import com.ctre.phoenix.sensors.Pigeon2_Faults;
+import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
+
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
+import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
@@ -21,6 +23,7 @@ import frc.robot.Constants;
 
 public class PigeonSubsystem extends SubsystemBase {
     private final Pigeon2 _pigeon;
+    // private final WPI_Pigeon2 _wpiPigeon;
 
     // private Pigeon2 _test;
     // private static Pigeon2_Faults _pigeonFaults = new Pigeon2_Faults();
@@ -28,6 +31,7 @@ public class PigeonSubsystem extends SubsystemBase {
 
     public PigeonSubsystem() {
         _pigeon = new Pigeon2(Constants.Pigeon2ID);
+        // _wpiPigeon = new WPI_Pigeon2(Constants.Pigeon2ID);
         // _pigeonFaults = new Pigeon2_Faults();
         // _test = new Pigeon2(4);
         initPigeon();
@@ -37,13 +41,14 @@ public class PigeonSubsystem extends SubsystemBase {
         // Factory default the Pigeon.
         var toApply = new Pigeon2Configuration();
         //var mountPose = toApply.MountPose;
-
+toApply.MountPose.MountPosePitch = 0;
+// toApply.MountPose.MountPoseRoll = 0;
+toApply.MountPose.MountPoseYaw = -90;
     /* User can change the configs if they want, or leave it empty for factory-default */
-   
-        _pigeon.getConfigurator().apply(toApply);
 
+        _pigeon.getConfigurator().apply(toApply);
         // Add runtime adjustments to Pigeon configuration below this line.
-       // _pigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.PositiveZ);
+    //    _wpiPigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.PositiveZ);
 
         // used by pro still thinking about it
         // _pigeon2.getConfigurator().apply(toApply);
@@ -51,10 +56,18 @@ public class PigeonSubsystem extends SubsystemBase {
         /* Speed up signals to an appropriate rate */
         // _pigeon2.getYaw().setUpdateFrequency(100);
         // _pigeon2.getPitch().setUpdateFrequency(100);
-        _pigeon.reset();
+       // _pigeon.reset();
         
-        _pigeon.getYaw().setUpdateFrequency(100);
+      
         _pigeon.getPitch().setUpdateFrequency(100);
+       _pigeon.setYaw(0,.1);
+
+       _pigeon.getYaw().setUpdateFrequency(100);
+       _pigeon.getYaw().waitForUpdate(.1);
+       
+
+       
+       
         // _pigeon2.setStatusFramePeriod(0,100 )
         // _pigeon2.getGravityVectorZ().setUpdateFrequency(100);
     }

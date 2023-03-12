@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystem.DriveSubsystem;
@@ -24,8 +25,10 @@ public class TurnToRelativeAngle extends PIDCommand {
           // Set reference to target
           targetRelativeAngleDegrees,
           // Pipe output to turn robot
-          output -> 
-                drive.arcadeDrive(0, output),
+        output -> {
+                drive.arcadeDrive(0, output);
+                SmartDashboard.putNumber("OUTPUT", output);
+        },
           // Require the drive
           drive);
       this.drive = drive;

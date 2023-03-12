@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,10 +23,17 @@ public class Robot extends TimedRobot {
 
   private RobotContainer _robotContainer;
 
+private PIDController m_pid;
+
   @Override
   public void robotInit() {
 
     _robotContainer = new RobotContainer();
+
+m_pid = _robotContainer.getTurnPID();
+
+
+
     _chooser.setDefaultOption("Short", ChooserOptions.kAutoShort);
     _chooser.addOption("Long", ChooserOptions.kAutoLong);
     _chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
