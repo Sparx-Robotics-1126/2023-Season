@@ -75,7 +75,7 @@ public final class Constants {
         public static final boolean kGyroReversed = false;
         
         public static final int EndGameSeconds = 105;
-        public static final double kRelTurnP = .01;
+        public static final double kRelTurnP = .001;
         public static final double kRelTurnI = 0;
         public static final double kRelTurnD = 0;
         public static final double kRelTurnFriction = 0.8;
@@ -91,27 +91,27 @@ public final class Constants {
     public static final class AcquisitionConstants {
         // TODO: Update and verify all of these values.
 
-        public static final int ELEVATIONS_LEFT_MOTOR = 10;
-        public static final int ELEVATIONS_RIGHT_MOTOR = 7;
-        public static final int EXTENDERS_MOTOR = 8;
+        public static final int Y_LEFT_MOTOR = 10;
+        public static final int Y_RIGHT_MOTOR = 7;
+        public static final int X_MOTOR = 8;
 
-        public static final int ELEVATIONS_LEFT_LIMIT = 1;
-        public static final int ELEVATIONS_RIGHT_LIMIT = 2;
-        public static final int EXTENDERS_LIMIT = 3;
+        public static final int Y_LEFT_LIMIT = 1;
+        public static final int Y_RIGHT_LIMIT = 2;
+        public static final int X_LIMIT = 3;
 
-        public static final int ELEVATIONS_LEFT_ENCODER_A = 4;
-        public static final int ELEVATIONS_LEFT_ENCODER_B = 5;
-        public static final int ELEVATIONS_RIGHT_ENCODER_A = 6;
-        public static final int ELEVATIONS_RIGHT_ENCODER_B = 7;
-        public static final int EXTENDERS_ENCODER_A = 8;
-        public static final int EXTENDERS_ENCODER_B = 9;
+        public static final int Y_LEFT_ENCODER_A = 4;
+        public static final int Y_LEFT_ENCODER_B = 5;
+        public static final int Y_RIGHT_ENCODER_A = 6;
+        public static final int Y_RIGHT_ENCODER_B = 7;
+        public static final int X_ENCODER_A = 8;
+        public static final int X_ENCODER_B = 9;
 
         public static final int MOTOR_P = 0;
         public static final int MOTOR_I = 0;
         public static final int MOTOR_D = 0;
 
-        public static final double X_MAX_METERS = 0;
-        public static final double Y_MAX_METERS = 0;
+        public static final double X_MAX_METERS = 1.143;
+        public static final double Y_MAX_METERS = 0.75;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
         public static final double MAX_MOTOR_POWER = 0.05;

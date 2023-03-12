@@ -17,66 +17,58 @@ import frc.robot.Constants;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class AcquisitionSubsystem extends SubsystemBase {
-
-    // private DrivesSensors _acquisitionsSensors;
-
-    // motors for elevations (X) and extenders (Y).
+    // Motors for elevations (X) and extenders (Y).
     private TalonSRX xMotor;
 
     private TalonSRX yMotorLeft;
     private TalonSRX yMotorRight;
 
-    private Encoder lowerEncoderRight;
-    private Encoder lowerEncoderLeft;
+    private Encoder yEncoderRight;
+    private Encoder yEncoderLeft;
 
-    private Encoder upperEncoder;
+    private Encoder xEncoder;
 
-    // digital input limits
-    private DigitalInput lowerLimitLeft;
-    private DigitalInput lowerLimitRight;
+    // Limit switches
+    private DigitalInput yLimitLeft;
+    private DigitalInput yLimitRight;
 
-    private DigitalInput upperLimit;
+    private DigitalInput xLimit;
 
-    // Pneumatic Compressors
-    private Compressor pcmCompressor;
+    // Pneumatics
+    private Compressor compressor;
 
-    private DoubleSolenoid DoublePCM;
+    private DoubleSolenoid grabberSolenoid;
 
     public AcquisitionSubsystem() {
+        xMotor = new TalonSRX(X_MOTOR);
 
-        // _acquisitionsSensors = new DrivesSensors();
-        xMotor = new TalonSRX(EXTENDERS_MOTOR);
-
-        yMotorLeft = new TalonSRX(ELEVATIONS_LEFT_MOTOR);
-        yMotorRight = new TalonSRX(ELEVATIONS_RIGHT_MOTOR);
+        yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
+        yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
 
         configureMotors(yMotorLeft, yMotorRight, xMotor);
 
         // Encoders
-        lowerEncoderLeft = new Encoder(ELEVATIONS_LEFT_ENCODER_A, ELEVATIONS_LEFT_ENCODER_B);
-        lowerEncoderRight = new Encoder(ELEVATIONS_RIGHT_ENCODER_A, ELEVATIONS_RIGHT_ENCODER_B);
-        upperEncoder = new Encoder(EXTENDERS_ENCODER_A, EXTENDERS_ENCODER_B);
+        yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
+        yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
+        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
 
-        configureEncoders(lowerEncoderLeft, lowerEncoderRight, upperEncoder);
+        configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
-        // digital input limits
-        lowerLimitLeft = new DigitalInput(ELEVATIONS_LEFT_LIMIT);
-        lowerLimitRight = new DigitalInput(ELEVATIONS_RIGHT_LIMIT);
+        // Limit switches
+        yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
+        yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
 
-        upperLimit = new DigitalInput(EXTENDERS_LIMIT);
+        xLimit = new DigitalInput(X_LIMIT);
 
-        // Compressors
-        pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
-    }
-    public void elevate() {
-        System.out.println("elevate");
+        // Pneumatics
+        compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("PRESSURE", getPressure());
-        SmartDashboard.putNumber("ENCODER_POS", upperEncoder.getDistance());
+        SmartDashboard.putNumber("ENCODER_POS", xEncoder.getDistance());
     }
 
     private static void configureEncoders(Encoder... encoders) {
@@ -108,66 +100,61 @@ public class AcquisitionSubsystem extends SubsystemBase {
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getLowerLimitLeft() {
-        return lowerLimitLeft.get();
+    public boolean getYLimitLeft() {
+        return yLimitLeft.get();
     }
 
-    public boolean getLowerLimitRight() {
-        return lowerLimitRight.get();
+    public boolean getYLimitRight() {
+        return yLimitRight.get();
     }
 
-    public boolean getUpperLimit() {
-        return upperLimit.get();
+    public boolean getXLimit() {
+        return xLimit.get();
     }
 
-    public void solonoidOff() {
-
-        DoublePCM.set(Value.kOff);
+    public void grabberOff() {
+        grabberSolenoid.set(Value.kOff);
     }
 
-    public void solonoidForward() {
-
-        DoublePCM.set(Value.kForward);
+    public void grabberClose() {
+        grabberSolenoid.set(Value.kForward);
     }
 
-    public void solonoidReverse() {
-
-        DoublePCM.set(Value.kReverse);
+    public void grabberOpen() {
+        grabberSolenoid.set(Value.kReverse);
     }
 
     /**
      * @return The Y encoder position in meters.
      */
     public double getYPos() {
-        return upperEncoder.getDistance();
+        return (yEncoderLeft.getDistance()
+            + yEncoderRight.getDistance()) / 2;
     }
 
     /**
      * @return Average X encoder position in meters.
      */
     public double getXPos() {
-        return (lowerEncoderLeft.getDistance()
-            + lowerEncoderRight.getDistance()) / 2;
+        return xEncoder.getDistance();
     }
 
     public double getPressure() {
-
-        return pcmCompressor.getPressure();
+        return compressor.getPressure();
     }
 
     public void compressorDisable() {
-
-         pcmCompressor.disable();
+        compressor.disable();
     }
 
     public void compressorEnable(){
-        pcmCompressor.enableAnalog(MIN_PRESSURE, MAX_PRESSURE);
+        compressor.enableAnalog(MIN_PRESSURE, MAX_PRESSURE);
     }
 
     public void reset() {
-        lowerEncoderLeft.reset();
-        lowerEncoderRight.reset();
-        upperEncoder.reset();
+        yEncoderLeft.reset();
+        yEncoderRight.reset();
+        xEncoder.reset();
     }
 
     public void returnToHome() {

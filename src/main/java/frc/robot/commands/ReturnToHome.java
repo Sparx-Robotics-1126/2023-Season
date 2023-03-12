@@ -14,17 +14,17 @@ public class ReturnToHome extends CommandBase
    
     @Override
     public void execute() {
-        if (acquisition.getUpperLimit())
+        if (acquisition.getXLimit())
             acquisition.setXMotor(0);
         else
             acquisition.setXMotor(-1);
         
-        if (acquisition.getLowerLimitLeft())
+        if (acquisition.getYLimitLeft())
             acquisition.setYMotorLeft(-1);
         else
             acquisition.setYMotorLeft(0);
         
-        if (acquisition.getLowerLimitRight())
+        if (acquisition.getYLimitRight())
             acquisition.setYMotorRight(-1);
         else
             acquisition.setYMotorRight(0);
@@ -32,7 +32,7 @@ public class ReturnToHome extends CommandBase
     
     @Override
     public boolean isFinished() {
-        if (acquisition.getLowerLimitLeft() && acquisition.getLowerLimitRight() && acquisition.getUpperLimit()) 
+        if (acquisition.getYLimitLeft() && acquisition.getYLimitRight() && acquisition.getXLimit()) 
         {
             acquisition.reset();
             return true;
