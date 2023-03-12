@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
@@ -15,7 +16,7 @@ import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
 import frc.robot.commands.ScoreCommunity;
-import frc.robot.commands.SetToCoast;
+import frc.robot.commands.TurnPID;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.robot.commands.TurnToAngle;
@@ -40,6 +41,9 @@ public class RobotContainer {
     private final XboxController m_driverController;
     private final XboxController m_operatorController;
     private final Timer m_Timer;
+
+    private PIDController m_pid;
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -62,6 +66,8 @@ public class RobotContainer {
                                 (m_driverController.getLeftY()), m_driverController.getRightY()),
                         m_robotDrive));
 
+        m_pid = new PIDController(0, 0, 0);
+
         configureDriverButtonBindings();
         configureOperatorButtons();
 
@@ -81,10 +87,9 @@ public class RobotContainer {
                 .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
-                new JoystickButton(m_driverController, Button.kLeftBumper.value)
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(SmartDashboard.getNumber("MAXSPEED",0 ))))
+        new JoystickButton(m_driverController, Button.kLeftBumper.value)
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(SmartDashboard.getNumber("MAXSPEED", 0))))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
-
 
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
         // InstantCommand(() -> _pigeon.reset()));
@@ -110,14 +115,13 @@ public class RobotContainer {
         new JoystickButton(m_driverController, Button.kX.value)
                 .onTrue(new TurnToAngle(20, m_robotDrive).withTimeout(7));
 
-                new JoystickButton(m_driverController, Button.kB.value)
-                .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
+        new JoystickButton(m_driverController, Button.kB.value)
+                .onTrue(new TurnPID(m_pid, -90, m_robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
-        .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
-        
-        // .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
+                .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
 
+        // .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
 
         // // Turn to -90 degrees with a profile when the Circle button is pressed, with
         // a
@@ -159,19 +163,20 @@ public class RobotContainer {
     public Command getScoreCommunityCommand() {
         return new ScoreCommunity(m_robotDrive);
     }
-    public double getTimerSeconds(){
+
+    public double getTimerSeconds() {
         return m_Timer.get();
     }
 
-    public void startTimer(){
+    public void startTimer() {
         m_Timer.start();
     }
 
-    public void restartTimer(){
+    public void restartTimer() {
         m_Timer.restart();
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         m_Timer.stop();
     }
 
@@ -220,12 +225,21 @@ public class RobotContainer {
         // return m_robotAcquisition;
     }
 
-    public double getPressure(){
+    public double getPressure() {
         return 0;
-      //  m_robotAcquisition.getPressure();
+        // m_robotAcquisition.getPressure();
     }
 
     public void compressorEnable() {
-       // m_robotAcquisition.compressorEnable();
+        // m_robotAcquisition.compressorEnable();
+    }
+
+    public void setTurnPID(PIDController pid) {
+        m_pid = pid;
+    }
+
+    public PIDController getTurnPID() {
+        m_pid = new PIDController(0, 0, 0);
+        return m_pid;
     }
 }
