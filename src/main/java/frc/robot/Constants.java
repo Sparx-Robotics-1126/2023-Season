@@ -125,6 +125,35 @@ public final class Constants {
 
     }
 
+    /**
+     * All values are in meters.
+     */
+    public static final class FieldConstants {
+        private static final double computeYOffset(double height)
+        {
+            return height - REACH_MOUNT_POINT_HEIGHT + Y_OFFSET;
+        }
+
+        public static final double SHELF_HEIGHT = 0.95;
+        public static final double HIGH_CONE_HEIGHT = 1.17;
+        public static final double LOW_CONE_HEIGHT = 0.87;
+        public static final double HIGH_CUBE_HEIGHT = 0.9;
+        public static final double LOW_CUBE_HEIGHT = 0.6;
+        public static final double REACH_MOUNT_POINT_HEIGHT = 0;
+        public static final double REACH_MOUNT_POINT_FRONT = 0;
+
+        public static final double Y_OFFSET = 0.1;
+        public static final double X_OFFSET = 0.1;
+
+        public static final double EXTENSION_X = REACH_MOUNT_POINT_FRONT + X_OFFSET;
+
+        public static final double SHELF_Y = computeYOffset(SHELF_HEIGHT);
+        public static final double HIGH_CONE_Y = computeYOffset(HIGH_CONE_HEIGHT);
+        public static final double LOW_CONE_Y = computeYOffset(LOW_CONE_HEIGHT);
+        public static final double HIGH_CUBE_Y = computeYOffset(HIGH_CUBE_HEIGHT);
+        public static final double LOW_CUBE_Y = computeYOffset(LOW_CUBE_HEIGHT);
+    }
+
     public static final class ChooserOptions{
         static final String kAutoShort = "Short";
          static final String kAutoLong = "Long";

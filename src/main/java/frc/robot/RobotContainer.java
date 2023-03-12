@@ -21,6 +21,7 @@ import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.commands.TurnToRelativeAngle;
 import frc.robot.sensors.Limelight;
+import static frc.robot.Constants.AcquisitionConstants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -101,13 +102,23 @@ public class RobotContainer {
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         new JoystickButton(m_driverController, Button.kX.value)
-                .onTrue(new TurnToRelativeAngle(90, m_robotDrive).withTimeout(7));
+            .onTrue(new TurnToRelativeAngle(90, m_robotDrive).withTimeout(7));
 
-                new JoystickButton(m_driverController, Button.kB.value)
-                .onTrue(new TurnToRelativeAngle(-90, m_robotDrive).withTimeout(5));
+        new JoystickButton(m_driverController, Button.kB.value)
+            .onTrue(new TurnToRelativeAngle(-90, m_robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
-        .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
+            .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
+
+        /*
+        Need 6 buttons:
+        - Score high cone
+        - Score low cone
+        - Score high cube
+        - Score low cube
+        - Pick up from shelf
+        - Open/close grabber
+        */
         
         // .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
 
