@@ -42,6 +42,7 @@ public class MoveTo extends CommandBase {
     {
         xController.reset();
         yController.reset();
+        
         xController.setSetpoint(xPos);
         yController.setSetpoint(yPos);
     }
