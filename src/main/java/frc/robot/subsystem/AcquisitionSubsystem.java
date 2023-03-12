@@ -13,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import frc.robot.commands.HoldPosition;
+
 import frc.robot.Constants;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
@@ -65,6 +67,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
         // Pneumatics
         compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
         grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+
+        setDefaultCommand(new HoldPosition(this));
     }
 
     @Override
