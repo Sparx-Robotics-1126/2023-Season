@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
-public class MoveTo extends CommandBase {
+public class MoveTo extends CommandBase
+{
     private AcquisitionSubsystem acquisition;
     private PIDController xController;
     private PIDController yController;
@@ -21,7 +22,8 @@ public class MoveTo extends CommandBase {
      */
     private double yPos;
     
-    public MoveTo(AcquisitionSubsystem acquisition, double xPosition, double yPosition){
+    public MoveTo(AcquisitionSubsystem acquisition, double xPosition, double yPosition)
+    {
         if (xPosition < 0 || xPosition > X_MAX_METERS
             || yPosition < 0 || yPosition > Y_MAX_METERS)
             throw new IllegalArgumentException("Invalid positions.");
@@ -51,7 +53,7 @@ public class MoveTo extends CommandBase {
     public void execute()
     {
         double xOut = xController.calculate(acquisition.getXPos());
-        double yOut = yController.calculate(acquisition.getYPos());
+        double yOut = yController.calculate(acquisition.getYPos()) + Y_FEEDFORWARD;
 
         acquisition.setXMotor(xOut);
         acquisition.setYMotorLeft(yOut);
