@@ -149,10 +149,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
         compressor.disable();
     }
 
-    public void compressorEnable(){
-        compressor.enableAnalog(MIN_PRESSURE, MAX_PRESSURE);
-    }
-
     public void reset() {
         yEncoderLeft.reset();
         yEncoderRight.reset();
