@@ -96,7 +96,7 @@ public final class Constants {
         public static final int X_MOTOR = 8;
         
         public static final int COMPRESSOR = 0;
-        public static final int SOLENOID = 1;
+        public static final int SOLENOID = 0;
 
         public static final int Y_LEFT_LIMIT = 1;
         public static final int Y_RIGHT_LIMIT = 2;

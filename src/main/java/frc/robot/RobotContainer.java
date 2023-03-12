@@ -39,7 +39,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem m_pigeon;
     private final DriveSubsystem m_robotDrive;
-    // private final AcquisitionSubsystem m_robotAcquisition;
+    private final AcquisitionSubsystem m_robotAcquisition;
     private final XboxController m_driverController;
     private final XboxController m_operatorController;
     private final Timer m_Timer;
@@ -58,7 +58,7 @@ public class RobotContainer {
         m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = new PigeonSubsystem();
 
-        // m_robotAcquisition = new AcquisitionSubsystem();
+        m_robotAcquisition = new AcquisitionSubsystem();
 
         m_robotDrive = new DriveSubsystem(m_pigeon, m_Timer);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);

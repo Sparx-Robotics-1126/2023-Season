@@ -3,9 +3,9 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -39,7 +39,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     // Pneumatics
     private Compressor compressor;
 
-    private DoubleSolenoid grabberSolenoid;
+    private Solenoid grabberSolenoid;
 
     public AcquisitionSubsystem() {
         xMotor = new TalonSRX(X_MOTOR);
@@ -65,16 +65,16 @@ public class AcquisitionSubsystem extends SubsystemBase {
         xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
-        compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+        compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
+        grabberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SOLENOID);
 
         setDefaultCommand(new HoldPosition(this));
     }
 
     @Override
-    public void periodic() {
-        SmartDashboard.putNumber("PRESSURE", getPressure());
-        SmartDashboard.putNumber("ENCODER_POS", xEncoder.getDistance());
+    public void periodic() 
+    {
+
     }
 
     private static void configureEncoders(Encoder... encoders) {
@@ -118,16 +118,12 @@ public class AcquisitionSubsystem extends SubsystemBase {
         return xLimit.get();
     }
 
-    public void grabberOff() {
-        grabberSolenoid.set(Value.kOff);
-    }
-
     public void grabberClose() {
-        grabberSolenoid.set(Value.kForward);
+        grabberSolenoid.set(false);
     }
 
     public void grabberOpen() {
-        grabberSolenoid.set(Value.kReverse);
+        grabberSolenoid.set(true);
     }
 
     /**
