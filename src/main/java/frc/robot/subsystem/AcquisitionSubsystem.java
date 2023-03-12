@@ -40,27 +40,27 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DoubleSolenoid grabberSolenoid;
 
     public AcquisitionSubsystem() {
-        xMotor = new TalonSRX(X_MOTOR);
+        //xMotor = new TalonSRX(X_MOTOR);
 
-        //yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
-        //yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
+        yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
+        yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
 
         yMotorRight.setInverted(true);
 
-        configureMotors(xMotor);// yMotorLeft, yMotorRight);
+        configureMotors(yMotorLeft, yMotorRight);//, xMotor);
 
         // Encoders
         //yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
         //yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
-        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
+        //xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
 
-        configureEncoders(xEncoder);//yEncoderLeft, yEncoderRight);
+        //configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
         // Limit switches
         //yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
         //yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
 
-        xLimit = new DigitalInput(X_LIMIT);
+        //xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
         //compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
@@ -154,9 +154,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public void reset() {
-        //yEncoderLeft.reset();
-        //yEncoderRight.reset();
-        xEncoder.reset();
+        yEncoderLeft.reset();
+        yEncoderRight.reset();
+        //xEncoder.reset();
     }
 
     public void returnToHome() {

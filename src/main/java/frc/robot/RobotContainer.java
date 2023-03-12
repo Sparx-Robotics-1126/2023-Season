@@ -26,7 +26,7 @@ import frc.robot.commands.TurnToRelativeAngle;
 import frc.robot.commands.ReturnToHome;
 import frc.robot.commands.MoveTo;
 import frc.robot.sensors.Limelight;
-import static frc.robot.Constants.AcquisitionConstants.*;
+import static frc.robot.Constants.FieldConstants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -127,6 +127,9 @@ public class RobotContainer {
 
         new JoystickButton(m_driverController, Button.kY.value)
             .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
+
+        new JoystickButton(m_operatorController, Button.kA.value)
+            .onTrue(new MoveTo(m_robotAcquisition, 0, 0.5));
         
         /*
         Need 6 buttons:

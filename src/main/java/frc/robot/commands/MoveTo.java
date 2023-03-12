@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystem.AcquisitionSubsystem;
@@ -30,36 +31,36 @@ public class MoveTo extends CommandBase {
         xPos = xPosition;
         yPos = yPosition;
 
-        xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
-        //yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        //xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
 
-        xController.setTolerance(POSITION_EPSILON_METERS);
-        //yController.setTolerance(POSITION_EPSILON_METERS);
+        //xController.setTolerance(POSITION_EPSILON_METERS);
+        yController.setTolerance(POSITION_EPSILON_METERS);
     }
 
     @Override
     public void initialize()
     {
-        xController.reset();
-        //yController.reset();
+        //xController.reset();
+        yController.reset();
         
-        xController.setSetpoint(xPos);
-        //yController.setSetpoint(yPos);
+        //xController.setSetpoint(xPos);
+        yController.setSetpoint(yPos);
     }
 
     @Override
     public void execute()
     {
-        double xOut = xController.calculate(acquisition.getXPos());
-        //double yOut = yController.calculate(acquisition.getYPos());
+        //double xOut = xController.calculate(acquisition.getXPos());
+        double yOut = yController.calculate(acquisition.getYPos());
 
-        acquisition.setXMotor(xOut);
-        //acquisition.setYMotorLeft(yOut);
-        //acquisition.setYMotorRight(yOut);
+        //acquisition.setXMotor(xOut);
+        acquisition.setYMotorLeft(1);
+        acquisition.setYMotorRight(1);
     }
 
     @Override
     public boolean isFinished() {
-        return xController.atSetpoint();// && yController.atSetpoint();
+        return false;//yController.atSetpoint();// && xController.atSetpoint();
     }
 }
