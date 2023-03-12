@@ -45,6 +45,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
         yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
 
+        yMotorRight.setInverted(true);
+
         configureMotors(yMotorLeft, yMotorRight, xMotor);
 
         // Encoders
