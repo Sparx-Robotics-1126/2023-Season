@@ -42,35 +42,35 @@ public class AcquisitionSubsystem extends SubsystemBase {
     public AcquisitionSubsystem() {
         xMotor = new TalonSRX(X_MOTOR);
 
-        yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
-        yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
+        //yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
+        //yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
 
         yMotorRight.setInverted(true);
 
-        configureMotors(yMotorLeft, yMotorRight, xMotor);
+        configureMotors(xMotor);// yMotorLeft, yMotorRight);
 
         // Encoders
-        yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
-        yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
+        //yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
+        //yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
 
-        configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        configureEncoders(xEncoder);//yEncoderLeft, yEncoderRight);
 
         // Limit switches
-        yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
-        yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
+        //yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
+        //yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
 
         xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
-        compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+        //compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        //grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("PRESSURE", getPressure());
-        SmartDashboard.putNumber("ENCODER_POS", xEncoder.getDistance());
+        //SmartDashboard.putNumber("PRESSURE", getPressure());
+        //SmartDashboard.putNumber("ENCODER_POS", xEncoder.getDistance());
     }
 
     private static void configureEncoders(Encoder... encoders) {
@@ -154,8 +154,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public void reset() {
-        yEncoderLeft.reset();
-        yEncoderRight.reset();
+        //yEncoderLeft.reset();
+        //yEncoderRight.reset();
         xEncoder.reset();
     }
 

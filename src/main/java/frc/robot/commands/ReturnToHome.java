@@ -19,7 +19,7 @@ public class ReturnToHome extends CommandBase
         else
             acquisition.setXMotor(-1);
         
-        if (acquisition.getYLimitLeft())
+        /*if (acquisition.getYLimitLeft())
             acquisition.setYMotorLeft(-1);
         else
             acquisition.setYMotorLeft(0);
@@ -27,12 +27,12 @@ public class ReturnToHome extends CommandBase
         if (acquisition.getYLimitRight())
             acquisition.setYMotorRight(-1);
         else
-            acquisition.setYMotorRight(0);
+            acquisition.setYMotorRight(0);*/
     }
     
     @Override
     public boolean isFinished() {
-        if (acquisition.getYLimitLeft() && acquisition.getYLimitRight() && acquisition.getXLimit()) 
+        if (acquisition.getXLimit())// && acquisition.getYLimitRight() && acquisition.getYLimitLeft()) 
         {
             acquisition.reset();
             return true;

@@ -31,35 +31,35 @@ public class MoveTo extends CommandBase {
         yPos = yPosition;
 
         xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
-        yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        //yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
 
         xController.setTolerance(POSITION_EPSILON_METERS);
-        yController.setTolerance(POSITION_EPSILON_METERS);
+        //yController.setTolerance(POSITION_EPSILON_METERS);
     }
 
     @Override
     public void initialize()
     {
         xController.reset();
-        yController.reset();
+        //yController.reset();
         
         xController.setSetpoint(xPos);
-        yController.setSetpoint(yPos);
+        //yController.setSetpoint(yPos);
     }
 
     @Override
     public void execute()
     {
         double xOut = xController.calculate(acquisition.getXPos());
-        double yOut = yController.calculate(acquisition.getYPos());
+        //double yOut = yController.calculate(acquisition.getYPos());
 
         acquisition.setXMotor(xOut);
-        acquisition.setYMotorLeft(yOut);
-        acquisition.setYMotorRight(yOut);
+        //acquisition.setYMotorLeft(yOut);
+        //acquisition.setYMotorRight(yOut);
     }
 
     @Override
     public boolean isFinished() {
-        return xController.atSetpoint() && yController.atSetpoint();
+        return xController.atSetpoint();// && yController.atSetpoint();
     }
 }

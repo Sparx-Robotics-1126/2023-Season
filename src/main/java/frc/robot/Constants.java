@@ -97,14 +97,14 @@ public final class Constants {
 
         public static final int Y_LEFT_LIMIT = 1;
         public static final int Y_RIGHT_LIMIT = 2;
-        public static final int X_LIMIT = 3;
+        public static final int X_LIMIT = 0;
 
         public static final int Y_LEFT_ENCODER_A = 4;
         public static final int Y_LEFT_ENCODER_B = 5;
         public static final int Y_RIGHT_ENCODER_A = 6;
         public static final int Y_RIGHT_ENCODER_B = 7;
-        public static final int X_ENCODER_A = 8;
-        public static final int X_ENCODER_B = 9;
+        public static final int X_ENCODER_A = 2;
+        public static final int X_ENCODER_B = 3;
 
         public static final int MOTOR_P = 0;
         public static final int MOTOR_I = 0;
@@ -114,7 +114,7 @@ public final class Constants {
         public static final double Y_MAX_METERS = 0.75;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
-        public static final double MAX_MOTOR_POWER = 0.05;
+        public static final double MAX_MOTOR_POWER = 0.2;
         
         public static final double PULSES_TO_REVOLUTION = 1.0 / 7;
         public static final double REVOLUTIONS_TO_METERS = 0.135;
