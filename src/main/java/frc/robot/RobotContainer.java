@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -75,9 +76,15 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureDriverButtonBindings() {
+        SmartDashboard.putNumber("MAXSPEED", 0);
         new JoystickButton(m_driverController, Button.kRightBumper.value)
                 .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
+
+                new JoystickButton(m_driverController, Button.kLeftBumper.value)
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(SmartDashboard.getNumber("MAXSPEED",0 ))))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
+
 
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
         // InstantCommand(() -> _pigeon.reset()));
@@ -101,10 +108,10 @@ public class RobotContainer {
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         new JoystickButton(m_driverController, Button.kX.value)
-                .onTrue(new TurnToRelativeAngle(90, m_robotDrive).withTimeout(7));
+                .onTrue(new TurnToAngle(20, m_robotDrive).withTimeout(7));
 
                 new JoystickButton(m_driverController, Button.kB.value)
-                .onTrue(new TurnToRelativeAngle(-90, m_robotDrive).withTimeout(5));
+                .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
 
         new JoystickButton(m_driverController, Button.kY.value)
         .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));

@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystem.DriveSubsystem;
@@ -17,19 +18,21 @@ public class TurnToAngle extends PIDCommand {
     super(
         new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnD),
         // Close loop on heading
-        () -> -drive.getHeading(),
+        () -> drive.getRotation(),
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot
-        output -> {
-          if (output > 0) {
-            drive.arcadeDrive(0, output + DriveConstants.kTurnFriction);
-          } else if (output < 0) {
-            drive.arcadeDrive(0, output - DriveConstants.kTurnFriction);
-          } else {
-            drive.arcadeDrive(0, output);
+        output ->  {
+          if (output > 0){
+            drive.arcadeDrive(0, output +.035 );
+          } else if (output <0){
+            drive.arcadeDrive(0, output-.035 );
+          } else{
+            drive.arcadeDrive(0, output );
           }
-        },
+          //drive.arcadeDrive(0, output );
+          SmartDashboard.putNumber("OUTPUT", output);
+  },
         // Require the drive
         drive);
 
@@ -39,7 +42,7 @@ public class TurnToAngle extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
-        .setTolerance(DriveConstants.kTurnToleranceDeg, DriveConstants.kTurnRateToleranceDegPerS);
+        .setTolerance(DriveConstants.kTurnToleranceDeg);
   }
 
   

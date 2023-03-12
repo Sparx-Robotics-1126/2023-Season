@@ -289,7 +289,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getHeading() {
     
-    return m_pigeon.getYaw();
+    return m_pigeon.getAngle();
     //return Math.IEEEremainder(m_pigeon.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     // return _pigeon.getRotation2d().getDegrees();
   }
