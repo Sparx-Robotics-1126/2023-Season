@@ -129,16 +129,30 @@ public final class Constants {
      * All values are in meters.
      */
     public static final class FieldConstants {
+        private static final double computeXOffset(double distance)
+        {
+            return distance + MIN_EXTENSION_FRONT + X_OFFSET;
+        }
+
         private static final double computeYOffset(double height)
         {
             return height - REACH_MOUNT_POINT_HEIGHT + Y_OFFSET;
         }
 
         private static final double SHELF_HEIGHT = 0.95;
+        private static final double SHELF_DISTANCE = 0.165;
+
         private static final double HIGH_CONE_HEIGHT = 1.17;
+        private static final double HIGH_CONE_DISTANCE = 1.01;
+
         private static final double MID_CONE_HEIGHT = 0.87;
+        private static final double MID_CONE_DISTANCE = 0.58;
+
         private static final double HIGH_CUBE_HEIGHT = 0.9;
+        private static final double HIGH_CUBE_DISTANCE = 1.01;
+
         private static final double MID_CUBE_HEIGHT = 0.6;
+        private static final double MID_CUBE_DISTANCE = 0.58;
 
         /**
          * The distance from the floor to the mount point of reach.
@@ -158,13 +172,20 @@ public final class Constants {
          */
         private static final double X_OFFSET = 0.1;
 
-        public static final double EXTENSION_X = MIN_EXTENSION_FRONT + X_OFFSET;
-
         public static final double SHELF_Y = computeYOffset(SHELF_HEIGHT);
+        public static final double SHELF_X = computeXOffset(SHELF_DISTANCE);
+
         public static final double HIGH_CONE_Y = computeYOffset(HIGH_CONE_HEIGHT);
+        public static final double HIGH_CONE_X = computeXOffset(HIGH_CONE_DISTANCE);
+
         public static final double LOW_CONE_Y = computeYOffset(MID_CONE_HEIGHT);
+        public static final double LOW_CONE_X = computeXOffset(MID_CONE_DISTANCE);
+
         public static final double HIGH_CUBE_Y = computeYOffset(HIGH_CUBE_HEIGHT);
+        public static final double HIGH_CUBE_X = computeXOffset(HIGH_CUBE_DISTANCE);
+
         public static final double LOW_CUBE_Y = computeYOffset(MID_CUBE_HEIGHT);
+        public static final double LOW_CUBE_X = computeXOffset(MID_CUBE_DISTANCE);
     }
 
     public static final class ChooserOptions{
