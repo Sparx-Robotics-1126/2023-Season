@@ -362,8 +362,6 @@ public double getRotation(){
         applyBrakes();
       }
     }
-
-
   }
 
   public boolean applyBrakes() {
@@ -385,5 +383,8 @@ public double getRotation(){
     m_brakesOn = false;
     SmartDashboard.putString("BRAKES", "OFF");
   }
+
+
+
 
 }

@@ -17,6 +17,7 @@ import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
 import frc.robot.commands.ScoreCommunity;
 import frc.robot.commands.TurnPID;
+import frc.robot.commands.TurnRight;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
 import frc.robot.commands.TurnToAngle;
@@ -113,7 +114,7 @@ public class RobotContainer {
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         new JoystickButton(m_driverController, Button.kX.value)
-                .onTrue(new TurnToAngle(20, m_robotDrive).withTimeout(7));
+                .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
 
         new JoystickButton(m_driverController, Button.kB.value)
                 .onTrue(new TurnPID(m_pid, -90, m_robotDrive).withTimeout(5));
