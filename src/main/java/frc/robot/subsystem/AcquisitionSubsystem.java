@@ -33,6 +33,7 @@ public class AcquisitionSubsystem extends SubsystemBase
     private DigitalInput xLimit;
 
     // Pneumatics
+    @SuppressWarnings("unused")
     private Compressor compressor;
     private Solenoid grabberSolenoid;
 
