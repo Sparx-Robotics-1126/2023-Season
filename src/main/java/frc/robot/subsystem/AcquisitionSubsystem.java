@@ -18,7 +18,7 @@ import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class AcquisitionSubsystem extends SubsystemBase 
 {
-    // Motors for elevations (X) and extenders/reach (Y).
+    // Motors for extenders/reach (X) and elevations (Y)
     private TalonSRX xMotor;
     private TalonSRX yMotor;
 
