@@ -71,12 +71,6 @@ public class AcquisitionSubsystem extends SubsystemBase
         setDefaultCommand(new HoldPosition(this));
     }
 
-    @Override
-    public void periodic() 
-    {
-
-    }
-
     private static void configureEncoders(Encoder... encoders) 
     {
         for (Encoder encoder : encoders)
