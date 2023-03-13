@@ -117,7 +117,7 @@ public class AcquisitionSubsystem extends SubsystemBase
     }
 
     /**
-     * @return The Y encoder position in meters.
+     * @return The average Y encoder position in meters.
      */
     public double getYPos() 
     {
@@ -126,7 +126,7 @@ public class AcquisitionSubsystem extends SubsystemBase
     }
 
     /**
-     * @return Average X encoder position in meters.
+     * @return The X encoder position in meters.
      */
     public double getXPos() 
     {
