@@ -60,7 +60,8 @@ public class MoveTo extends CommandBase
     }
 
     @Override
-    public boolean isFinished() {
+    public boolean isFinished() 
+    {
         return yController.atSetpoint() && xController.atSetpoint();
     }
 }
