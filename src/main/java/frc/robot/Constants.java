@@ -107,9 +107,9 @@ public final class Constants {
         public static final int X_ENCODER_A = 2;
         public static final int X_ENCODER_B = 3;
 
-        public static final int MOTOR_P = 0;
-        public static final int MOTOR_I = 0;
-        public static final int MOTOR_D = 0;
+        public static final double MOTOR_P = 0;
+        public static final double MOTOR_I = 0;
+        public static final double MOTOR_D = 0;
 
         public static final double X_MAX_METERS = 1.143;
         public static final double Y_MAX_METERS = 0.75;
