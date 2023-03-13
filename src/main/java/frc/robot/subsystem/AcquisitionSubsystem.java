@@ -133,16 +133,6 @@ public class AcquisitionSubsystem extends SubsystemBase
         return xEncoder.getDistance();
     }
 
-    public double getPressure() 
-    {
-        return compressor.getPressure();
-    }
-
-    public void compressorDisable() 
-    {
-        compressor.disable();
-    }
-
     public void reset() 
     {
         yEncoderLeft.reset();
