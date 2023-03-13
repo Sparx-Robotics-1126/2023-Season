@@ -22,9 +22,9 @@ public class AcquisitionSubsystem extends SubsystemBase
     private TalonSRX xMotor;
     private TalonSRX yMotor;
 
+    // Motor encoders
     private Encoder yEncoderRight;
     private Encoder yEncoderLeft;
-
     private Encoder xEncoder;
 
     // Limit switches
@@ -33,7 +33,6 @@ public class AcquisitionSubsystem extends SubsystemBase
 
     // Pneumatics
     private Compressor compressor;
-
     private Solenoid grabberSolenoid;
 
     public AcquisitionSubsystem() 
