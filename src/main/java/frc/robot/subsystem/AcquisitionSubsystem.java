@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
 
 import frc.robot.commands.HoldPosition;
 
@@ -44,7 +43,7 @@ public class AcquisitionSubsystem extends SubsystemBase
         yMotor = new TalonSRX(Y_LEFT_MOTOR);
         TalonSRX yMotorSlave = new TalonSRX(Y_RIGHT_MOTOR);
 
-        yMotorSlave.setInverted(InvertType.OpposeMaster);
+        yMotorSlave.setInverted(true);
         yMotorSlave.follow(yMotor);
 
         configureMotors(yMotorSlave, yMotor, xMotor);
@@ -53,6 +52,8 @@ public class AcquisitionSubsystem extends SubsystemBase
         yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
         yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
+
+        yEncoderRight.setReverseDirection(true);
 
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
