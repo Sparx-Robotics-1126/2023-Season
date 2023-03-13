@@ -184,8 +184,8 @@ public final class Constants {
         public static final double HIGH_CUBE_Y = computeYOffset(HIGH_CUBE_HEIGHT);
         public static final double HIGH_CUBE_X = computeXOffset(HIGH_CUBE_DISTANCE);
 
-        public static final double LOW_CUBE_Y = computeYOffset(MID_CUBE_HEIGHT);
-        public static final double LOW_CUBE_X = computeXOffset(MID_CUBE_DISTANCE);
+        public static final double MID_CUBE_Y = computeYOffset(MID_CUBE_HEIGHT);
+        public static final double MID_CUBE_X = computeXOffset(MID_CUBE_DISTANCE);
     }
 
     public static final class ChooserOptions{
