@@ -97,8 +97,9 @@ public final class Constants {
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
 
-        public static final int Y_LIMIT = 1;
-        public static final int X_LIMIT = 0;
+        public static final int Y_LIMIT_LEFT = 0;
+        public static final int Y_LIMIT_RIGHT = 1;
+        public static final int X_LIMIT = 2;
 
         public static final int Y_LEFT_ENCODER_A = 4;
         public static final int Y_LEFT_ENCODER_B = 5;

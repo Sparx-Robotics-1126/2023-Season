@@ -23,12 +23,13 @@ public class AcquisitionSubsystem extends SubsystemBase
     private TalonSRX yMotor;
 
     // Motor encoders
-    private Encoder yEncoderRight;
     private Encoder yEncoderLeft;
+    private Encoder yEncoderRight;
     private Encoder xEncoder;
 
     // Limit switches
-    private DigitalInput yLimit;
+    private DigitalInput yLimitLeft;
+    private DigitalInput yLimitRight;
     private DigitalInput xLimit;
 
     // Pneumatics
@@ -57,7 +58,8 @@ public class AcquisitionSubsystem extends SubsystemBase
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
         // Limit switches
-        yLimit = new DigitalInput(Y_LIMIT);
+        yLimitLeft = new DigitalInput(Y_LIMIT_LEFT);
+        yLimitRight = new DigitalInput(Y_LIMIT_RIGHT);
         xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
@@ -96,9 +98,14 @@ public class AcquisitionSubsystem extends SubsystemBase
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getYLimit() 
+    public boolean getYLimitLeft() 
     {
-        return yLimit.get();
+        return yLimitLeft.get();
+    }
+
+    public boolean getYLimitRight() 
+    {
+        return yLimitRight.get();
     }
 
     public boolean getXLimit() 
