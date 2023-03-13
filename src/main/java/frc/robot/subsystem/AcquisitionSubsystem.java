@@ -40,7 +40,6 @@ public class AcquisitionSubsystem extends SubsystemBase
     public AcquisitionSubsystem() 
     {
         xMotor = new TalonSRX(X_MOTOR);
-
         yMotor = new TalonSRX(Y_LEFT_MOTOR);
         TalonSRX yMotorSlave = new TalonSRX(Y_RIGHT_MOTOR);
 
