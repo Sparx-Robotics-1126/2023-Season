@@ -34,10 +34,9 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_1 = 24;
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
-        public static double MAX_DRIVE_SPEED = 0.8;
-        public static double MAX_TRIGGER_SPEED = 0.1;
-        public static double kTurnFriction = 0.3;
-
+        public static final double MAX_DRIVE_SPEED = 0.8;
+        public static final double MAX_TRIGGER_SPEED = 0.1;
+        public static final double kTurnFriction = 0.3;
 
         public static final int kEncoderCPR = 1024;
         public static final double kGearRatio = 10.75; //8.45;// 10.71;
@@ -98,8 +97,7 @@ public final class Constants {
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
 
-        public static final int Y_LEFT_LIMIT = 1;
-        public static final int Y_RIGHT_LIMIT = 2;
+        public static final int Y_LIMIT = 1;
         public static final int X_LIMIT = 0;
 
         public static final int Y_LEFT_ENCODER_A = 4;
@@ -123,9 +121,6 @@ public final class Constants {
         public static final double PULSES_TO_REVOLUTIONS = 1.0 / 7;
         public static final double REVOLUTIONS_TO_METERS = 0.135;
         public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTIONS * REVOLUTIONS_TO_METERS;
-
-        public static final double MIN_PRESSURE = 0;
-        public static final double MAX_PRESSURE = 0;
     }
 
     /**

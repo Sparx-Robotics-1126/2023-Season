@@ -57,7 +57,7 @@ public class AcquisitionSubsystem extends SubsystemBase
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
         // Limit switches
-        yLimit = new DigitalInput(Y_LEFT_LIMIT);
+        yLimit = new DigitalInput(Y_LIMIT);
         xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
