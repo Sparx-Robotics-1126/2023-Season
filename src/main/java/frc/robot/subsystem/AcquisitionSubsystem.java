@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -18,7 +16,8 @@ import frc.robot.commands.HoldPosition;
 import frc.robot.Constants;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
-public class AcquisitionSubsystem extends SubsystemBase {
+public class AcquisitionSubsystem extends SubsystemBase 
+{
     // Motors for elevations (X) and extenders (Y).
     private TalonSRX xMotor;
 
@@ -41,7 +40,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     private Solenoid grabberSolenoid;
 
-    public AcquisitionSubsystem() {
+    public AcquisitionSubsystem() 
+    {
         xMotor = new TalonSRX(X_MOTOR);
 
         yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
@@ -77,12 +77,14 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     }
 
-    private static void configureEncoders(Encoder... encoders) {
+    private static void configureEncoders(Encoder... encoders) 
+    {
         for (Encoder encoder : encoders)
             encoder.setDistancePerPulse(PULSES_TO_METERS);
     }
 
-    private static void configureMotors(TalonSRX... controllers) {
+    private static void configureMotors(TalonSRX... controllers) 
+    {
         TalonSRXConfiguration config = new TalonSRXConfiguration();
 
         config.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
@@ -94,42 +96,51 @@ public class AcquisitionSubsystem extends SubsystemBase {
             controller.configAllSettings(config);
     }
 
-    public void setYMotorLeft(double power) {
+    public void setYMotorLeft(double power) 
+    {
         yMotorLeft.set(ControlMode.PercentOutput, power);
     }
 
-    public void setYMotorRight(double power) {
+    public void setYMotorRight(double power) 
+    {
         yMotorRight.set(ControlMode.PercentOutput, power);
     }
 
-    public void setXMotor(double power) {
+    public void setXMotor(double power) 
+    {
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getYLimitLeft() {
+    public boolean getYLimitLeft() 
+    {
         return yLimitLeft.get();
     }
 
-    public boolean getYLimitRight() {
+    public boolean getYLimitRight() 
+    {
         return yLimitRight.get();
     }
 
-    public boolean getXLimit() {
+    public boolean getXLimit() 
+    {
         return xLimit.get();
     }
 
-    public void grabberClose() {
+    public void grabberClose() 
+    {
         grabberSolenoid.set(false);
     }
 
-    public void grabberOpen() {
+    public void grabberOpen() 
+    {
         grabberSolenoid.set(true);
     }
 
     /**
      * @return The Y encoder position in meters.
      */
-    public double getYPos() {
+    public double getYPos() 
+    {
         return (yEncoderLeft.getDistance()
             + yEncoderRight.getDistance()) / 2;
     }
@@ -137,25 +148,25 @@ public class AcquisitionSubsystem extends SubsystemBase {
     /**
      * @return Average X encoder position in meters.
      */
-    public double getXPos() {
+    public double getXPos() 
+    {
         return xEncoder.getDistance();
     }
 
-    public double getPressure() {
+    public double getPressure() 
+    {
         return compressor.getPressure();
     }
 
-    public void compressorDisable() {
+    public void compressorDisable() 
+    {
         compressor.disable();
     }
 
-    public void reset() {
+    public void reset() 
+    {
         yEncoderLeft.reset();
         yEncoderRight.reset();
         xEncoder.reset();
-    }
-
-    public void returnToHome() {
-        // TODO: Set command to ReturnToHome
     }
 }

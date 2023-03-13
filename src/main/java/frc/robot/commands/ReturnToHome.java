@@ -7,13 +7,14 @@ public class ReturnToHome extends CommandBase
 {
     private AcquisitionSubsystem acquisition;
 
-    public ReturnToHome(AcquisitionSubsystem acquisitionSubsystem) {
-     
+    public ReturnToHome(AcquisitionSubsystem acquisitionSubsystem) 
+    { 
         acquisition = acquisitionSubsystem;
     }
    
     @Override
-    public void execute() {
+    public void execute() 
+    {
         if (acquisition.getXLimit())
             acquisition.setXMotor(0);
         else
@@ -31,8 +32,9 @@ public class ReturnToHome extends CommandBase
     }
     
     @Override
-    public boolean isFinished() {
-        if (acquisition.getYLimitLeft() && acquisition.getYLimitRight() && acquisition.getXLimit()) 
+    public boolean isFinished() 
+    {
+        if (acquisition.getXLimit() && acquisition.getYLimitRight() && acquisition.getYLimitLeft()) 
         {
             acquisition.reset();
             return true;
