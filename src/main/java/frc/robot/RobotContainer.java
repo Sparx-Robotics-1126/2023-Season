@@ -178,7 +178,7 @@ public class RobotContainer {
     }
 
     public Command getScoreCommunityCommand() {
-        return new ScoreCommunity(m_robotDrive);
+        return new ScoreCommunity(m_robotDrive, m_robotAcquisition);
     }
 
     public double getTimerSeconds() {
