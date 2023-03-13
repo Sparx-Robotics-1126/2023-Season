@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
 
 import frc.robot.commands.HoldPosition;
 
@@ -18,11 +19,9 @@ import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class AcquisitionSubsystem extends SubsystemBase 
 {
-    // Motors for elevations (X) and extenders (Y).
+    // Motors for elevations (X) and extenders/reach (Y).
     private TalonSRX xMotor;
-
-    private TalonSRX yMotorLeft;
-    private TalonSRX yMotorRight;
+    private TalonSRX yMotor;
 
     private Encoder yEncoderRight;
     private Encoder yEncoderLeft;
@@ -30,9 +29,7 @@ public class AcquisitionSubsystem extends SubsystemBase
     private Encoder xEncoder;
 
     // Limit switches
-    private DigitalInput yLimitLeft;
-    private DigitalInput yLimitRight;
-
+    private DigitalInput yLimit;
     private DigitalInput xLimit;
 
     // Pneumatics
@@ -44,12 +41,13 @@ public class AcquisitionSubsystem extends SubsystemBase
     {
         xMotor = new TalonSRX(X_MOTOR);
 
-        yMotorLeft = new TalonSRX(Y_LEFT_MOTOR);
-        yMotorRight = new TalonSRX(Y_RIGHT_MOTOR);
+        yMotor = new TalonSRX(Y_LEFT_MOTOR);
+        TalonSRX yMotorSlave = new TalonSRX(Y_RIGHT_MOTOR);
 
-        yMotorRight.setInverted(true);
+        yMotorSlave.setInverted(InvertType.OpposeMaster);
+        yMotorSlave.follow(yMotor);
 
-        configureMotors(yMotorLeft, yMotorRight, xMotor);
+        configureMotors(yMotorSlave, yMotor, xMotor);
 
         // Encoders
         yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
@@ -59,9 +57,7 @@ public class AcquisitionSubsystem extends SubsystemBase
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
         // Limit switches
-        yLimitLeft = new DigitalInput(Y_LEFT_LIMIT);
-        yLimitRight = new DigitalInput(Y_RIGHT_LIMIT);
-
+        yLimit = new DigitalInput(Y_LEFT_LIMIT);
         xLimit = new DigitalInput(X_LIMIT);
 
         // Pneumatics
@@ -90,14 +86,9 @@ public class AcquisitionSubsystem extends SubsystemBase
             controller.configAllSettings(config);
     }
 
-    public void setYMotorLeft(double power) 
+    public void setYMotor(double power) 
     {
-        yMotorLeft.set(ControlMode.PercentOutput, power);
-    }
-
-    public void setYMotorRight(double power) 
-    {
-        yMotorRight.set(ControlMode.PercentOutput, power);
+        yMotor.set(ControlMode.PercentOutput, power);
     }
 
     public void setXMotor(double power) 
@@ -105,14 +96,9 @@ public class AcquisitionSubsystem extends SubsystemBase
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getYLimitLeft() 
+    public boolean getYLimit() 
     {
-        return yLimitLeft.get();
-    }
-
-    public boolean getYLimitRight() 
-    {
-        return yLimitRight.get();
+        return yLimit.get();
     }
 
     public boolean getXLimit() 

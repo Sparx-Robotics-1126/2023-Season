@@ -20,21 +20,16 @@ public class ReturnToHome extends CommandBase
         else
             acquisition.setXMotor(-1);
         
-        if (acquisition.getYLimitLeft())
-            acquisition.setYMotorLeft(-1);
+        if (acquisition.getYLimit())
+            acquisition.setYMotor(0);
         else
-            acquisition.setYMotorLeft(0);
-        
-        if (acquisition.getYLimitRight())
-            acquisition.setYMotorRight(-1);
-        else
-            acquisition.setYMotorRight(0);
+            acquisition.setYMotor(-1);
     }
     
     @Override
     public boolean isFinished() 
     {
-        if (acquisition.getXLimit() && acquisition.getYLimitRight() && acquisition.getYLimitLeft()) 
+        if (acquisition.getXLimit() && acquisition.getYLimit()) 
         {
             acquisition.reset();
             return true;

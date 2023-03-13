@@ -37,7 +37,6 @@ public class HoldPosition extends CommandBase
         double yOut = yController.calculate(acquisition.getYPos()) + Y_FEEDFORWARD;
 
         acquisition.setXMotor(xOut);
-        acquisition.setYMotorLeft(yOut);
-        acquisition.setYMotorRight(yOut);
+        acquisition.setYMotor(yOut);
     }
 }
