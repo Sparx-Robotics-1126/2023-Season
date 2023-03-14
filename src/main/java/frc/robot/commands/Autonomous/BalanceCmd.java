@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Autonomous;
 
 // import java.util.function.DoubleConsumer;
 // import java.util.function.DoubleSupplier;

@@ -1,7 +1,8 @@
-package frc.robot.commands;
+package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Drive.DriveToPitch;
 import frc.robot.subsystem.DriveSubsystem;
 
 public class BalanceShortRobot extends SequentialCommandGroup {

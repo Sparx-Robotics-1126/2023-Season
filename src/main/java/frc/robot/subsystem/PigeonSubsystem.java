@@ -1,16 +1,15 @@
 package frc.robot.subsystem;
 // package frc.subsystem;
 
-import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
+//import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
 
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
-import com.ctre.phoenix.sensors.Pigeon2_Faults;
+//import com.ctre.phoenix.sensors.WPI_Pigeon2;
+//import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
+//import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
-import com.ctre.phoenixpro.wpiutils.*;
-
+//import com.ctre.phoenixpro.wpiutils.*;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,15 +39,18 @@ public class PigeonSubsystem extends SubsystemBase {
     private void initPigeon() {
         // Factory default the Pigeon.
         var toApply = new Pigeon2Configuration();
-        //var mountPose = toApply.MountPose;
-toApply.MountPose.MountPosePitch = 0;
-// toApply.MountPose.MountPoseRoll = 0;
-toApply.MountPose.MountPoseYaw = -90;
-    /* User can change the configs if they want, or leave it empty for factory-default */
+        // var mountPose = toApply.MountPose;
+        toApply.MountPose.MountPosePitch = 0;
+        // toApply.MountPose.MountPoseRoll = 0;
+        toApply.MountPose.MountPoseYaw = -90;
+        /*
+         * User can change the configs if they want, or leave it empty for
+         * factory-default
+         */
 
         _pigeon.getConfigurator().apply(toApply);
         // Add runtime adjustments to Pigeon configuration below this line.
-    //    _wpiPigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.PositiveZ);
+        // _wpiPigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.PositiveZ);
 
         // used by pro still thinking about it
         // _pigeon2.getConfigurator().apply(toApply);
@@ -56,18 +58,14 @@ toApply.MountPose.MountPoseYaw = -90;
         /* Speed up signals to an appropriate rate */
         // _pigeon2.getYaw().setUpdateFrequency(100);
         // _pigeon2.getPitch().setUpdateFrequency(100);
-       // _pigeon.reset();
-        
-      
+        // _pigeon.reset();
+
         _pigeon.getPitch().setUpdateFrequency(100);
-       _pigeon.setYaw(0,.1);
+        _pigeon.setYaw(0, .1);
 
-       _pigeon.getYaw().setUpdateFrequency(100);
-       _pigeon.getYaw().waitForUpdate(.1);
-       
+        _pigeon.getYaw().setUpdateFrequency(100);
+        _pigeon.getYaw().waitForUpdate(.1);
 
-       
-       
         // _pigeon2.setStatusFramePeriod(0,100 )
         // _pigeon2.getGravityVectorZ().setUpdateFrequency(100);
     }
@@ -76,120 +74,106 @@ toApply.MountPose.MountPoseYaw = -90;
         initPigeon();
     }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getYaw() {
         return _pigeon.getYaw().getValue();
     }
 
-    
-    /** 
+    /**
      * @return The current pitch reported by the Pigeon.
      */
     public int getPitch() {
         return (int) -Math.round(_pigeon.getPitch().getValue());
     }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getRoll() {
         return _pigeon.getRoll().getValue();
     }
 
-    
-    /** 
+    /**
      * @return Rotation2d
      */
     public Rotation2d getRotation2d() {
         return _pigeon.getRotation2d();
     }
 
-    
-    /** 
+    /**
      * @param yaw
      */
     public void setYaw(double yaw) {
         _pigeon.setYaw(yaw, 10);
     }
 
-    
-    /** 
+    /**
      * @param yaw
      */
     // public void addYaw(double yaw) {
-    //     _pigeon.addYaw(yaw, 10);
+    // _pigeon.addYaw(yaw, 10);
     // }
 
     // public void setYawToCompass() {
-    //     _pigeon.setYawToCompass(10);
+    // _pigeon.setYawToCompass(10);
     // }
 
-    
-    /** 
+    /**
      * @param accumZ
      */
     // public void setAccumZ(double accumZ) {
-    //     _pigeon.setAccumZAngle(accumZ, 10);
+    // _pigeon.setAccumZAngle(accumZ, 10);
     // }
 
-    
-    /** 
+    /**
      * @return Pigeon2_Faults
      */
     // public Pigeon2_Faults getFaults() {
-    //     return _pigeon.getf;
+    // return _pigeon.getf;
     // }
 
-    
-    /** 
+    /**
      * @return boolean
      */
     // public boolean getFault() {
-    //     return _pigeonFaults.hasAnyFault();
+    // return _pigeonFaults.hasAnyFault();
     // }
 
-    
-    /** 
+    /**
      * @return double
      */
     // public double getCompass() {
-    //     return _pigeon.getCompassHeading();
+    // return _pigeon.getCompassHeading();
     // }
 
-    
-    /** 
+    /**
      * @return double
      */
     // public double getAccumZ() {
-    //     double[] accums = new double[3];
-    //     _pigeon.getAccumGyroZ(accums);
-    //     return accums[2];
+    // double[] accums = new double[3];
+    // _pigeon.getAccumGyroZ(accums);
+    // return accums[2];
     // }
 
-    
-    /** 
+    /**
      * @return double[]
      */
     // public double[] getRawGyros() {
-    //     double[] gyrs = new double[3];
-    //     _pigeon.getRawGyro(gyrs);
-    //     return gyrs;
+    // double[] gyrs = new double[3];
+    // _pigeon.getRawGyro(gyrs);
+    // return gyrs;
     // }
 
-    
-    /** 
+    /**
      * @return int
      */
     public double getUpTime() {
         return _pigeon.getUpTime().getValue();
     }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getTemp() {
@@ -208,37 +192,34 @@ toApply.MountPose.MountPoseYaw = -90;
         SmartDashboard.putNumber("PIGEON_ROTATION", getRotation2d().getDegrees());
     }
 
-    
-    /** 
+    /**
      * @return String
      */
     // public String getFaultMessage() {
-    //     if (!_pigeonFaults.hasAnyFault())
-    //         return "No faults";
-    //     String retval = "";
-    //     retval += _pigeonFaults.APIError ? "APIError, " : "";
-    //     retval += _pigeonFaults.AccelFault ? "AccelFault, " : "";
-    //     retval += _pigeonFaults.BootIntoMotion ? "BootIntoMotion, " : "";
-    //     retval += _pigeonFaults.GyroFault ? "GyroFault, " : "";
-    //     retval += _pigeonFaults.HardwareFault ? "HardwareFault, " : "";
-    //     retval += _pigeonFaults.MagnetometerFault ? "MagnetometerFault, " : "";
-    //     retval += _pigeonFaults.ResetDuringEn ? "ResetDuringEn, " : "";
-    //     retval += _pigeonFaults.SaturatedAccel ? "SaturatedAccel, " : "";
-    //     retval += _pigeonFaults.SaturatedMag ? "SaturatedMag, " : "";
-    //     retval += _pigeonFaults.SaturatedRotVelocity ? "SaturatedRotVelocity, " : "";
-    //     return retval;
+    // if (!_pigeonFaults.hasAnyFault())
+    // return "No faults";
+    // String retval = "";
+    // retval += _pigeonFaults.APIError ? "APIError, " : "";
+    // retval += _pigeonFaults.AccelFault ? "AccelFault, " : "";
+    // retval += _pigeonFaults.BootIntoMotion ? "BootIntoMotion, " : "";
+    // retval += _pigeonFaults.GyroFault ? "GyroFault, " : "";
+    // retval += _pigeonFaults.HardwareFault ? "HardwareFault, " : "";
+    // retval += _pigeonFaults.MagnetometerFault ? "MagnetometerFault, " : "";
+    // retval += _pigeonFaults.ResetDuringEn ? "ResetDuringEn, " : "";
+    // retval += _pigeonFaults.SaturatedAccel ? "SaturatedAccel, " : "";
+    // retval += _pigeonFaults.SaturatedMag ? "SaturatedMag, " : "";
+    // retval += _pigeonFaults.SaturatedRotVelocity ? "SaturatedRotVelocity, " : "";
+    // return retval;
     // }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getAngle() {
         return _pigeon.getAngle();
     }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getRate() {

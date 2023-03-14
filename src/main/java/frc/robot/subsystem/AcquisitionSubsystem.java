@@ -11,13 +11,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import frc.robot.commands.HoldPosition;
-
 import frc.robot.Constants;
+import frc.robot.commands.Acquisition.HoldPosition;
+
 import static frc.robot.Constants.AcquisitionConstants.*;
 
-public class AcquisitionSubsystem extends SubsystemBase 
-{
+public class AcquisitionSubsystem extends SubsystemBase {
     // Motors for extenders/reach (X) and elevations (Y)
     private TalonSRX xMotor;
     private TalonSRX yMotor;
@@ -32,12 +31,11 @@ public class AcquisitionSubsystem extends SubsystemBase
     private DigitalInput yLimit;
 
     // Pneumatics
-    @SuppressWarnings("unused")
+    //@SuppressWarnings("unused")
     private Compressor compressor;
     private Solenoid grabberSolenoid;
 
-    public AcquisitionSubsystem() 
-    {
+    public AcquisitionSubsystem() {
         xMotor = new TalonSRX(X_MOTOR);
         yMotor = new TalonSRX(Y_LEFT_MOTOR);
         TalonSRX yMotorSlave = new TalonSRX(Y_RIGHT_MOTOR);
@@ -62,19 +60,19 @@ public class AcquisitionSubsystem extends SubsystemBase
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
+        //compressor.disable();
+
         grabberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SOLENOID);
 
         setDefaultCommand(new HoldPosition(this));
     }
 
-    private static void configureEncoders(Encoder... encoders) 
-    {
+    private static void configureEncoders(Encoder... encoders) {
         for (Encoder encoder : encoders)
             encoder.setDistancePerPulse(PULSES_TO_METERS);
     }
 
-    private static void configureMotors(TalonSRX... controllers) 
-    {
+    private static void configureMotors(TalonSRX... controllers) {
         TalonSRXConfiguration config = new TalonSRXConfiguration();
 
         config.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
@@ -86,57 +84,60 @@ public class AcquisitionSubsystem extends SubsystemBase
             controller.configAllSettings(config);
     }
 
-    public void setYMotor(double power) 
-    {
+
+    
+
+    public void setYMotor(double power) {
         yMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public void setXMotor(double power) 
-    {
+    public void setXMotor(double power) {
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getYLimit() 
-    {
+    public boolean getYLimit() {
         return yLimit.get();
     }
 
-    public boolean getXLimit() 
-    {
+    public boolean getXLimit() {
         return xLimit.get();
     }
 
-    public void grabberClose() 
-    {
+    public void grabberClose() {
         grabberSolenoid.set(false);
     }
 
-    public void grabberOpen() 
-    {
+    public void grabberOpen() {
         grabberSolenoid.set(true);
     }
 
     /**
      * @return The average Y encoder position in meters.
      */
-    public double getYPos() 
-    {
+    public double getYPos() {
         return (yEncoderLeft.getDistance()
-            + yEncoderRight.getDistance()) / 2;
+                + yEncoderRight.getDistance()) / 2;
     }
 
     /**
      * @return The X encoder position in meters.
      */
-    public double getXPos() 
-    {
+    public double getXPos() {
         return xEncoder.getDistance();
     }
 
-    public void reset() 
-    {
+    public void reset() {
         yEncoderLeft.reset();
         yEncoderRight.reset();
         xEncoder.reset();
+    }
+
+   
+
+    public void compressorEnable() {
+        compressor.enableDigital();
+    }
+
+    public void compressorDisable() {
     }
 }

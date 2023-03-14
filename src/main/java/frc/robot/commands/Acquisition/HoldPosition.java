@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Acquisition;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -6,37 +6,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import static frc.robot.Constants.AcquisitionConstants.*;
 
-public class MoveTo extends CommandBase
+public class HoldPosition extends CommandBase
 {
     private AcquisitionSubsystem acquisition;
     private PIDController xController;
     private PIDController yController;
-
-    /**
-     * In meters.
-     */
-    private double xPos;
-
-    /**
-     * In meters.
-     */
-    private double yPos;
     
-    public MoveTo(AcquisitionSubsystem acquisition, double xPosition, double yPosition)
+    public HoldPosition(AcquisitionSubsystem acquisition)
     {
-        if (xPosition < 0 || xPosition > X_MAX_METERS
-            || yPosition < 0 || yPosition > Y_MAX_METERS)
-            throw new IllegalArgumentException("Invalid positions.");
-
         this.acquisition = acquisition;
-        xPos = xPosition;
-        yPos = yPosition;
 
         xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
         yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
-
-        xController.setTolerance(POSITION_EPSILON_METERS);
-        yController.setTolerance(POSITION_EPSILON_METERS);
     }
 
     @Override
@@ -45,8 +26,8 @@ public class MoveTo extends CommandBase
         xController.reset();
         yController.reset();
         
-        xController.setSetpoint(xPos);
-        yController.setSetpoint(yPos);
+        xController.setSetpoint(acquisition.getXPos());
+        yController.setSetpoint(acquisition.getYPos());
     }
 
     @Override
@@ -57,11 +38,5 @@ public class MoveTo extends CommandBase
 
         acquisition.setXMotor(xOut);
         acquisition.setYMotor(yOut);
-    }
-
-    @Override
-    public boolean isFinished() 
-    {
-        return yController.atSetpoint() && xController.atSetpoint();
     }
 }

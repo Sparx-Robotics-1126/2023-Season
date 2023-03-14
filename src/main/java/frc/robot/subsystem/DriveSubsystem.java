@@ -46,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDriveOdometry m_odometry;
   // private final WPI_Pigeon2 _pigeon2;
   private final Timer m_timer;
-  private  Boolean m_brakesOn;
+  private Boolean m_brakesOn;
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(PigeonSubsystem pigeon, Timer timer) {
@@ -77,7 +77,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    // _drivesSensors.addEncoders(m_leftEncoder, m_rightEncoder);
     leftMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
@@ -102,6 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
     SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
     SmartDashboard.putNumber("AVG DIST", getAverageEncoderDistance());
+
   }
 
   /**
@@ -116,14 +116,14 @@ public class DriveSubsystem extends SubsystemBase {
     master.setIdleMode(IdleMode.kCoast);
     master.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
     master.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-    // master.setOpenLoopRampRate(1);
+    // master.setOpenLoopRampRate(1); //used for demo
 
     for (CANSparkMax slave : slaves) {
       slave.restoreFactoryDefaults();
       slave.follow(master);
       slave.setIdleMode(IdleMode.kCoast);
       slave.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
-      // slave.setOpenLoopRampRate(1);
+      // slave.setOpenLoopRampRate(1); //used for demo
     }
   }
 
@@ -133,14 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
   public double getEncoderMeters() {
     return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2 * DriveConstants.kEncoderTick2Meter;
   }
-
-  /**
-   * @return Pose2d
-   */
-  // public void setMotors(double leftSpeed, double rightSpeed) {
-  // leftMotors.set(leftSpeed);
-  // rightMotors.set(-rightSpeed);
-  // }
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -179,10 +171,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightY the commanded right output
    */
   public void tankDrive(double leftY, double rightY) {
-    SmartDashboard.putNumber("LEFTY", leftY);
-    SmartDashboard.putNumber("RIGHTY", rightY);
-    // SmartDashboard.putNumber("PITCH", _pigeon2subsystem.getPitch());
-    // SmartDashboard.putNumber("YAW", _pigeon2subsystem.getYaw());
 
     m_driveDifferential.tankDrive(leftY, rightY, true);
 
@@ -288,15 +276,16 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    
+
     return m_pigeon.getAngle();
-    //return Math.IEEEremainder(m_pigeon.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    // return Math.IEEEremainder(m_pigeon.getAngle(), 360) *
+    // (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     // return _pigeon.getRotation2d().getDegrees();
   }
 
-public double getRotation(){
-  return m_pigeon.getRotation2d().getDegrees();
-}
+  public double getRotation() {
+    return m_pigeon.getRotation2d().getDegrees();
+  }
 
   /**
    * Returns the turn rate of the robot.
@@ -355,10 +344,9 @@ public double getRotation(){
   public void applyBrakesEndGame() {
 
     if (m_timer.get() > DriveConstants.EndGameSeconds) {
-      if (m_brakesOn){
+      if (m_brakesOn) {
         setToCoast();
-      }
-      else{
+      } else {
         applyBrakes();
       }
     }
@@ -383,8 +371,5 @@ public double getRotation(){
     m_brakesOn = false;
     SmartDashboard.putString("BRAKES", "OFF");
   }
-
-
-
 
 }
