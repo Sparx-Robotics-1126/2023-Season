@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -40,7 +39,6 @@ public class RobotContainer {
     private final AcquisitionSubsystem m_robotAcquisition;
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
-    private final EventLoop m_controllerEventLoop;
 
     private final Timer m_Timer;
 
@@ -55,7 +53,6 @@ public class RobotContainer {
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = new PigeonSubsystem();
-        m_controllerEventLoop = new EventLoop();
 
         m_robotAcquisition = new AcquisitionSubsystem();
 
@@ -150,11 +147,11 @@ public class RobotContainer {
     private void configureOperatorButtons() {
 
         // Grabber Open
-        m_operatorController.leftTrigger(m_controllerEventLoop, 0.5)
+        m_operatorController.leftTrigger()
                 .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
 
         // Grabber Closed
-        m_operatorController.rightTrigger(0.5, m_controllerEventLoop)
+        m_operatorController.rightTrigger()
                 .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
 
         // Return To Home
@@ -282,9 +279,5 @@ public class RobotContainer {
 
     public void compressorDisable() {
         m_robotAcquisition.compressorDisable();
-    }
-
-    public void PollEventLoopController() {
-        m_controllerEventLoop.poll();
     }
 }
