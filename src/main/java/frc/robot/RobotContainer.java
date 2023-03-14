@@ -264,20 +264,6 @@ public class RobotContainer {
     }
 
     public AcquisitionSubsystem getAcquisition() {
-        return null;
-        // return m_robotAcquisition;
-    }
-
-    public double getPressure() {
-        return 0;
-        // m_robotAcquisition.getPressure();
-    }
-
-    public void compressorEnable() {
-        m_robotAcquisition.compressorEnable();
-    }
-
-    public void compressorDisable() {
-        m_robotAcquisition.compressorDisable();
+        return m_robotAcquisition;
     }
 }
