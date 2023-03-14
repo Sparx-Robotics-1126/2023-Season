@@ -1,10 +1,8 @@
 package frc.robot.commands.Acquisition;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystem.AcquisitionSubsystem;
-import static frc.robot.Constants.AcquisitionConstants.*;
 
 public class MoveTo extends CommandBase {
     private AcquisitionSubsystem acquisition;
