@@ -13,29 +13,15 @@ public class ReturnToHome extends CommandBase
     }
    
     @Override
-    public void execute() 
+    public void initialize() 
     {
-        if (acquisition.getXLimit())
-            acquisition.setXMotor(0);
-        else
-            acquisition.setXMotor(-1);
-        
-        if (acquisition.getYLimit())
-            acquisition.setYMotor(0);
-        else
-            acquisition.setYMotor(-1);
-    }
-
-    @Override
-    public void end(boolean interrupted)
-    {
-        if (!interrupted)
-            acquisition.reset();
+        acquisition.xMoveTo(0);
+        acquisition.yMoveTo(0);
     }
     
     @Override
     public boolean isFinished() 
     {
-        return acquisition.getXLimit() && acquisition.getYLimit();
+        return acquisition.atSetpoint();
     }
 }

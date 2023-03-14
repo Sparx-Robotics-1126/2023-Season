@@ -1,18 +1,18 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.Constants;
-import frc.robot.commands.Acquisition.HoldPosition;
 
 import static frc.robot.Constants.AcquisitionConstants.*;
 
@@ -31,9 +31,12 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DigitalInput yLimit;
 
     // Pneumatics
-    //@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     private Compressor compressor;
     private Solenoid grabberSolenoid;
+
+    private PIDController xController;
+    private PIDController yController;
 
     public AcquisitionSubsystem() {
         xMotor = new TalonSRX(X_MOTOR);
@@ -60,11 +63,41 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
-        //compressor.disable();
-
         grabberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SOLENOID);
 
-        setDefaultCommand(new HoldPosition(this));
+        xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+
+        xController.setTolerance(POSITION_EPSILON_METERS);
+        yController.setTolerance(POSITION_EPSILON_METERS);
+    }
+
+    @Override
+    public void periodic() {
+        if (xLimit.get()) {
+            xEncoder.reset();
+            xMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            if (xController.getSetpoint() == 0)
+                xMotor.set(ControlMode.PercentOutput, -1);
+            else {
+                double xOut = xController.calculate(getXPos());
+                xMotor.set(ControlMode.PercentOutput, xOut);
+            }
+        }
+        
+        if (yLimit.get()) {
+            yEncoderLeft.reset();
+            yEncoderRight.reset();
+            yMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            if (yController.getSetpoint() == 0)
+                yMotor.set(ControlMode.PercentOutput, -1);
+            else {
+                double yOut = yController.calculate(getYPos());
+                yMotor.set(ControlMode.PercentOutput, yOut);
+            }
+        }
     }
 
     private static void configureEncoders(Encoder... encoders) {
@@ -84,25 +117,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
             controller.configAllSettings(config);
     }
 
-
-    
-
-    public void setYMotor(double power) {
-        yMotor.set(ControlMode.PercentOutput, power);
-    }
-
-    public void setXMotor(double power) {
-        xMotor.set(ControlMode.PercentOutput, power);
-    }
-
-    public boolean getYLimit() {
-        return yLimit.get();
-    }
-
-    public boolean getXLimit() {
-        return xLimit.get();
-    }
-
     public void grabberClose() {
         grabberSolenoid.set(false);
     }
@@ -114,7 +128,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     /**
      * @return The average Y encoder position in meters.
      */
-    public double getYPos() {
+    private double getYPos() {
         return (yEncoderLeft.getDistance()
                 + yEncoderRight.getDistance()) / 2;
     }
@@ -122,22 +136,27 @@ public class AcquisitionSubsystem extends SubsystemBase {
     /**
      * @return The X encoder position in meters.
      */
-    public double getXPos() {
+    private double getXPos() {
         return xEncoder.getDistance();
     }
 
-    public void reset() {
-        yEncoderLeft.reset();
-        yEncoderRight.reset();
-        xEncoder.reset();
+    public void xMoveTo(double pos) {
+        if (pos < 0 || pos > X_MAX)
+            throw new IllegalArgumentException("Invalid X position.");
+        
+        xController.reset();
+        xController.setSetpoint(pos);
     }
 
-   
-
-    public void compressorEnable() {
-        compressor.enableDigital();
+    public void yMoveTo(double pos) {
+        if (pos < 0 || pos > Y_MAX)
+            throw new IllegalArgumentException("Invalid Y position.");
+        
+        yController.reset();
+        yController.setSetpoint(pos);
     }
 
-    public void compressorDisable() {
+    public boolean atSetpoint() {
+        return xController.atSetpoint() && yController.atSetpoint();
     }
 }
