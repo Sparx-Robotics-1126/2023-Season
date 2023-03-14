@@ -111,8 +111,8 @@ public final class Constants {
         public static final double MOTOR_I = 0;
         public static final double MOTOR_D = 0;
 
-        public static final double X_MAX_METERS = 1.143;
-        public static final double Y_MAX_METERS = 0.75;
+        public static final double X_MAX = 1.143;
+        public static final double Y_MAX = 0.75;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
         public static final double MAX_MOTOR_POWER = 1;
