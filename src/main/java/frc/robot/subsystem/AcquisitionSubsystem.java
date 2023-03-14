@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
@@ -39,9 +40,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private PIDController yController;
 
     public AcquisitionSubsystem() {
-        xMotor = new TalonSRX(X_MOTOR);
-        yMotor = new TalonSRX(Y_LEFT_MOTOR);
-        TalonSRX yMotorSlave = new TalonSRX(Y_RIGHT_MOTOR);
+        xMotor = new WPI_TalonSRX(X_MOTOR);
+        yMotor = new WPI_TalonSRX(Y_LEFT_MOTOR);
+        TalonSRX yMotorSlave = new WPI_TalonSRX(Y_RIGHT_MOTOR);
 
         yMotorSlave.setInverted(true);
         yMotorSlave.follow(yMotor);
