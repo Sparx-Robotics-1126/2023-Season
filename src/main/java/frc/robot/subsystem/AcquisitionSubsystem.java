@@ -131,7 +131,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     /**
      * @return The average Y encoder position in meters.
      */
-    private double getYPos() {
+    public double getYPos() {
         return (yEncoderLeft.getDistance()
                 + yEncoderRight.getDistance()) / 2;
     }
@@ -139,7 +139,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
     /**
      * @return The X encoder position in meters.
      */
-    private double getXPos() {
+    public double getXPos() {
         return xEncoder.getDistance();
     }
 
