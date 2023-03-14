@@ -97,15 +97,15 @@ public final class Constants {
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
 
-        public static final int X_LIMIT = 25;
-        public static final int Y_LIMIT = 31;
+        public static final int X_LIMIT = 7;
+        public static final int Y_LIMIT = 10;
 
-        public static final int X_ENCODER_A = 22;
-        public static final int X_ENCODER_B = 26;
-        public static final int Y_LEFT_ENCODER_A = 32;
-        public static final int Y_LEFT_ENCODER_B = 34;
-        public static final int Y_RIGHT_ENCODER_A = 15;
-        public static final int Y_RIGHT_ENCODER_B = 17;
+        public static final int X_ENCODER_A = 12;
+        public static final int X_ENCODER_B = 13;
+        public static final int Y_LEFT_ENCODER_A = 14;
+        public static final int Y_LEFT_ENCODER_B = 15;
+        public static final int Y_RIGHT_ENCODER_A = 2;
+        public static final int Y_RIGHT_ENCODER_B = 3;
 
         public static final double MOTOR_P = 0;
         public static final double MOTOR_I = 0;
