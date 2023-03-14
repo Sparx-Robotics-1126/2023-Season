@@ -96,7 +96,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
             yMotor.set(ControlMode.PercentOutput, 0);
         } else {
             if (yController.getSetpoint() == 0)
-                yMotor.set(ControlMode.PercentOutput, -1);
+                yMotor.set(ControlMode.PercentOutput, -1 + Y_FEEDFORWARD);
             else {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
                 yMotor.set(ControlMode.PercentOutput, yOut);
