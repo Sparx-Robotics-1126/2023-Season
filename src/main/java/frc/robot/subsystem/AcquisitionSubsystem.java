@@ -70,6 +70,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         xController.setTolerance(POSITION_EPSILON_METERS);
         yController.setTolerance(POSITION_EPSILON_METERS);
+
+        xController.setSetpoint(0);
+        yController.setSetpoint(0);
     }
 
     @Override
