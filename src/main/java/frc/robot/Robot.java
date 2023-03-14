@@ -132,9 +132,6 @@ public class Robot extends TimedRobot {
 	public void disabledInit() {
 		System.out.println("********** ROBOT DISABLED ************");
 		_robotContainer.stopTimer();
-		_robotContainer.compressorDisable();
-
-		// m_robotAcquisition.compressorDisable();
 
 	}
 
