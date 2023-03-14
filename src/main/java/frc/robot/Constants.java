@@ -177,8 +177,8 @@ public final class Constants {
         public static final double HIGH_CONE_Y = computeYOffset(HIGH_CONE_HEIGHT);
         public static final double HIGH_CONE_X = computeXOffset(HIGH_CONE_DISTANCE);
 
-        public static final double LOW_CONE_Y = computeYOffset(MID_CONE_HEIGHT);
-        public static final double LOW_CONE_X = computeXOffset(MID_CONE_DISTANCE);
+        public static final double MID_CONE_Y = computeYOffset(MID_CONE_HEIGHT);
+        public static final double MID_CONE_X = computeXOffset(MID_CONE_DISTANCE);
 
         public static final double HIGH_CUBE_Y = computeYOffset(HIGH_CUBE_HEIGHT);
         public static final double HIGH_CUBE_X = computeXOffset(HIGH_CUBE_DISTANCE);

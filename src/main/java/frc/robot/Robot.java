@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -21,6 +22,7 @@ import frc.robot.commands.BalanceShortRobot;
 import frc.robot.commands.BalanceLongRobot;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.commands.DriveMeasurements;
+import frc.robot.commands.MoveTo;
 import frc.robot.commands.ScoreCommunity;
 import frc.robot.commands.TurnPID;
 import frc.robot.commands.TurnRight;
@@ -249,15 +251,7 @@ public class Robot extends TimedRobot
 		new JoystickButton(m_driverController, Button.kY.value)
 			.toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
 
-		/*
-		Need 6 buttons:
-		- Score high cone
-		- Score low cone
-		- Score high cube
-		- Score low cube
-		- Pick up from shelf
-		- Open/close grabber
-		*/
+
 
 		// .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
 
@@ -282,18 +276,50 @@ public class Robot extends TimedRobot
 		m_operatorController.rightTrigger(0.5, m_controllerEventLoop)
 			.ifHigh(() -> m_robotAcquisition.grabberClose());
 
+		//m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
+
 		m_operatorController.leftTrigger(0.5, m_controllerEventLoop)
 			.ifHigh(() -> m_robotAcquisition.grabberOpen());
 
+		m_operatorController.rightTrigger(0.5, m_controllerEventLoop)
+			.ifHigh(() -> m_robotAcquisition.grabberClose());
+
 		new JoystickButton(m_operatorController, Button.kA.value)
 			.onTrue(new ReturnToHome(m_robotAcquisition));
+
+		new JoystickButton(m_operatorController, Button.kX.value)
+			.onTrue(new MoveTo(m_robotAcquisition, MID_CUBE_Y, MID_CUBE_X));
+
+		new JoystickButton(m_driverController, Button.kB.value)
+			.onTrue(new MoveTo(m_robotAcquisition, MID_CONE_Y, MID_CONE_X));
+
+		m_operatorController.leftBumper(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop))
+			.ifHigh(() -> new MoveTo(m_robotAcquisition, HIGH_CONE_Y, HIGH_CONE_X));
+
+		m_operatorController.rightBumper(m_controllerEventLoop).and(m_operatorController.x(m_controllerEventLoop))
+			.ifHigh(() -> new MoveTo(m_robotAcquisition, HIGH_CUBE_X, HIGH_CUBE_Y));
+
+		new JoystickButton(m_operatorController, Button.kY.value)
+			.onTrue(new MoveTo(m_robotAcquisition, SHELF_X, SHELF_Y));
+		
+	
+
+					/*
+		Need 6 buttons:
+		- Score high cone
+		- Score low cone
+		- Score high cube
+		- Score low cube
+		- Pick up from shelf
+		- Open/close grabber
+		*/
 	}
 
 	// /**
 	// * @param left
 	// * @param right
 	// * @param speed
-	// */
+	// 
 	// public void tankDrive(double left, double right, double speed) {
 	// m_robotDrive.setMaxOutput(speed);
 	// m_robotDrive.tankDrive(left, right);
