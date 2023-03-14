@@ -7,14 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.ChooserOptions;
 import frc.robot.Constants.DriveConstants;
@@ -41,9 +37,10 @@ public class Robot extends TimedRobot
 	private final PigeonSubsystem m_pigeon;
 	private final DriveSubsystem m_robotDrive;
 	private final AcquisitionSubsystem m_robotAcquisition;
-	private final XboxController m_driverController;
-	private final XboxController m_operatorController;
-	private final EventLoop m_controllerEventLoop;
+
+	private final CommandXboxController m_driverController;
+	private final CommandXboxController m_operatorController;
+
 	private final Timer m_Timer;
 
 	private PIDController m_pid;
@@ -58,10 +55,9 @@ public class Robot extends TimedRobot
 		Limelight limeLight = new Limelight();
 		limeLight.enableVision();
 
-		m_driverController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
-		m_operatorController = new XboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
+		m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
+		m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
 		m_pigeon = new PigeonSubsystem();
-		m_controllerEventLoop = new EventLoop();
 
 		m_robotAcquisition = new AcquisitionSubsystem();
 
@@ -103,11 +99,9 @@ public class Robot extends TimedRobot
 		// block in order for anything in the Command-based framework to work.
 
 		CommandScheduler.getInstance().run();
-		m_controllerEventLoop.poll();
-		// SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
 	}
-
-	/**
+	
+    /**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different
 	 * autonomous modes using the dashboard. The sendable chooser code works with
@@ -213,11 +207,11 @@ public class Robot extends TimedRobot
 	{
 		SmartDashboard.putNumber("MAXSPEED", 0);
 
-		new JoystickButton(m_driverController, Button.kRightBumper.value)
+		m_driverController.rightBumper()
 			.whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
 			.onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
-		new JoystickButton(m_driverController, Button.kLeftBumper.value)
+		m_driverController.leftBumper()
 			.whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(SmartDashboard.getNumber("MAXSPEED", 0))))
 			.onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
@@ -242,16 +236,14 @@ public class Robot extends TimedRobot
 		// m_robotDrive));
 
 		// // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-		new JoystickButton(m_driverController, Button.kX.value)
+		m_driverController.x()
 			.onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
 
-		new JoystickButton(m_driverController, Button.kB.value)
+		m_driverController.b()
 			.onTrue(new TurnPID(m_pid, -90, m_robotDrive).withTimeout(5));
 
-		new JoystickButton(m_driverController, Button.kY.value)
-			.toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
-
-
+		m_driverController.y()
+		    .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
 
 		// .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
 
@@ -270,41 +262,31 @@ public class Robot extends TimedRobot
 
 	private void configureOperatorButtons() 
 	{
-		// new JoystickButton(m_operatorController, Button.kY.value)
-		// .whileTrue(new Elevate(m_robotAcquisition));
+		m_operatorController.leftTrigger()
+			.onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
 
-		m_operatorController.rightTrigger(0.5, m_controllerEventLoop)
-			.ifHigh(() -> m_robotAcquisition.grabberClose());
+		m_operatorController.rightTrigger()
+			.onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
 
-		//m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
-
-		m_operatorController.leftTrigger(0.5, m_controllerEventLoop)
-			.ifHigh(() -> m_robotAcquisition.grabberOpen());
-
-		m_operatorController.rightTrigger(0.5, m_controllerEventLoop)
-			.ifHigh(() -> m_robotAcquisition.grabberClose());
-
-		new JoystickButton(m_operatorController, Button.kA.value)
+		m_operatorController.a()
 			.onTrue(new ReturnToHome(m_robotAcquisition));
 
-		new JoystickButton(m_operatorController, Button.kX.value)
-			.onTrue(new MoveTo(m_robotAcquisition, MID_CUBE_Y, MID_CUBE_X));
+        m_operatorController.y()
+            .onTrue(new MoveTo(m_robotAcquisition, SHELF_X, SHELF_Y));
 
-		new JoystickButton(m_driverController, Button.kB.value)
-			.onTrue(new MoveTo(m_robotAcquisition, MID_CONE_Y, MID_CONE_X));
+		m_operatorController.x().and(m_operatorController.rightBumper().negate())
+			.onTrue(new MoveTo(m_robotAcquisition, MID_CUBE_X, MID_CUBE_Y));
 
-		m_operatorController.leftBumper(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop))
-			.ifHigh(() -> new MoveTo(m_robotAcquisition, HIGH_CONE_Y, HIGH_CONE_X));
+		m_operatorController.b().and(m_operatorController.rightBumper().negate())
+			.onTrue(new MoveTo(m_robotAcquisition, MID_CONE_X, MID_CONE_Y));
 
-		m_operatorController.rightBumper(m_controllerEventLoop).and(m_operatorController.x(m_controllerEventLoop))
-			.ifHigh(() -> new MoveTo(m_robotAcquisition, HIGH_CUBE_X, HIGH_CUBE_Y));
+		m_operatorController.rightBumper().and(m_operatorController.x())
+			.onTrue(new MoveTo(m_robotAcquisition, HIGH_CUBE_X, HIGH_CUBE_Y));
 
-		new JoystickButton(m_operatorController, Button.kY.value)
-			.onTrue(new MoveTo(m_robotAcquisition, SHELF_X, SHELF_Y));
-		
-	
+        m_operatorController.rightBumper().and(m_operatorController.b())
+			.onTrue(new MoveTo(m_robotAcquisition, HIGH_CONE_X, HIGH_CONE_Y));
 
-					/*
+		/*
 		Need 6 buttons:
 		- Score high cone
 		- Score low cone
