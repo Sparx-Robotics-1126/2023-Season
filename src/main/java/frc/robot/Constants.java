@@ -90,7 +90,7 @@ public final class Constants {
     public static final class AcquisitionConstants {
         // TODO: Update and verify all of these values.
 
-        public static final int X_MOTOR = 8;
+        public static final int X_MOTOR = 9;
         public static final int Y_LEFT_MOTOR = 10;
         public static final int Y_RIGHT_MOTOR = 7;
         
