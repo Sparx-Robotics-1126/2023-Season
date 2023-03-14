@@ -109,7 +109,7 @@ public class RobotContainer {
         // m_robotDrive));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        m_driverController.a()
+        m_driverController.b()
                 .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
 
         m_driverController.y()
