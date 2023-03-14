@@ -20,7 +20,7 @@ public class ReturnToHome extends CommandBase
         else
             acquisition.setXMotor(-1);
         
-        if (acquisition.getYLimitLeft() || acquisition.getYLimitRight())
+        if (acquisition.getYLimit())
             acquisition.setYMotor(0);
         else
             acquisition.setYMotor(-1);
@@ -36,6 +36,6 @@ public class ReturnToHome extends CommandBase
     @Override
     public boolean isFinished() 
     {
-        return acquisition.getXLimit() && (acquisition.getYLimitLeft() || acquisition.getYLimitRight());
+        return acquisition.getXLimit() && acquisition.getYLimit();
     }
 }

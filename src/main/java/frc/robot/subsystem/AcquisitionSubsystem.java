@@ -23,14 +23,13 @@ public class AcquisitionSubsystem extends SubsystemBase
     private TalonSRX yMotor;
 
     // Motor encoders
+    private Encoder xEncoder;
     private Encoder yEncoderLeft;
     private Encoder yEncoderRight;
-    private Encoder xEncoder;
 
     // Limit switches
-    private DigitalInput yLimitLeft;
-    private DigitalInput yLimitRight;
     private DigitalInput xLimit;
+    private DigitalInput yLimit;
 
     // Pneumatics
     @SuppressWarnings("unused")
@@ -49,18 +48,17 @@ public class AcquisitionSubsystem extends SubsystemBase
         configureMotors(yMotorSlave, yMotor, xMotor);
 
         // Encoders
+        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
         yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
         yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
-        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
 
         yEncoderRight.setReverseDirection(true);
 
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
 
         // Limit switches
-        yLimitLeft = new DigitalInput(Y_LIMIT_LEFT);
-        yLimitRight = new DigitalInput(Y_LIMIT_RIGHT);
         xLimit = new DigitalInput(X_LIMIT);
+        yLimit = new DigitalInput(Y_LIMIT);
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
@@ -98,14 +96,9 @@ public class AcquisitionSubsystem extends SubsystemBase
         xMotor.set(ControlMode.PercentOutput, power);
     }
 
-    public boolean getYLimitLeft() 
+    public boolean getYLimit() 
     {
-        return yLimitLeft.get();
-    }
-
-    public boolean getYLimitRight() 
-    {
-        return yLimitRight.get();
+        return yLimit.get();
     }
 
     public boolean getXLimit() 

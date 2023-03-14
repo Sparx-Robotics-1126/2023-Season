@@ -90,23 +90,22 @@ public final class Constants {
     public static final class AcquisitionConstants {
         // TODO: Update and verify all of these values.
 
+        public static final int X_MOTOR = 8;
         public static final int Y_LEFT_MOTOR = 10;
         public static final int Y_RIGHT_MOTOR = 7;
-        public static final int X_MOTOR = 8;
         
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
 
-        public static final int Y_LIMIT_LEFT = 0;
-        public static final int Y_LIMIT_RIGHT = 1;
-        public static final int X_LIMIT = 2;
+        public static final int X_LIMIT = 0;
+        public static final int Y_LIMIT = 1;
 
+        public static final int X_ENCODER_A = 2;
+        public static final int X_ENCODER_B = 3;
         public static final int Y_LEFT_ENCODER_A = 4;
         public static final int Y_LEFT_ENCODER_B = 5;
         public static final int Y_RIGHT_ENCODER_A = 6;
         public static final int Y_RIGHT_ENCODER_B = 7;
-        public static final int X_ENCODER_A = 2;
-        public static final int X_ENCODER_B = 3;
 
         public static final double MOTOR_P = 0;
         public static final double MOTOR_I = 0;
