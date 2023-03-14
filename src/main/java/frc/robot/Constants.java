@@ -90,37 +90,38 @@ public final class Constants {
     public static final class AcquisitionConstants {
         // TODO: Update and verify all of these values.
 
-        public static final int X_MOTOR = 8;
+        public static final int X_MOTOR = 9;
         public static final int Y_LEFT_MOTOR = 10;
         public static final int Y_RIGHT_MOTOR = 7;
         
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
 
-        public static final int X_LIMIT = 0;
-        public static final int Y_LIMIT = 1;
+        public static final int X_LIMIT = 25;
+        public static final int Y_LIMIT = 31;
 
-        public static final int X_ENCODER_A = 2;
-        public static final int X_ENCODER_B = 3;
-        public static final int Y_LEFT_ENCODER_A = 4;
-        public static final int Y_LEFT_ENCODER_B = 5;
-        public static final int Y_RIGHT_ENCODER_A = 6;
-        public static final int Y_RIGHT_ENCODER_B = 7;
+        public static final int X_ENCODER_A = 22;
+        public static final int X_ENCODER_B = 26;
+        public static final int Y_LEFT_ENCODER_A = 32;
+        public static final int Y_LEFT_ENCODER_B = 34;
+        public static final int Y_RIGHT_ENCODER_A = 15;
+        public static final int Y_RIGHT_ENCODER_B = 17;
 
         public static final double MOTOR_P = 0;
         public static final double MOTOR_I = 0;
         public static final double MOTOR_D = 0;
 
-        public static final double X_MAX = 1.143;
-        public static final double Y_MAX = 0.75;
+        public static final double X_MAX = 1.1938;
+        public static final double Y_MAX = 0.69215;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
         public static final double MAX_MOTOR_POWER = 1;
         public static final double Y_FEEDFORWARD = 0.5;
         
         public static final double PULSES_TO_REVOLUTIONS = 1.0 / 7;
-        public static final double REVOLUTIONS_TO_METERS = 0.135;
-        public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTIONS * REVOLUTIONS_TO_METERS;
+        public static final double GEAR_RATIO = 1.0 / 13.7;
+        public static final double WHEEL_CIRCUMFERENCE = Math.PI * 0.0381;
+        public static final double PULSES_TO_METERS = PULSES_TO_REVOLUTIONS * GEAR_RATIO * WHEEL_CIRCUMFERENCE;
     }
 
     /**
@@ -155,7 +156,7 @@ public final class Constants {
         /**
          * The distance from the floor to the mount point of reach.
          */
-        private static final double REACH_MOUNT_POINT_HEIGHT = 0;
+        private static final double REACH_MOUNT_POINT_HEIGHT = 0.6858;
         /**
          * The distance from the minimum extension of reach to the front of the robot.
          */
