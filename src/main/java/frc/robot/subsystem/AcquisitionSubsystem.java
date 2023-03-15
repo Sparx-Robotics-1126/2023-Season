@@ -53,13 +53,13 @@ public class AcquisitionSubsystem extends SubsystemBase {
         configureMotors(yMotorSlave, yMotor, xMotor);
 
         // Encoders
-        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
-        yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
-        yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
+        //xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
+        //yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
+        //yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
 
-        yEncoderRight.setReverseDirection(true);
+        //yEncoderRight.setReverseDirection(true);
 
-        configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        //configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
         
         testing = new DigitalInput[32];
 
