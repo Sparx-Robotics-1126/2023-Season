@@ -105,7 +105,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 yMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER + Y_FEEDFORWARD);
             else {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
-                SmartDashboard.putNumber("YOUTPUT", yOut);
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
         }
