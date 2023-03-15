@@ -72,8 +72,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
         grabberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, SOLENOID);
 
-        xController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
-        yController = new PIDController(MOTOR_P, MOTOR_I, MOTOR_D);
+        xController = new PIDController(X_MOTOR_P, X_MOTOR_I, X_MOTOR_D);
+        yController = new PIDController(Y_MOTOR_P, Y_MOTOR_I, Y_MOTOR_D);
 
         xController.setTolerance(POSITION_EPSILON_METERS);
         yController.setTolerance(POSITION_EPSILON_METERS);
