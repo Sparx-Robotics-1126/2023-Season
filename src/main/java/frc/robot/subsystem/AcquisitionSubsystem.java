@@ -32,6 +32,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DigitalInput xLimit;
     private DigitalInput yLimit;
 
+    private DigitalInput[] testing;
+
     // Pneumatics
     @SuppressWarnings("unused")
     private Compressor compressor;
@@ -58,10 +60,15 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yEncoderRight.setReverseDirection(true);
 
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        
+        testing = new DigitalInput[32];
+
+        for (int i = 0; i <= 31; i++)
+            testing[i] = new DigitalInput(i);
 
         // Limit switches
-        xLimit = new DigitalInput(X_LIMIT);
-        yLimit = new DigitalInput(Y_LIMIT);
+        //xLimit = new DigitalInput(X_LIMIT);
+        //yLimit = new DigitalInput(Y_LIMIT);
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
