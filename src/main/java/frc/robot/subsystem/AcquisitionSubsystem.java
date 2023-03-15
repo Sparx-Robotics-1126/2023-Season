@@ -82,7 +82,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (xLimit.get()) {
+        if (xLimit.get() && xController.getSetpoint() == 0) {
             xEncoder.reset();
             xMotor.set(ControlMode.PercentOutput, 0);
         } else {
@@ -94,7 +94,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
             }
         }
         
-        if (yLimit.get()) {
+        if (yLimit.get() && yController.getSetpoint() == 0) {
             yEncoderLeft.reset();
             yEncoderRight.reset();
             yMotor.set(ControlMode.PercentOutput, 0);
