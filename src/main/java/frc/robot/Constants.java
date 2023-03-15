@@ -88,8 +88,6 @@ public final class Constants {
     }
 
     public static final class AcquisitionConstants {
-        // TODO: Update and verify all of these values.
-
         public static final int X_MOTOR = 9;
         public static final int Y_LEFT_MOTOR = 10;
         public static final int Y_RIGHT_MOTOR = 7;
@@ -120,7 +118,9 @@ public final class Constants {
         public static final double MAX_MOTOR_POWER = 1;
         public static final double Y_FEEDFORWARD = 1;
         
-        public static final double PULSES_TO_METERS = 1.0 / 734.5;
+        // TODO: remeasure these values.
+        public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
+        public static final double Y_PULSES_TO_METERS = 1.0 / 1;
     }
 
     /**

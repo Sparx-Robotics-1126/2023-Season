@@ -60,10 +60,10 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         yEncoderRight.setReverseDirection(true);
 
-        configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        xEncoder.setDistancePerPulse(X_PULSES_TO_METERS);
+        yEncoderLeft.setDistancePerPulse(Y_PULSES_TO_METERS);
+        yEncoderRight.setDistancePerPulse(Y_PULSES_TO_METERS);
         
-       
-
         // Limit switches
         xLimit = new DigitalInput(X_LIMIT);
         yLimit = new DigitalInput(Y_LIMIT);
@@ -96,7 +96,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
             }
         }
         
-        /*if (yLimit.get() && yController.getSetpoint() == 0) {
+        if (yLimit.get() && yController.getSetpoint() == 0) {
             yEncoderLeft.reset();
             yEncoderRight.reset();
             yMotor.set(ControlMode.PercentOutput, 0);
@@ -108,15 +108,10 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 SmartDashboard.putNumber("YOUTPUT", yOut);
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
-        }*/
+        }
 
-        SmartDashboard.putNumber("YPOS", getYPos());
-        SmartDashboard.putNumber("XPOS", getXPos());
-    }
-
-    private static void configureEncoders(Encoder... encoders) {
-        for (Encoder encoder : encoders)
-            encoder.setDistancePerPulse(PULSES_TO_METERS);
+        SmartDashboard.putNumber("Y_POS", getYPos());
+        SmartDashboard.putNumber("X_POS", getXPos());
     }
 
     private static void configureMotors(TalonSRX... controllers) {
