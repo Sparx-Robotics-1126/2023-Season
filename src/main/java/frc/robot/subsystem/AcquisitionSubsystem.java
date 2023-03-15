@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -46,7 +48,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yMotor = new WPI_TalonSRX(Y_LEFT_MOTOR);
         TalonSRX yMotorSlave = new WPI_TalonSRX(Y_RIGHT_MOTOR);
 
-        yMotorSlave.setInverted(true);
+        yMotorSlave.setInverted(InvertType.OpposeMaster);
         yMotorSlave.follow(yMotor);
 
         configureMotors(yMotorSlave, yMotor, xMotor);
@@ -87,27 +89,29 @@ public class AcquisitionSubsystem extends SubsystemBase {
             xMotor.set(ControlMode.PercentOutput, 0);
         } else {
             if (xController.getSetpoint() == 0)
-                xMotor.set(ControlMode.PercentOutput, -1);
+                xMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
             else {
                 double xOut = xController.calculate(getXPos());
                 xMotor.set(ControlMode.PercentOutput, xOut);
             }
         }
         
-        if (yLimit.get() && yController.getSetpoint() == 0) {
+        /*if (yLimit.get() && yController.getSetpoint() == 0) {
             yEncoderLeft.reset();
             yEncoderRight.reset();
             yMotor.set(ControlMode.PercentOutput, 0);
         } else {
             if (yController.getSetpoint() == 0)
-                yMotor.set(ControlMode.PercentOutput, -1 + Y_FEEDFORWARD);
+                yMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER + Y_FEEDFORWARD);
             else {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
+                SmartDashboard.putNumber("YOUTPUT", yOut);
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
-        }
-SmartDashboard.putNumber("YPOS", getYPos());
-SmartDashboard.putNumber("XPOS", getXPos());
+        }*/
+
+        SmartDashboard.putNumber("YPOS", getYPos());
+        SmartDashboard.putNumber("XPOS", getXPos());
     }
 
     private static void configureEncoders(Encoder... encoders) {
@@ -124,7 +128,10 @@ SmartDashboard.putNumber("XPOS", getXPos());
         config.peakOutputReverse = -MAX_MOTOR_POWER;
 
         for (TalonSRX controller : controllers)
+        {
             controller.configAllSettings(config);
+            controller.setNeutralMode(NeutralMode.Coast);
+        }
     }
 
     public void grabberClose() {

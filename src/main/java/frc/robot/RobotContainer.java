@@ -168,7 +168,7 @@ public class RobotContainer {
 
         // Score Mid Cone
         m_operatorController.b().and(m_operatorController.leftBumper().negate())
-                .onTrue(new MoveTo(m_robotAcquisition, MID_CONE_X, MID_CONE_Y));
+                .onTrue(new MoveTo(m_robotAcquisition, 1, 0));//MID_CONE_X, MID_CONE_Y));
 
         // Score Cube High
         m_operatorController.x().and(m_operatorController.leftBumper())
