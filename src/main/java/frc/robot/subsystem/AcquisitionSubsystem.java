@@ -61,9 +61,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         //configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
         
-        testing = new DigitalInput[32];
+        testing = new DigitalInput[31];
 
-        for (int i = 0; i <= 31; i++)
+        for (int i = 0; i <= 30; i++)
             testing[i] = new DigitalInput(i);
 
         // Limit switches
@@ -86,7 +86,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (xLimit.get()) {
+        /*if (xLimit.get()) {
             xEncoder.reset();
             xMotor.set(ControlMode.PercentOutput, 0);
         } else {
@@ -109,7 +109,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
-        }
+        }*/
 
         for (int i = 0; i < testing.length; i++)
             SmartDashboard.putBoolean("PIN_" + i, testing[i].get());
