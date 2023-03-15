@@ -32,7 +32,6 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DigitalInput xLimit;
     private DigitalInput yLimit;
 
-    private DigitalInput[] testing;
 
     // Pneumatics
     @SuppressWarnings("unused")
@@ -52,23 +51,20 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         configureMotors(yMotorSlave, yMotor, xMotor);
 
-        // Encoders
-        //xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
-        //yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
-        //yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
+       // Encoders
+        xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
+        yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
+        yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
 
-        //yEncoderRight.setReverseDirection(true);
+        yEncoderRight.setReverseDirection(true);
 
-        //configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
         
-        testing = new DigitalInput[31];
-
-        for (int i = 0; i <= 30; i++)
-            testing[i] = new DigitalInput(i);
+       
 
         // Limit switches
-        //xLimit = new DigitalInput(X_LIMIT);
-        //yLimit = new DigitalInput(Y_LIMIT);
+        xLimit = new DigitalInput(X_LIMIT);
+        yLimit = new DigitalInput(Y_LIMIT);
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
@@ -86,7 +82,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        /*if (xLimit.get()) {
+        if (xLimit.get()) {
             xEncoder.reset();
             xMotor.set(ControlMode.PercentOutput, 0);
         } else {
@@ -109,10 +105,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
-        }*/
-
-        for (int i = 0; i < testing.length; i++)
-            SmartDashboard.putBoolean("PIN_" + i, testing[i].get());
+        }
+SmartDashboard.putNumber("YPOS", getYPos());
+SmartDashboard.putNumber("XPOS", getXPos());
     }
 
     private static void configureEncoders(Encoder... encoders) {
