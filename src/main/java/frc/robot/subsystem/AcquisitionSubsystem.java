@@ -111,8 +111,11 @@ public class AcquisitionSubsystem extends SubsystemBase {
             }
         }
 
-        for (int i = 0; i < testing.length; i++)
-            SmartDashboard.putBoolean("PIN_" + i, testing[i].get());
+
+// for(var x=0;x<32; x++){
+//  SmartDashboard.putBoolean("PORT" + x, new DigitalInput(x).get());
+// }
+       
     }
 
     private static void configureEncoders(Encoder... encoders) {
