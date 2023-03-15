@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -102,6 +103,12 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
         }
+
+
+// for(var x=0;x<32; x++){
+//  SmartDashboard.putBoolean("PORT" + x, new DigitalInput(x).get());
+// }
+       
     }
 
     private static void configureEncoders(Encoder... encoders) {
