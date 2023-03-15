@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -30,6 +31,8 @@ public class AcquisitionSubsystem extends SubsystemBase {
     // Limit switches
     private DigitalInput xLimit;
     private DigitalInput yLimit;
+
+    private DigitalInput[] testing;
 
     // Pneumatics
     @SuppressWarnings("unused")
@@ -57,10 +60,15 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yEncoderRight.setReverseDirection(true);
 
         configureEncoders(yEncoderLeft, yEncoderRight, xEncoder);
+        
+        testing = new DigitalInput[32];
+
+        for (int i = 0; i <= 31; i++)
+            testing[i] = new DigitalInput(i);
 
         // Limit switches
-        xLimit = new DigitalInput(X_LIMIT);
-        yLimit = new DigitalInput(Y_LIMIT);
+        //xLimit = new DigitalInput(X_LIMIT);
+        //yLimit = new DigitalInput(Y_LIMIT);
 
         // Pneumatics
         compressor = new Compressor(COMPRESSOR, PneumaticsModuleType.CTREPCM);
@@ -102,6 +110,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
         }
+
+        for (int i = 0; i < testing.length; i++)
+            SmartDashboard.putBoolean("PIN_" + i, testing[i].get());
     }
 
     private static void configureEncoders(Encoder... encoders) {
