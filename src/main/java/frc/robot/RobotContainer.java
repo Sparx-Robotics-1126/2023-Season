@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Acquisition.MoveTo;
-import frc.robot.commands.Acquisition.ReturnToHome;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.ScoreCommunity;
@@ -55,6 +54,10 @@ public class RobotContainer {
         m_pigeon = new PigeonSubsystem();
 
         m_robotAcquisition = new AcquisitionSubsystem();
+        m_robotAcquisition.setDefaultCommand(new RunCommand(() -> {
+                m_robotAcquisition.setXPower(m_operatorController.getLeftY());
+                m_robotAcquisition.setYPower(m_operatorController.getRightY());
+        }, m_robotAcquisition));
 
         m_robotDrive = new DriveSubsystem(m_pigeon, m_Timer);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
@@ -160,23 +163,23 @@ public class RobotContainer {
 
         // Get from Human Shelf
         m_operatorController.y()
-                .onTrue(new MoveTo(m_robotAcquisition, SHELF_X, SHELF_Y));
+                .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
 
         // Score Mid Cube
         m_operatorController.x().and(m_operatorController.leftBumper().negate())
-                .onTrue(new MoveTo(m_robotAcquisition, MID_CUBE_X, MID_CUBE_Y));
+                .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
 
         // Score Mid Cone
         m_operatorController.b().and(m_operatorController.leftBumper().negate())
-                .onTrue(new MoveTo(m_robotAcquisition, 1, 0));//MID_CONE_X, MID_CONE_Y));
+                .onTrue(new MoveTo(1, 0, m_robotAcquisition));//MID_CONE_X, MID_CONE_Y));
 
         // Score Cube High
         m_operatorController.x().and(m_operatorController.leftBumper())
-                .onTrue(new MoveTo(m_robotAcquisition, HIGH_CUBE_X, HIGH_CUBE_Y));
+                .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
 
         // Score Cone High
         m_operatorController.b().and(m_operatorController.leftBumper())
-                .onTrue(new MoveTo(m_robotAcquisition, HIGH_CONE_X, HIGH_CONE_Y));
+                .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
 
         // m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
 
@@ -205,6 +208,10 @@ public class RobotContainer {
 
     public double getPitch() {
         return m_pigeon.getPitch();
+    }
+
+    public CommandXboxController getOperatorController() {
+        return m_operatorController;
     }
 
     public Command getShortAutoCommand() {
