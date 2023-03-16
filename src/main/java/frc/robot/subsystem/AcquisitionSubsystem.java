@@ -161,6 +161,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
         else 
             yMotor.set(ControlMode.PercentOutput, 0);
 
+        SmartDashboard.putNumber("yPower", yPower);
+        SmartDashboard.putNumber("xPower", xPower);
+
         SmartDashboard.putNumber("yOut", yOut);
         SmartDashboard.putNumber("xOut", xOut);
 

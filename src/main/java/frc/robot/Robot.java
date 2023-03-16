@@ -47,8 +47,23 @@ public class Robot extends TimedRobot {
 39   */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("LEFT_Y", _robotContainer.getOperatorController().getLeftY());
-		SmartDashboard.putNumber("RIGHT_Y", _robotContainer.getOperatorController().getRightY());
+		double deadband = 0.1;
+
+		double ly = -_robotContainer.getOperatorController().getLeftY();
+		double ry = -_robotContainer.getOperatorController().getRightY();
+
+		SmartDashboard.putNumber("LEFT_Y", ly);
+		SmartDashboard.putNumber("RIGHT_Y",  ry);
+
+		if (Math.abs(ly) > deadband)
+			_robotContainer.getAcquisition().setXPower(ly);
+		else 
+			_robotContainer.getAcquisition().setXPower(0);
+		
+		if (Math.abs(ry) > deadband)
+			_robotContainer.getAcquisition().setYPower(ry);
+		else
+			_robotContainer.getAcquisition().setYPower(0);
 		// Runs the Scheduler. This is responsible for polling buttons, adding
 		// newly-scheduled
 		// commands, running already-scheduled commands, removing finished or
@@ -131,20 +146,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		double deadband = 0.05;
-
-		double ly = _robotContainer.getOperatorController().getLeftY();
-		double ry = _robotContainer.getOperatorController().getRightY();
-
-		if (Math.abs(ly) > deadband)
-			_robotContainer.getAcquisition().setXPower(ly);
-		else 
-			_robotContainer.getAcquisition().setXPower(0);
 		
-		if (Math.abs(ry) > deadband)
-			_robotContainer.getAcquisition().setYPower(ry);
-		else
-			_robotContainer.getAcquisition().setYPower(0);
 	}
 
 	/** This function is called once when the robot is disabled. */
