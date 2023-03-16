@@ -14,7 +14,7 @@ public class BalanceLongRobot extends SequentialCommandGroup {
    
     // moves over docking station
     // drive to ramp and up a little
-    addCommands(new DriveToPitch(drive, .65, 10, false, false));
+    addCommands(new DriveToPitch(drive, .75, 10, false, false));
     // drive until ramp startsg going down
     //addCommands(new DriveToPitch(drive, .5, -2, false, false));
     addCommands(new DriveDistance(drive, 3, .7));

@@ -142,7 +142,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
             else
                 yOut += yController.calculate(getYPos());
 
-        if (xLimit.get()) {
+        if (xLimit.get() && xOut <= 0) {
             xEncoder.reset();
             if (xMotor.getMotorOutputPercent() < 0)
                 xMotor.set(ControlMode.PercentOutput, 0);
@@ -151,7 +151,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         else 
             xMotor.set(ControlMode.PercentOutput, 0);
         
-        if (yLimit.get()) {
+        if (yLimit.get() && yOut <= 0) {
             yEncoderLeft.reset();
             yEncoderRight.reset();
             if (yMotor.getMotorOutputPercent() < 0)

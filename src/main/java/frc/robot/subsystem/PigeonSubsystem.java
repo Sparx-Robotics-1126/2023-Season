@@ -60,7 +60,7 @@ public class PigeonSubsystem extends SubsystemBase {
         // _pigeon2.getPitch().setUpdateFrequency(100);
         // _pigeon.reset();
 
-        _pigeon.getPitch().setUpdateFrequency(100);
+        _pigeon.getPitch().setUpdateFrequency(1000);
         _pigeon.setYaw(0, .1);
 
         _pigeon.getYaw().setUpdateFrequency(100);
