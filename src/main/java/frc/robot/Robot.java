@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -148,15 +149,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
 
-		if (Math.abs(ly) > deadband)
-			_robotContainer.getAcquisition().setXPower(ly);
-		else
-			_robotContainer.getAcquisition().setXPower(0);
-
-		if (Math.abs(ry) > deadband)
-			_robotContainer.getAcquisition().setYPower(ry);
-		else
-			_robotContainer.getAcquisition().setYPower(0);
+		_robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, deadband));
+		_robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, deadband));
 	}
 
 	/** This function is called once when the robot is disabled. */
