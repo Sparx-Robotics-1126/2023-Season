@@ -21,7 +21,7 @@ public final class Constants {
      */
     //
     public static final double NOMINAL_VOLTAGE = 12;
-    public static final int MAX_CURRENT = 25;
+    public static final int MAX_CURRENT = 40;
     public static final double DEAD_BAND = .5;
     public static final int Pigeon2ID = 4;
     public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
@@ -123,7 +123,7 @@ public final class Constants {
         
         // TODO: remeasure these values.
         public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
-        public static final double Y_PULSES_TO_METERS = 1.0 / 1;
+        public static final double Y_PULSES_TO_METERS = 1.0 / 1002.75;
     }
 
     /**
