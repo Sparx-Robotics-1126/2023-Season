@@ -13,7 +13,7 @@ public class ScoreCommunity extends SequentialCommandGroup {
     public ScoreCommunity(DriveSubsystem drive, AcquisitionSubsystem acquisitions) {  
     
     //moving forward to score cone
-    addCommands(new DriveDistance(drive, .5, .7).withTimeout(5));
+    addCommands(new DriveDistance(drive, .2, .7).withTimeout(5));
     addCommands(new MoveTo(0, .2, acquisitions));
     addCommands(new InstantCommand(() -> acquisitions.grabberOpen()));
     
