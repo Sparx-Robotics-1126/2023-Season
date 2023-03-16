@@ -17,7 +17,9 @@ public class MoveTo extends CommandBase {
      */
     private double yPos;
     
-    public MoveTo(AcquisitionSubsystem acquisition, double xPosition, double yPosition) {
+    public MoveTo(double xPosition, double yPosition, AcquisitionSubsystem acquisition) {
+        addRequirements(acquisition);
+
         this.acquisition = acquisition;
         xPos = xPosition;
         yPos = yPosition;

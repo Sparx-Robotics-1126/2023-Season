@@ -127,6 +127,12 @@ public class Robot extends TimedRobot {
 		_robotContainer.setToCoast();
 	}
 
+	@Override
+	public void teleopPeriodic() {
+		_robotContainer.getAcquisition().setXPower(_robotContainer.getOperatorController().getLeftY());
+		_robotContainer.getAcquisition().setYPower(_robotContainer.getOperatorController().getRightY());
+	}
+
 	/** This function is called once when the robot is disabled. */
 	@Override
 	public void disabledInit() {
