@@ -169,6 +169,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Y_POS", getYPos());
         SmartDashboard.putNumber("X_POS", getXPos());
+
+        SmartDashboard.putBoolean("X_LIMIT", xLimit.get());
+        SmartDashboard.putBoolean("Y_LIMIT", yLimit.get());
     }
 
     private static void configureMotors(TalonSRX... controllers) {
