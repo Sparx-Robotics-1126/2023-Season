@@ -102,6 +102,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
     SmartDashboard.putNumber("AVG DIST", getAverageEncoderDistance());
 
+    SmartDashboard.putNumber("LEFT_MOTOR_PERCENT", leftMotors.get());
+    SmartDashboard.putNumber("RIGHT_MOTOR_PERCENT", rightMotors.get());
+
+    SmartDashboard.putNumber("LEFT_MOTOR_VOLTAGE", leftMotors.getAppliedOutput());
+    SmartDashboard.putNumber("RIGHT_MOTOR_VOLTAGE", rightMotors.getAppliedOutput());
+
+    SmartDashboard.putNumber("LEFT_MOTOR_AMPS", leftMotors.getOutputCurrent());
+    SmartDashboard.putNumber("RIGHT_MOTOR_AMPS", rightMotors.getOutputCurrent());
+
   }
 
   /**
