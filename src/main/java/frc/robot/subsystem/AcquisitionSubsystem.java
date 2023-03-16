@@ -132,13 +132,13 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         if (xUsePID)
             if (xController.getSetpoint() == 0)
-                xOut = -RETURN_HOME_POWER;
+                xOut -= RETURN_HOME_POWER;
             else 
                 xOut += xController.calculate(getXPos());
         
         if (yUsePID)
             if (yController.getSetpoint() == 0)
-                yOut = -RETURN_HOME_POWER + Y_FEEDFORWARD;
+                yOut -= RETURN_HOME_POWER;
             else
                 yOut += yController.calculate(getYPos());
 
