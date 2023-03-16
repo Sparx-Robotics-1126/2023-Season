@@ -105,11 +105,11 @@ public final class Constants {
         public static final int Y_RIGHT_ENCODER_A = 25;
         public static final int Y_RIGHT_ENCODER_B = 24;
 
-        public static final double X_MOTOR_P = 1.5;
+        public static final double X_MOTOR_P = 0;
         public static final double X_MOTOR_I = 0;
         public static final double X_MOTOR_D = 0;
 
-        public static final double Y_MOTOR_P = 0.05;
+        public static final double Y_MOTOR_P = 0;
         public static final double Y_MOTOR_I = 0;
         public static final double Y_MOTOR_D = 0;
 

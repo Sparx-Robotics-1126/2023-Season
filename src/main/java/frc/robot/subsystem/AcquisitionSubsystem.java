@@ -221,19 +221,17 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public void xMoveTo(double pos) {
-        if (pos < 0 || pos > X_MAX)
-            throw new IllegalArgumentException("Invalid X position.");
-        
-        xController.reset();
-        xController.setSetpoint(pos);
+        if (pos <= X_MAX) {
+            xController.reset();
+            xController.setSetpoint(pos);
+        }
     }
 
     public void yMoveTo(double pos) {
-        if (pos < 0 || pos > Y_MAX)
-            throw new IllegalArgumentException("Invalid Y position.");
-        
-        yController.reset();
-        yController.setSetpoint(pos);
+        if (pos <= Y_MAX) {
+            yController.reset();
+            yController.setSetpoint(pos);
+        }
     }
 
     public boolean atSetpoint() {
