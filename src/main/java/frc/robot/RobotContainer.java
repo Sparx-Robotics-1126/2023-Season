@@ -54,10 +54,6 @@ public class RobotContainer {
         m_pigeon = new PigeonSubsystem();
 
         m_robotAcquisition = new AcquisitionSubsystem();
-        m_robotAcquisition.setDefaultCommand(new RunCommand(() -> {
-                m_robotAcquisition.setXPower(m_operatorController.getLeftY());
-                m_robotAcquisition.setYPower(m_operatorController.getRightY());
-        }, m_robotAcquisition));
 
         m_robotDrive = new DriveSubsystem(m_pigeon, m_Timer);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
