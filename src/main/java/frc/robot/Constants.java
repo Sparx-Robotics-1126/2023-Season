@@ -194,6 +194,7 @@ public final class Constants {
          static final String kAutoLong = "Long";
          static final String kDriveMeasure = "Drive Measure";
          static final String kScoreCommunity = "Score and Leave Community";
+         static final String kDoNothing = "";
     }
 
     public static final class AutoConstants {

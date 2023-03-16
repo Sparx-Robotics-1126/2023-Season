@@ -20,31 +20,37 @@ public class Robot extends TimedRobot {
 	private final SendableChooser<String> _chooser = new SendableChooser<>();
 	private Command m_autonomousCommand;
 
-
 	/**
-23   * This function is run when the robot is first started up and should be used for any
-24   * initialization code.
-25   */
+	 * 23 * This function is run when the robot is first started up and should be
+	 * used for any
+	 * 24 * initialization code.
+	 * 25
+	 */
 	@Override
 	public void robotInit() {
 
-		_chooser.setDefaultOption("Long", ChooserOptions.kAutoLong);
+		_chooser.addOption("Long", ChooserOptions.kAutoLong);
 		_chooser.addOption("Short", ChooserOptions.kAutoShort);
-		_chooser.addOption("Measure", ChooserOptions.kDriveMeasure);
+		_chooser.setDefaultOption("Measure", ChooserOptions.kDriveMeasure);
 		_chooser.addOption("Score and Leave Community", ChooserOptions.kScoreCommunity);
+		_chooser.addOption("Do Nothing", ChooserOptions.kDoNothing);
 		SmartDashboard.putData("AUTO CHOICES", _chooser);
 
 		_robotContainer = new RobotContainer();
 	}
 
-
 	/**
-34   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-35   * that you want ran during disabled, autonomous, teleoperated and test.
-36   *
-37   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-38   * SmartDashboard integrated updating.
-39   */
+	 * 34 * This function is called every 20 ms, no matter the mode. Use this for
+	 * items like diagnostics
+	 * 35 * that you want ran during disabled, autonomous, teleoperated and test.
+	 * 36 *
+	 * 37 *
+	 * <p>
+	 * This runs after the mode specific periodic functions, but before LiveWindow
+	 * and
+	 * 38 * SmartDashboard integrated updating.
+	 * 39
+	 */
 	@Override
 	public void robotPeriodic() {
 		double deadband = 0.1;
@@ -53,13 +59,13 @@ public class Robot extends TimedRobot {
 		double ry = -_robotContainer.getOperatorController().getRightY();
 
 		SmartDashboard.putNumber("LEFT_Y", ly);
-		SmartDashboard.putNumber("RIGHT_Y",  ry);
+		SmartDashboard.putNumber("RIGHT_Y", ry);
 
 		if (Math.abs(ly) > deadband)
 			_robotContainer.getAcquisition().setXPower(ly);
-		else 
+		else
 			_robotContainer.getAcquisition().setXPower(0);
-		
+
 		if (Math.abs(ry) > deadband)
 			_robotContainer.getAcquisition().setYPower(ry);
 		else
@@ -76,8 +82,8 @@ public class Robot extends TimedRobot {
 
 		// SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
 	}
-	
-    /**
+
+	/**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different
 	 * autonomous modes using the dashboard. The sendable chooser code works with
@@ -101,24 +107,29 @@ public class Robot extends TimedRobot {
 		_robotContainer.reset();
 
 		_autoSelected = _chooser.getSelected();
+		m_autonomousCommand = _robotContainer.getDriveMeasurements();
+		// switch (_autoSelected) {
+		// 	case ChooserOptions.kAutoShort:
+		// 		m_autonomousCommand = _robotContainer.getShortAutoCommand();
+		// 		break;
 
-		switch (_autoSelected) {
-			case ChooserOptions.kAutoShort:
-				m_autonomousCommand = _robotContainer.getShortAutoCommand();
-				break;
+		// 	case ChooserOptions.kAutoLong:
+		// 		m_autonomousCommand = _robotContainer.getLongAutoCommand();
+		// 		break;
 
-			case ChooserOptions.kAutoLong:
-				m_autonomousCommand = _robotContainer.getLongAutoCommand();
-				break;
+		// 	case ChooserOptions.kDriveMeasure:
+		// 		m_autonomousCommand = _robotContainer.getDriveMeasurements();
+		// 		break;
 
-			case ChooserOptions.kDriveMeasure:
-				m_autonomousCommand = _robotContainer.getDriveMeasurements();
-				break;
+		// 	case ChooserOptions.kScoreCommunity:
+		// 		m_autonomousCommand = _robotContainer.getScoreCommunityCommand();
+		// 		break;
 
-			case ChooserOptions.kScoreCommunity:
-				m_autonomousCommand = _robotContainer.getScoreCommunityCommand();
-				break;
-		}
+		// 	case ChooserOptions.kDoNothing:
+		// 	{
+		// 		break;
+		// 	}
+		// }
 
 		if (m_autonomousCommand != null) {
 			_robotContainer.setToCoast();
@@ -146,7 +157,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		
+
 	}
 
 	/** This function is called once when the robot is disabled. */
