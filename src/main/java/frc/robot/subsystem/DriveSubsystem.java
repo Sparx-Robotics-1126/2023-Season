@@ -80,7 +80,9 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotors.setInverted(true);
     // Burn settings into Spark MAX flash
     rightMotors.burnFlash();
+    rightMotorSlave.burnFlash();
     leftMotors.burnFlash();
+    leftMotorSlave.burnFlash();
 
     // Set drive deadband and safety
     m_driveDifferential.setDeadband(0.05);
@@ -124,14 +126,14 @@ public class DriveSubsystem extends SubsystemBase {
     master.set(0);
     master.setIdleMode(IdleMode.kCoast);
     master.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
-    master.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
+    master.setSmartCurrentLimit(Constants.MAX_CURRENT);
     // master.setOpenLoopRampRate(1); //used for demo
 
     for (CANSparkMax slave : slaves) {
       slave.restoreFactoryDefaults();
       slave.follow(master);
       slave.setIdleMode(IdleMode.kCoast);
-      slave.setSmartCurrentLimit(Constants.MAX_CURRENT, 60);
+      slave.setSmartCurrentLimit(Constants.MAX_CURRENT);
       // slave.setOpenLoopRampRate(1); //used for demo
     }
   }
