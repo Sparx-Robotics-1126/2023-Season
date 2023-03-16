@@ -132,13 +132,13 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
         if (xUsePID)
             if (xController.getSetpoint() == 0)
-                xOut -= RETURN_HOME_POWER;
+                xOut = -RETURN_HOME_POWER;
             else 
                 xOut += xController.calculate(getXPos());
         
         if (yUsePID)
             if (yController.getSetpoint() == 0)
-                yOut -= RETURN_HOME_POWER;
+                yOut = -RETURN_HOME_POWER + Y_FEEDFORWARD;
             else
                 yOut += yController.calculate(getYPos());
 
@@ -160,6 +160,9 @@ public class AcquisitionSubsystem extends SubsystemBase {
             yMotor.set(ControlMode.PercentOutput, yOut);
         else 
             yMotor.set(ControlMode.PercentOutput, 0);
+
+        SmartDashboard.putNumber("yOut", yOut);
+        SmartDashboard.putNumber("xOut", xOut);
 
         SmartDashboard.putNumber("Y_POS", getYPos());
         SmartDashboard.putNumber("X_POS", getXPos());
