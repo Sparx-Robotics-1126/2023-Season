@@ -109,7 +109,7 @@ public final class Constants {
         public static final double X_MOTOR_I = 0;
         public static final double X_MOTOR_D = 0;
 
-        public static final double Y_MOTOR_P = 0.001;
+        public static final double Y_MOTOR_P = 0.05;
         public static final double Y_MOTOR_I = 0;
         public static final double Y_MOTOR_D = 0;
 
@@ -117,7 +117,7 @@ public final class Constants {
         public static final double Y_MAX = 0.69215;
         public static final double POSITION_EPSILON_METERS = 0.01;
         
-        public static final double RETURN_HOME_POWER = 0.5;
+        public static final double RETURN_HOME_POWER = 0.3;
         public static final double MAX_MOTOR_POWER = 1;
         public static final double Y_FEEDFORWARD = 1;
         

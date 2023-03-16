@@ -34,6 +34,11 @@ public class AcquisitionSubsystem extends SubsystemBase {
     private DigitalInput xLimit;
     private DigitalInput yLimit;
 
+    static {
+        SmartDashboard.putNumber("Y_POWER", 0.1);
+        SmartDashboard.putBoolean("ENABLE", false);
+    }
+
 
     // Pneumatics
     @SuppressWarnings("unused")
@@ -84,7 +89,12 @@ public class AcquisitionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (xLimit.get() && xController.getSetpoint() == 0) {
+        if (SmartDashboard.getBoolean("ENABLE", false))
+            yMotor.set(ControlMode.PercentOutput, SmartDashboard.getNumber("Y_POWER", 0.1));
+        else
+            yMotor.set(ControlMode.PercentOutput, 0.1);
+
+        /*if (xLimit.get() && xController.getSetpoint() == 0) {
             xEncoder.reset();
             xMotor.set(ControlMode.PercentOutput, 0);
         } else {
@@ -107,7 +117,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
                 double yOut = yController.calculate(getYPos()) + Y_FEEDFORWARD;
                 yMotor.set(ControlMode.PercentOutput, yOut);
             }
-        }
+        }*/
 
         SmartDashboard.putNumber("Y_POS", getYPos());
         SmartDashboard.putNumber("X_POS", getXPos());

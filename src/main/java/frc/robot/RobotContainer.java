@@ -156,7 +156,7 @@ public class RobotContainer {
 
         // Return To Home
         m_operatorController.a()
-                .onTrue(new ReturnToHome(m_robotAcquisition));
+                .onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("ENABLE", !SmartDashboard.getBoolean("ENABLE", true))));//new ReturnToHome(m_robotAcquisition));
 
         // Get from Human Shelf
         m_operatorController.y()
