@@ -56,7 +56,22 @@ public class AcquisitionSubsystem extends SubsystemBase {
         yMotorSlave.setInverted(InvertType.OpposeMaster);
         yMotorSlave.follow(yMotor);
 
-        configureMotors(yMotorSlave, yMotor, xMotor);
+        TalonSRXConfiguration xConfig = new TalonSRXConfiguration();
+
+        xConfig.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
+        xConfig.peakCurrentLimit = Constants.MAX_CURRENT;
+        xConfig.peakOutputForward = X_MAX_MOTOR_POWER;
+        xConfig.peakOutputReverse = -X_MAX_MOTOR_POWER;
+
+        TalonSRXConfiguration yConfig = new TalonSRXConfiguration();
+
+        yConfig.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
+        yConfig.peakCurrentLimit = Constants.MAX_CURRENT;
+        yConfig.peakOutputForward = Y_MAX_MOTOR_POWER;
+        yConfig.peakOutputReverse = -Y_MAX_MOTOR_POWER;
+
+        configureMotors(xConfig, xMotor);
+        configureMotors(yConfig, yMotorSlave, yMotor);
 
        // Encoders
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
@@ -174,14 +189,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Y_LIMIT", yLimit.get());
     }
 
-    private static void configureMotors(TalonSRX... controllers) {
-        TalonSRXConfiguration config = new TalonSRXConfiguration();
-
-        config.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
-        config.peakCurrentLimit = Constants.MAX_CURRENT;
-        config.peakOutputForward = MAX_MOTOR_POWER;
-        config.peakOutputReverse = -MAX_MOTOR_POWER;
-
+    private static void configureMotors(TalonSRXConfiguration config, TalonSRX... controllers) {
         for (TalonSRX controller : controllers)
         {
             controller.configAllSettings(config);

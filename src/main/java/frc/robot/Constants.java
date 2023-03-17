@@ -118,7 +118,8 @@ public final class Constants {
         public static final double POSITION_EPSILON_METERS = 0.01;
         
         public static final double RETURN_HOME_POWER = 0.3;
-        public static final double MAX_MOTOR_POWER = 1;
+        public static final double X_MAX_MOTOR_POWER = 0.5;
+        public static final double Y_MAX_MOTOR_POWER = 1;
         public static final double Y_FEEDFORWARD = 0;
         
         // TODO: remeasure these values.
