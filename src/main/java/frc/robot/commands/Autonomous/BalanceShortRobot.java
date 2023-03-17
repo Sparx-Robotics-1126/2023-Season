@@ -11,12 +11,12 @@ public class BalanceShortRobot extends SequentialCommandGroup {
   public BalanceShortRobot(DriveSubsystem drive) {
 
     // Good short balance group
-     addCommands(new DriveToPitch(drive, .75, 10,false,false ));
-     addCommands(new WaitCommand(.05));
-     addCommands(new DriveDistance(drive, .6, .8));
-     addCommands(new DriveToPitch(drive, .75, -.1, false, false));
+     addCommands(new DriveToPitch(drive, .65, 10,false,false ));
      addCommands(new WaitCommand(1));
-     addCommands(new DriveToPitch(drive, .3, 0, true, false));
+    //  addCommands(new DriveDistance(drive, .6, .8));
+     addCommands(new DriveToPitch(drive, .38, -.02, false, false));
+     addCommands(new WaitCommand(1));
+     addCommands(new DriveToPitch(drive, .35, 0, true, false).withTimeout(8));
 
    
   }

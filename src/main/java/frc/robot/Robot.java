@@ -92,7 +92,8 @@ public class Robot extends TimedRobot {
 		_robotContainer.reset();
 
 		_autoSelected = _chooser.getSelected();
-		m_autonomousCommand = _robotContainer.getDriveMeasurements();
+		 m_autonomousCommand = _robotContainer.getDriveMeasurements();
+		//m_autonomousCommand = _robotContainer.getShortAutoCommand();
 		// switch (_autoSelected) {
 		// 	case ChooserOptions.kAutoShort:
 		// 		m_autonomousCommand = _robotContainer.getShortAutoCommand();
