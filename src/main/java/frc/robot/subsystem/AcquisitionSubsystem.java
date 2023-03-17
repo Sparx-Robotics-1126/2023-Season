@@ -120,32 +120,36 @@ public class AcquisitionSubsystem extends SubsystemBase {
             // We have a manual power command. Do it.
             xOut += xPower;
             prevXPower = xPower;
-        } else if (prevXPower != 0) {
+        } /*else if (prevXPower != 0) {
             // We don't have a power command, but are just returning from one.
             // Set the X setpoint to the current position so we can resume PID
             // and hold our current position.
             xMoveTo(getXPos());
             prevXPower = 0;
             xUsePID = true;
-        } else {
+        }*/ else {
             // We don't have a power command and aren't returning from one.
             // Let PID take over.
-            xUsePID = true;
+            // xUsePID = true;
+
+            xOut -= RETURN_HOME_POWER;
         }
 
         // Do the same thing for y.
         if (yPower != 0) {
             yOut += yPower;
             prevYPower = yPower;
-        } else if (prevYPower != 0) {
+        } /*else if (prevYPower != 0) {
             yMoveTo(getYPos());
             prevYPower = 0;
             yUsePID = true;
-        } else {
-            yUsePID = true;
+        }*/ else {
+            //yUsePID = true;
+
+            yOut -= RETURN_HOME_POWER;
         }
 
-        if (xUsePID)
+        /*if (xUsePID)
             if (xController.getSetpoint() == 0)
                 xOut -= RETURN_HOME_POWER;
             else 
@@ -155,12 +159,11 @@ public class AcquisitionSubsystem extends SubsystemBase {
             if (yController.getSetpoint() == 0)
                 yOut -= RETURN_HOME_POWER;
             else
-                yOut += yController.calculate(getYPos());
+                yOut += yController.calculate(getYPos());*/
 
         if (xLimit.get() && xOut <= 0) {
             xEncoder.reset();
-            if (xMotor.getMotorOutputPercent() < 0)
-                xMotor.set(ControlMode.PercentOutput, 0);
+            xMotor.set(ControlMode.PercentOutput, -LIMIT_TENSION_POWER);
         } else if (getXPos() < X_MAX)
             xMotor.set(ControlMode.PercentOutput, xOut);
         else 
@@ -169,8 +172,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         if (yLimit.get() && yOut <= 0) {
             yEncoderLeft.reset();
             yEncoderRight.reset();
-            if (yMotor.getMotorOutputPercent() < 0)
-                yMotor.set(ControlMode.PercentOutput, 0);
+            yMotor.set(ControlMode.PercentOutput, 0);
         } else if (getYPos() < Y_MAX)
             yMotor.set(ControlMode.PercentOutput, yOut);
         else 
