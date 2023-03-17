@@ -221,14 +221,14 @@ public class AcquisitionSubsystem extends SubsystemBase {
     }
 
     public void xMoveTo(double pos) {
-        if (pos <= X_MAX) {
+        if (pos >= 0 && pos <= X_MAX) {
             xController.reset();
             xController.setSetpoint(pos);
         }
     }
 
     public void yMoveTo(double pos) {
-        if (pos <= Y_MAX) {
+        if (pos >= 0 && pos <= Y_MAX) {
             yController.reset();
             yController.setSetpoint(pos);
         }
