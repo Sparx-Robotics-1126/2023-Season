@@ -9,7 +9,7 @@ public class DriveMeasurements extends SequentialCommandGroup{
 
     public DriveMeasurements(DriveSubsystem drive) {
 
-        addCommands(new DriveDistance(drive, 6, .45).withTimeout(6));
+        addCommands(new DriveDistance(drive, 6, .4).withTimeout(6));
     }
     
 }
