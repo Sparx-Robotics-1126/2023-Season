@@ -33,6 +33,6 @@ public class MoveTo extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return acquisition.atSetpoint();
+        return true;
     }
 }
