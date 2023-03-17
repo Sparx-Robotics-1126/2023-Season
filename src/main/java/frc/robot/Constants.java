@@ -124,6 +124,8 @@ public final class Constants {
         // TODO: remeasure these values.
         public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
         public static final double Y_PULSES_TO_METERS = 1.0 / 1002.75;
+
+        public static final double MANUAL_DEADBAND = 0.1;
     }
 
     /**

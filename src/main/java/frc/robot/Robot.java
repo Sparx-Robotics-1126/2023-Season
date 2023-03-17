@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import frc.robot.Constants.AcquisitionConstants;
 import frc.robot.Constants.ChooserOptions;
 
 /**
@@ -141,16 +142,14 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		double deadband = 0.1;
-
 		double ly = -_robotContainer.getOperatorController().getLeftY();
 		double ry = -_robotContainer.getOperatorController().getRightY();
 
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
 
-		_robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, deadband));
-		_robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, deadband));
+		_robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, AcquisitionConstants.MANUAL_DEADBAND));
+		_robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, AcquisitionConstants.MANUAL_DEADBAND));
 	}
 
 	/** This function is called once when the robot is disabled. */
