@@ -158,6 +158,10 @@ public class Robot extends TimedRobot {
 		System.out.println("********** ROBOT DISABLED ************");
 		_robotContainer.stopTimer();
 
+		// For safety reasons, apply the drivetrain brakes when the robot 
+		// becomes disabled. Avoids coasting into people. Useful for
+		// demonstrations when someone inexperienced is operating.
+		_robotContainer.applyBrakes();
 	}
 
 	/** This function is called once when test mode is enabled. */
