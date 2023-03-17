@@ -35,7 +35,8 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
         public static final double MAX_DRIVE_SPEED = 1;
-        public static final double MAX_TRIGGER_SPEED = 0.1;
+        public static final double MAX_LEFT_TRIGGER_SPEED = 0.1;
+        public static final double MAX_RIGHT_TRIGGER_SPEED = .25;
         public static final double kTurnFriction = 0.3;
 
         public static final int kEncoderCPR = 1024;
@@ -121,8 +122,8 @@ public final class Constants {
         public static final double LIMIT_TENSION_POWER = 0.2;
         
         public static final double X_MAX_MOTOR_POWER = 0.5;
-        public static final double Y_MAX_MOTOR_POWER = 1;
-        public static final double Y_FEEDFORWARD = 0.4;
+        public static final double Y_MAX_MOTOR_POWER = 0;
+        public static final double Y_FEEDFORWARD = 0;//0.4;
         
         // TODO: remeasure these values.
         public static final double X_PULSES_TO_METERS = 1.0 / 734.5;

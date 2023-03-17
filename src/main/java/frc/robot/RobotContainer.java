@@ -80,11 +80,11 @@ public class RobotContainer {
         SmartDashboard.putNumber("MAXSPEED", 0);
 
         m_driverController.rightBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_TRIGGER_SPEED)))
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_RIGHT_TRIGGER_SPEED)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
         m_driverController.leftBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(SmartDashboard.getNumber("MAXSPEED", 0))))
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_LEFT_TRIGGER_SPEED)))
                 .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
         // new JoystickButton(_driverController, Button.kA.value).onTrue(new
