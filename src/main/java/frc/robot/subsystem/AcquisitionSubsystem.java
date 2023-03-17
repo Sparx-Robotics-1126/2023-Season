@@ -167,7 +167,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         } else if (getXPos() < X_MAX)
             xMotor.set(ControlMode.PercentOutput, xOut);
         else 
-            xMotor.set(ControlMode.PercentOutput, 0);
+            xMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
         
         if (yLimit.get() && yOut <= 0) {
             yEncoderLeft.reset();
@@ -176,7 +176,7 @@ public class AcquisitionSubsystem extends SubsystemBase {
         } else if (getYPos() < Y_MAX)
             yMotor.set(ControlMode.PercentOutput, yOut);
         else 
-            yMotor.set(ControlMode.PercentOutput, 0);
+            yMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
 
         SmartDashboard.putNumber("yPower", yPower);
         SmartDashboard.putNumber("xPower", xPower);
