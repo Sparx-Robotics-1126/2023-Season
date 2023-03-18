@@ -46,8 +46,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         m_Timer = new Timer();
-        Limelight limeLight = new Limelight();
-        limeLight.enableVision();
+        Limelight limelight = new Limelight();
 
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);

@@ -85,7 +85,6 @@ public final class Constants {
 
         public static final double kRelTurnToleranceDeg = 1;
         public static final double kRelTurnRateToleranceDegPerS = 3; // degrees per second
-
     }
 
     public static final class AcquisitionConstants {
@@ -193,6 +192,13 @@ public final class Constants {
 
         public static final double MID_CUBE_Y = computeYOffset(MID_CUBE_HEIGHT);
         public static final double MID_CUBE_X = computeXOffset(MID_CUBE_DISTANCE);
+    }
+
+    public static final class LimelightConstants {
+        public static final boolean USE_FOR_TARGETING = true;
+        public static final boolean LED_ON_DEFAULT = false;
+        public static final double CAMERA_MIN_FLOOR_HEIGHT = 0;
+        public static final double CAMERA_ANGLE = 0;
     }
 
     public static final class ChooserOptions{
