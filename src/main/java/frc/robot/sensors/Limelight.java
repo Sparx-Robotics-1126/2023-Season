@@ -61,14 +61,15 @@ public class Limelight {
 	}
 	
 	public double getDistanceFromTarget(double targetFloorHeight) {
-		return (targetFloorHeight - getCameraHeight()) / Math.tan(Math.toRadians(getCameraAngle() + getY()));
+		return (targetFloorHeight - getCameraHeight())
+			/ Math.tan(Math.toRadians(getCameraAngle() + getTargetY()));
 	}
 
-	public long getX() {
+	public long getTargetX() {
 		return tx.getInteger(0);
 	}
 
-	public long getY() {
+	public long getTargetY() {
 		return ty.getInteger(0);
 	}
 	
