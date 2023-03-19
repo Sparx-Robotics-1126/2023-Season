@@ -39,29 +39,34 @@ public class Limelight {
 	}
 
 	public double getCameraPitch() {
-		// Add any necessary robot-specific dynamic offsets here (e.g. system adjusts limelight pitch).
+		// Add any necessary robot-specific dynamic offsets here (e.g. system tilts the limelight up and down).
 		return CAMERA_INITIAL_PITCH;
 	}
 
-	public double getYOffset(double targetFloorHeight) {
-		return targetFloorHeight - getCameraHeight();
-	}
-
-	public long getXAngle() {
-		return tx.getInteger(0);
+	public double getXAngle() {
+		return getXCrosshairAngle();
 	}
 
 	public double getYAngle() {
 		return getCameraPitch() + getYCrosshairAngle();
 	}
+
+	public double getYOffset(double targetFloorHeight) {
+		return targetFloorHeight - getCameraHeight();
+	}
 	
-	public double getXDistance(double targetFloorHeight) {
+	public double getHorizontalDistance(double targetFloorHeight) {
+		return getDistance(targetFloorHeight) 
+			* Math.tan(Math.toRadians(getXAngle()));
+	}
+
+	public double getDistance(double targetFloorHeight) {
 		return getYOffset(targetFloorHeight)
 			/ Math.tan(Math.toRadians(getYAngle()));
 	}
 
-	public double getYDistance(double targetFloorHeight) {
-		return Math.abs(getYOffset(targetFloorHeight));
+	public long getXCrosshairAngle() {
+		return tx.getInteger(0);
 	}
 
 	public long getYCrosshairAngle() {
