@@ -38,9 +38,9 @@ public class Limelight {
 		return CAMERA_MIN_FLOOR_HEIGHT;
 	}
 
-	public double getCameraAngle() {
-		// Add any necessary robot-specific dynamic offsets here (e.g. system rotates the limelight).
-		return CAMERA_INITIAL_ANGLE;
+	public double getCameraPitch() {
+		// Add any necessary robot-specific dynamic offsets here (e.g. system adjusts limelight pitch).
+		return CAMERA_INITIAL_PITCH;
 	}
 
 	public double getYOffset(double targetFloorHeight) {
@@ -52,7 +52,7 @@ public class Limelight {
 	}
 
 	public double getYAngle() {
-		return getCameraAngle() + getYCrosshairAngle();
+		return getCameraPitch() + getYCrosshairAngle();
 	}
 	
 	public double getXDistance(double targetFloorHeight) {

@@ -198,7 +198,7 @@ public final class Constants {
         public static final boolean USE_FOR_TARGETING = true;
         public static final boolean LED_ON_DEFAULT = false;
         public static final double CAMERA_MIN_FLOOR_HEIGHT = 0;
-        public static final double CAMERA_INITIAL_ANGLE = 0;
+        public static final double CAMERA_INITIAL_PITCH = 0;
     }
 
     public static final class ChooserOptions{
