@@ -11,9 +11,6 @@ public class Limelight {
 	NetworkTableEntry tv;
 	NetworkTableEntry ty;
 
-	NetworkTableEntry thor;
-	NetworkTableEntry tvert;
-
 	NetworkTableEntry ledMode;
 	NetworkTableEntry camMode;
 	
@@ -29,12 +26,6 @@ public class Limelight {
 		// The Y offset of the target in degrees from the crosshair.
 		ty = table.getEntry("ty");
 
-		// The horizontal viewport size.
-		thor = table.getEntry("thor");
-
-		// The vertical viewport size.
-		tvert = table.getEntry("tver");
-
 		ledMode = table.getEntry("ledMode");
 		camMode = table.getEntry("camMode");
 
@@ -43,33 +34,37 @@ public class Limelight {
 	}
 
 	public double getCameraHeight() {
-		// Add any necessary offsets here.
+		// Add any necessary robot-specific dynamic offsets here (e.g. system elevates the limelight).
 		return CAMERA_MIN_FLOOR_HEIGHT;
 	}
 
 	public double getCameraAngle() {
-		// Add any necessary offsets here.
-		return CAMERA_ANGLE;
+		// Add any necessary robot-specific dynamic offsets here (e.g. system rotates the limelight).
+		return CAMERA_INITIAL_ANGLE;
 	}
 
-	public long getViewportXSize() {
-		return thor.getInteger(0);
+	public double getYOffset(double targetFloorHeight) {
+		return targetFloorHeight - getCameraHeight();
 	}
 
-	public long getViewportYSize() {
-		return tvert.getInteger(0);
-	}
-	
-	public double getDistanceFromTarget(double targetFloorHeight) {
-		return (targetFloorHeight - getCameraHeight())
-			/ Math.tan(Math.toRadians(getCameraAngle() + getTargetY()));
-	}
-
-	public long getTargetX() {
+	public long getXAngle() {
 		return tx.getInteger(0);
 	}
 
-	public long getTargetY() {
+	public double getYAngle() {
+		return getCameraAngle() + getYCrosshairAngle();
+	}
+	
+	public double getXDistance(double targetFloorHeight) {
+		return getYOffset(targetFloorHeight)
+			/ Math.tan(Math.toRadians(getYAngle()));
+	}
+
+	public double getYDistance(double targetFloorHeight) {
+		return Math.abs(getYOffset(targetFloorHeight));
+	}
+
+	public long getYCrosshairAngle() {
 		return ty.getInteger(0);
 	}
 	
