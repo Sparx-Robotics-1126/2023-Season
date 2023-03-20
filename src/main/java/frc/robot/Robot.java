@@ -2,13 +2,13 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+// import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants.AcquisitionConstants;
-import frc.robot.Constants.ChooserOptions;
+// import frc.robot.Constants.ChooserOptions;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -18,8 +18,8 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer _robotContainer;
 
-	private String _autoSelected;
-	private final SendableChooser<String> _chooser = new SendableChooser<>();
+	// private String _autoSelected;
+	// private final SendableChooser<String> _chooser = new SendableChooser<>();
 	private Command m_autonomousCommand;
 
 	/**
@@ -30,13 +30,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-
-		_chooser.addOption("Long", ChooserOptions.kAutoLong);
-		_chooser.addOption("Short", ChooserOptions.kAutoShort);
-		_chooser.setDefaultOption("Measure", ChooserOptions.kDriveMeasure);
-		_chooser.addOption("Score and Leave Community", ChooserOptions.kScoreCommunity);
-		_chooser.addOption("Do Nothing", ChooserOptions.kDoNothing);
-		SmartDashboard.putData("AUTO CHOICES ", _chooser);
 
 		_robotContainer = new RobotContainer();
 	}
@@ -64,7 +57,10 @@ public class Robot extends TimedRobot {
 		// block in order for anything in the Command-based framework to work.
 
 		CommandScheduler.getInstance().run();
-
+		_robotContainer.displayShuffleboard();
+        // if(SmartDashboard.getBoolean("Testing", false)) {
+        //     _robotContainer.tuningPeriodic();
+        // }
 		// SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
 	}
 
@@ -91,31 +87,8 @@ public class Robot extends TimedRobot {
 
 		_robotContainer.reset();
 
-		_autoSelected = _chooser.getSelected();
-		 m_autonomousCommand = _robotContainer.getDriveMeasurements();
-		//m_autonomousCommand = _robotContainer.getShortAutoCommand();
-		// switch (_autoSelected) {
-		// 	case ChooserOptions.kAutoShort:
-		// 		m_autonomousCommand = _robotContainer.getShortAutoCommand();
-		// 		break;
 
-		// 	case ChooserOptions.kAutoLong:
-		// 		m_autonomousCommand = _robotContainer.getLongAutoCommand();
-		// 		break;
-
-		// 	case ChooserOptions.kDriveMeasure:
-		// 		m_autonomousCommand = _robotContainer.getDriveMeasurements();
-		// 		break;
-
-		// 	case ChooserOptions.kScoreCommunity:
-		// 		m_autonomousCommand = _robotContainer.getScoreCommunityCommand();
-		// 		break;
-
-		// 	case ChooserOptions.kDoNothing:
-		// 	{
-		// 		break;
-		// 	}
-		// }
+		m_autonomousCommand = _robotContainer.getAutonomousCommand();
 
 		if (m_autonomousCommand != null) {
 			_robotContainer.setToCoast();
