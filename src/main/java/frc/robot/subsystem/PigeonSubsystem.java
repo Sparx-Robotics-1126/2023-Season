@@ -21,6 +21,7 @@ import frc.robot.Constants;
 // import com.ctre.phoenix.sensors.Pigeon2Configuration;
 
 public class PigeonSubsystem extends SubsystemBase {
+    private static PigeonSubsystem m_instance = null;
     private final Pigeon2 _pigeon;
     // private final WPI_Pigeon2 _wpiPigeon;
 
@@ -28,13 +29,21 @@ public class PigeonSubsystem extends SubsystemBase {
     // private static Pigeon2_Faults _pigeonFaults = new Pigeon2_Faults();
     // private BasePigeon m_basePigeon;
 
-    public PigeonSubsystem() {
+    private PigeonSubsystem() {
         _pigeon = new Pigeon2(Constants.Pigeon2ID);
         // _wpiPigeon = new WPI_Pigeon2(Constants.Pigeon2ID);
         // _pigeonFaults = new Pigeon2_Faults();
         // _test = new Pigeon2(4);
         initPigeon();
     }
+
+    public static PigeonSubsystem getInstance() {
+        if (m_instance == null) {
+            m_instance = new PigeonSubsystem();
+        }
+        return m_instance;
+    }
+
 
     private void initPigeon() {
         // Factory default the Pigeon.
@@ -84,8 +93,8 @@ public class PigeonSubsystem extends SubsystemBase {
     /**
      * @return The current pitch reported by the Pigeon.
      */
-    public int getPitch() {
-        return (int) -Math.round(_pigeon.getPitch().getValue());
+    public double getPitch() {
+        return _pigeon.getPitch().getValue();
     }
 
     /**
@@ -184,12 +193,7 @@ public class PigeonSubsystem extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         // _pigeon.getFaults(_pigeonFaults);
-        SmartDashboard.putNumber("PIGEON_PITCH", getPitch());
-        SmartDashboard.putNumber("PIGEON_TEMP", getTemp());
-        SmartDashboard.putNumber("PIGEON_ANGLE", getAngle());
-        SmartDashboard.putNumber("PIGEON_RATE", getRate());
-        SmartDashboard.putNumber("PIGEON_YAW", getYaw());
-        SmartDashboard.putNumber("PIGEON_ROTATION", getRotation2d().getDegrees());
+      
     }
 
     /**
@@ -224,6 +228,15 @@ public class PigeonSubsystem extends SubsystemBase {
      */
     public double getRate() {
         return _pigeon.getRate();
+    }
+
+    public void outputValues() {
+        SmartDashboard.putNumber("PIGEON_PITCH", getPitch());
+        SmartDashboard.putNumber("PIGEON_TEMP", getTemp());
+        SmartDashboard.putNumber("PIGEON_ANGLE", getAngle());
+        SmartDashboard.putNumber("PIGEON_RATE", getRate());
+        SmartDashboard.putNumber("PIGEON_YAW", getYaw());
+        SmartDashboard.putNumber("PIGEON_ROTATION", getRotation2d().getDegrees());
     }
 
     // public abstract String getFaultMessage();

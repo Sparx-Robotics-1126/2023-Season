@@ -1,8 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -11,16 +15,20 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Acquisition.MoveTo;
+import frc.robot.commands.Autonomous.Autos;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.ScoreCommunity;
+import frc.robot.commands.Drive.DriveDistance;
 import frc.robot.commands.Drive.DriveMeasurements;
-import frc.robot.commands.Drive.TurnRight;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.subsystem.DriveSubsystem;
 import frc.robot.subsystem.PigeonSubsystem;
+import frc.robot.subsystem.ShuffleSubsystem;
 import frc.robot.sensors.Limelight;
 import static frc.robot.Constants.FieldConstants.*;
+
+import java.util.ArrayList;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,7 +47,24 @@ public class RobotContainer {
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
 
+    private boolean slowSpeedEnabled;
+    private boolean mediumSpeedEnabled;
+    private boolean fullSpeedEnabled;
+
+    private boolean isSimulation;
     private final Timer m_Timer;
+
+    private ArrayList<ShuffleSubsystem> m_subsystems;
+    private int outputCounter;
+    private Notifier updateNotifier;
+    
+    private ArrayList<ShuffleSubsystem> subsystems;
+
+    private interface CommandSupplier {
+        Command getCommand();
+}
+
+    private final SendableChooser<CommandSupplier> _chooser = new SendableChooser<>();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -51,11 +76,11 @@ public class RobotContainer {
 
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
-        m_pigeon = new PigeonSubsystem();
+        m_pigeon = PigeonSubsystem.getInstance();
 
         m_robotAcquisition = new AcquisitionSubsystem();
 
-        m_robotDrive = new DriveSubsystem(m_pigeon, m_Timer);
+        m_robotDrive = new DriveSubsystem( m_Timer);
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
@@ -65,7 +90,21 @@ public class RobotContainer {
 
         configureDriverButtonBindings();
         configureOperatorButtons();
+        configureChooser();
+        configureShuffleboard();
 
+        updateNotifier = new Notifier(this::update);
+        updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
+
+        isSimulation = RobotBase.isSimulation();
+
+         
+        subsystems = new ArrayList<ShuffleSubsystem>();
+        // add each of the subsystems to the arraylist here
+        
+        subsystems.add(m_robotDrive);
+        // subsystems.add(vision);
+        subsystems.add(m_robotAcquisition); 
     }
 
     /**
@@ -77,39 +116,24 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureDriverButtonBindings() {
-        SmartDashboard.putNumber("MAXSPEED", 0);
-
+        // SmartDashboard.putNumber("MAXSPEED", 0);
+        SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {slowSpeedEnabled, mediumSpeedEnabled, fullSpeedEnabled});
+        
         m_driverController.rightBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_RIGHT_TRIGGER_SPEED)))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_RIGHT_TRIGGER_SPEED))
+                .andThen( new InstantCommand(() -> setSpeedToggles("medium"))))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED))
+                .andThen( new InstantCommand(() -> setSpeedToggles("full"))));
 
         m_driverController.leftBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_LEFT_TRIGGER_SPEED)))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
-
-        // new JoystickButton(_driverController, Button.kA.value).onTrue(new
-        // InstantCommand(() -> _pigeon.reset()));
-
-        // Stabilize robot to drive straight with gyro when left bumper is held
-        // new JoystickButton(m_operatorController, Button.kLeftBumper.value)
-        // .whileTrue(
-        // new PIDCommand(
-        // new PIDController(
-        // DriveConstants.kStabilizationP,
-        // DriveConstants.kStabilizationI,
-        // DriveConstants.kStabilizationD),
-        // // Close the loop on the turn rate
-        // m_robotDrive::getTurnRate,
-        // // Setpoint is 0
-        // 0,
-        // // Pipe the output to the turning controls
-        // output -> m_robotDrive.arcadeDrive(-m_operatorController.getLeftY(), output),
-        // // Require the robot drive
-        // m_robotDrive));
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_LEFT_TRIGGER_SPEED))
+                .andThen( new InstantCommand(() -> setSpeedToggles("slow"))))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED))
+                .andThen( new InstantCommand(() -> setSpeedToggles("full"))));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        m_driverController.b()
-                .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
+        // m_driverController.b()
+        //         .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
 
         m_driverController.y()
                 .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
@@ -117,29 +141,6 @@ public class RobotContainer {
         // new JoystickButton(m_operatorController, Button.kA.value)
         // .onTrue(new MoveTo(m_robotAcquisition, 0, 0.5));
 
-        /*
-         * Need 6 buttons:
-         * - Score high cone
-         * - Score low cone
-         * - Score high cube
-         * - Score low cube
-         * - Pick up from shelf
-         * - Open/close grabber
-         */
-
-        // .onFalse(new InstantCommand(() -> m_robotDrive.setToCoast()));
-
-        // // Turn to -90 degrees with a profile when the Circle button is pressed, with
-        // a
-        // // 5 second timeout
-        // new JoystickButton(_driverController, Button.kB.value)
-        // .onTrue(new TurnToAngleProfiled(-90, _robotDrive).withTimeout(5));
-
-        // new JoystickButton(m_operatorController, Button.kY.value)
-        // .whileTrue(new BalanceCmd(m_robotDrive));
-
-        // // new JoystickButton(m_operatorController, Button.kA.value)
-        // // .onTrue(new DriveToPitch(m_robotDrive, .5, 1));
 
     }
 
@@ -201,6 +202,68 @@ public class RobotContainer {
     // m_robotDrive.setMaxOutput(speed);
     // m_robotDrive.tankDrive(left, right);
     // }
+
+    public void configureChooser(){
+
+        _chooser.setDefaultOption("Short PID", () ->  Autos.balanceChargeStations(m_robotDrive));
+        _chooser.addOption("Long", () ->  new BalanceLongRobot(m_robotDrive));
+		_chooser.addOption("Short",() -> new BalanceShortRobot(m_robotDrive));
+		_chooser.addOption("Measure", () ->new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
+		_chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
+		_chooser.addOption("Do Nothing",  () -> new InstantCommand());
+
+        SmartDashboard.putData("AUTO CHOICES ", _chooser);
+    }
+
+    public void configureShuffleboard() {
+        // Field Side
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+       // SmartDashboard.putBoolean("Testing", false);
+        //getting the auto values for score, cargo, and charge
+        // SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        // SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
+        // SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        // SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        // SmartDashboard.putNumber("View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Update Visual", false);
+        // SmartDashboard.putBoolean("3 Ball Auto", false);
+        SmartDashboard.putBoolean("Leave Tarmac", true);
+        SmartDashboard.putBoolean("Hit and Run", false);
+
+        SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        
+    }
+
+
+    private void setSpeedToggles(String speed){
+        slowSpeedEnabled = false;
+        mediumSpeedEnabled = false;
+        fullSpeedEnabled = false;
+
+        switch(speed){
+            case "slow":
+            {
+                slowSpeedEnabled = true;
+            }
+            case "medium":
+            {
+                mediumSpeedEnabled = true;
+            }
+            case "full":
+            {
+                fullSpeedEnabled = true;
+            }
+            default: {
+                fullSpeedEnabled = true;
+            }
+        }
+    }
+
+    public Command getAutonomousCommand(){
+        return new InstantCommand(() -> m_robotDrive.resetPitch())
+                        .andThen(() -> m_robotDrive.setToCoast())
+                        .andThen(_chooser.getSelected().getCommand());
+    }
 
     public double getPitch() {
         return m_pigeon.getPitch();
@@ -269,4 +332,80 @@ public class RobotContainer {
     public AcquisitionSubsystem getAcquisition() {
         return m_robotAcquisition;
     }
+
+    private boolean getAllianceColor() {
+        return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
+    }
+
+/**
+     * Update all of the subsystems
+     * This is run in a separate loop at a faster rate to:
+     * a) update subsystems faster
+     * b) prevent packet delay from driver station from delaying response from our robot
+     */
+    private void update() {
+        for(ShuffleSubsystem subsystem : subsystems) {
+            subsystem.update();
+        }
+    }
+
+    public void displayShuffleboard() {
+
+        if (m_subsystems.size() == 0){
+        return;
+        }
+    
+
+    if(outputCounter % 3 == 0) {
+        m_subsystems.get(outputCounter / 3).displayShuffleboard();
+    }
+
+    PigeonSubsystem.getInstance().outputValues();
+    tuningPeriodic();
+
+    outputCounter = (outputCounter + 1) % (m_subsystems.size() * 3);
+
+    }
+
+    private void tuningPeriodic() {
+        if(outputCounter % 3 == 0) {
+            m_subsystems.get(outputCounter / 3).tuningPeriodic();
+        }
+
+        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
+            // updateTraj = true;
+            SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        }
+
+        // if (updateTraj) { // change the trajectory drawn
+        //     // generateTrajedies.incrementOutputCounter();
+        //     Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        //     if (traj != null)
+        //         drivetrain.drawTrajectory(traj);
+        // }
+
+        // if (updateTraj && checkIfUpdate()) {
+        //     DriverStation.reportWarning("Updating Auto", cargo);
+        //     updateAutoChoosers();
+
+        //     generateTrajectories = new GenerateTrajectories(
+        //         drivetrain,
+        //         charge,
+        //         firstScore,
+        //         secondScore,
+        //         cargo,
+        //         estimatedCurrentPose2d(),
+        //         threePiece,
+        //         leaveTarmac,
+        //         hitAndRun
+        //     );
+
+        //     SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+
+        //     putTrajectoryTime();
+        //     resetDashboard();
+        // }
+    }
+
+
 }
