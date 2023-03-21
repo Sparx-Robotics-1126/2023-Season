@@ -1,5 +1,6 @@
 package frc.robot.subsystem;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -69,7 +70,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
   private DifferentialDrivePoseEstimator m_poseEstimator;
 
   private DifferentialDriveOdometry m_odometry;
-  private final Timer m_timer;
   private Boolean m_brakesOn;
 
   private double m_distSetpoint; // current distance setpoint in meters
@@ -101,10 +101,9 @@ public class DriveSubsystem extends ShuffleSubsystem {
   private State m_state = m_defaultState; // stores the current driving mode of the drivetrain
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(Timer timer) {
+  public DriveSubsystem() {
     // stop();
     // m_pigeon = pigeon;
-    m_timer = timer;
 
     configureMotors();
     configureEncoders();
@@ -569,7 +568,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public void applyBrakesEndGame() {
 
-    if (m_timer.get() > DriveConstants.EndGameSeconds) {
+    if (DriverStation.getMatchTime()< DriveConstants.EndGameSeconds) {
       if (m_brakesOn) {
         setToCoast();
       } else {

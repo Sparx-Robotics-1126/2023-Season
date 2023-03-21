@@ -79,7 +79,7 @@ public class RobotContainer {
 
         // m_robotAcquisition = new AcquisitionSubsystem();
 
-        m_robotDrive = new DriveSubsystem(new Timer() );
+        m_robotDrive = new DriveSubsystem();
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
