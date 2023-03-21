@@ -24,9 +24,9 @@ public static Command balanceChargeStations(DriveSubsystem drive){
     return new InstantCommand(() -> {
         new GetOnChargeStation(drive)
         .withTimeout(AutoConstants.BalanceAuto.TIMEOUT_SECONDS)
-        .andThen(new DriveDistanceCmd(drive,  AutoConstants.BalanceAuto.DISTANCE_TO_CLOSER_CENTER,.38 )
-        .withTimeout(AutoConstants.BalanceAuto.GET_CLOSER_TO_CENTER_TIMEOUT)).
-        andThen(new BalanceOnChargeStation(drive));
+        // .andThen(new DriveDistanceCmd(drive,  AutoConstants.BalanceAuto.DISTANCE_TO_CLOSER_CENTER,.38 )
+        // .withTimeout(AutoConstants.BalanceAuto.GET_CLOSER_TO_CENTER_TIMEOUT))
+        .andThen(new BalanceOnChargeStation(drive));
     });
 
 

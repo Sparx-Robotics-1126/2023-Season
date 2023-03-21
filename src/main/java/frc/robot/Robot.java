@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants.AcquisitionConstants;
 // import frc.robot.Constants.ChooserOptions;
+import frc.robot.subsystem.PigeonSubsystem;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -109,7 +111,7 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null)
 			m_autonomousCommand.cancel();
 
-		_robotContainer.startTimer();
+		// _robotContainer.startTimer();
 		_robotContainer.reset();
 		_robotContainer.setToCoast();
 	}
@@ -122,15 +124,15 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
 
-		_robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, AcquisitionConstants.MANUAL_DEADBAND));
-		_robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, AcquisitionConstants.MANUAL_DEADBAND));
+		// _robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, AcquisitionConstants.MANUAL_DEADBAND));
+		// _robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, AcquisitionConstants.MANUAL_DEADBAND));
 	}
 
 	/** This function is called once when the robot is disabled. */
 	@Override
 	public void disabledInit() {
 		System.out.println("********** ROBOT DISABLED ************");
-		_robotContainer.stopTimer();
+		// _robotContainer.stopTimer();
 
 		// For safety reasons, apply the drivetrain brakes when the robot 
 		// becomes disabled. Avoids coasting into people. Useful for

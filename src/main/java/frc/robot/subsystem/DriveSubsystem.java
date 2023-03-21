@@ -2,6 +2,7 @@ package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -14,7 +15,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,8 +23,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-// import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.DriveConstants.*;
 
@@ -102,20 +103,67 @@ public class DriveSubsystem extends ShuffleSubsystem {
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(Timer timer) {
     // stop();
-    // m_pigeon = PigeonSubsystem.getInstance();
+    // m_pigeon = pigeon;
     m_timer = timer;
 
-    configureMotors();
-    configureEncoders();
-    configurePID();
+    m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+    m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+
+    m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+    m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+
+    configureMotor(m_rightMotor, m_rightMotorSlave);
+    configureMotor(m_leftMotor, m_leftMotorSlave);
+    // configurePID();
+
+    m_leftEncoder = m_leftMotor.getEncoder();
+    m_rightEncoder = m_rightMotor.getEncoder();
+
+    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder
+        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+    m_rightEncoder
+        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
+    var leftConversionFactor = m_leftMotor.getEncoder().getPositionConversionFactor();
+    var rightConversionFactor = m_rightMotor.getEncoder().getPositionConversionFactor();
+    // configure velocity PID controllers
+    m_leftPIDController = m_leftMotor.getPIDController();
+    m_rightPIDController = m_rightMotor.getPIDController();
+
+    m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
+    m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
+    m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
+    m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
+
+    // configure drive distance PID controllers
+    m_distancePIDController = new PIDController(DRIVE_DIST_PID[0], DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
+    m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
+
+    // configure turn angle PID controllers
+    m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0], DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
+    m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
+    m_anglePIDController.enableContinuousInput(-180.0, 180.0);
 
     m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
+    // m_driveDifferential.setDeadband(Constants.DEAD_BAND);
+    // We need to invert one side of the drivetrain so that positive voltages
+    // result in both sides moving forward. Depending on how your robot's
+    // gearbox is constructed, you might have to invert the left side instead.
+    // _rightMotors.setInverted(true);
 
-    m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
+    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
-        Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), m_leftEncoder.getPositionConversionFactor(),
-        m_leftEncoder.getPositionConversionFactor(), new Pose2d(0, 0, new Rotation2d(0.0)));
+    m_leftMotor.setInverted(true);
+    // Burn settings into Spark MAX flash
+    m_rightMotor.burnFlash();
+    m_rightMotorSlave.burnFlash();
+    m_leftMotor.burnFlash();
+    m_leftMotorSlave.burnFlash();
 
     // Set drive deadband and safety
     m_driveDifferential.setDeadband(0.05);
@@ -123,9 +171,13 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
         m_rightEncoder.getPosition());
+
+    // var test = m_leftMotor.getEncoder().getPositionConversionFactor();
+    m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
+        Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), leftConversionFactor,
+        rightConversionFactor, new Pose2d(0, 0, new Rotation2d(0.0)));
     m_brakesOn = false;
     m_pathTimer = new Timer();
-
   }
 
   public void periodic() {
@@ -146,25 +198,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     SmartDashboard.putNumber("LEFT_MOTOR_AMPS", m_leftMotor.getOutputCurrent());
     SmartDashboard.putNumber("RIGHT_MOTOR_AMPS", m_rightMotor.getOutputCurrent());
-
-  }
-
-  private void configureMotors() {
-    m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-    m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
-
-    m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-    m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
-
-    configureMotor(m_rightMotor, m_rightMotorSlave);
-    configureMotor(m_leftMotor, m_leftMotorSlave);
-
-    m_leftMotor.setInverted(true);
-    // Burn settings into Spark MAX flash
-    m_rightMotor.burnFlash();
-    m_rightMotorSlave.burnFlash();
-    m_leftMotor.burnFlash();
-    m_leftMotorSlave.burnFlash();
+    PigeonSubsystem.getInstance().outputValues();
   }
 
   /**
@@ -177,54 +211,43 @@ public class DriveSubsystem extends ShuffleSubsystem {
     master.restoreFactoryDefaults();
     master.set(0);
     master.setIdleMode(IdleMode.kCoast);
-    master.enableVoltageCompensation(NOMINAL_VOLTAGE);
-    master.setSmartCurrentLimit(MAX_CURRENT);
+    master.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
+    master.setSmartCurrentLimit(Constants.MAX_CURRENT);
     // master.setOpenLoopRampRate(1); //used for demo
 
     for (CANSparkMax slave : slaves) {
       slave.restoreFactoryDefaults();
       slave.follow(master);
       slave.setIdleMode(IdleMode.kCoast);
-      slave.setSmartCurrentLimit(MAX_CURRENT);
+      slave.setSmartCurrentLimit(Constants.MAX_CURRENT);
       // slave.setOpenLoopRampRate(1); //used for demo
     }
   }
 
-  private void configureEncoders() {
-    m_leftEncoder = m_leftMotor.getEncoder();
-    m_rightEncoder = m_rightMotor.getEncoder();
-
-    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    m_leftEncoder
-        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
-    m_rightEncoder
-        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
-
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
-  }
-
   // configure all PID settings on the motors
-  private void configurePID() {
-    // configure velocity PID controllers
-    m_leftPIDController = m_leftMotor.getPIDController();
-    m_rightPIDController = m_rightMotor.getPIDController();
+  // private void configurePID() {
+  // // configure velocity PID controllers
+  // m_leftPIDController = m_leftMotor.getPIDController();
+  // m_rightPIDController = m_rightMotor.getPIDController();
 
-    m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
-    m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
-    m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
-    m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
+  // m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
+  // m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
+  // m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
+  // m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
 
-    // configure drive distance PID controllers
-    m_distancePIDController = new PIDController(DRIVE_DIST_PID[0], DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
-    m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
+  // // configure drive distance PID controllers
+  // m_distancePIDController = new PIDController(DRIVE_DIST_PID[0],
+  // DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
+  // m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into
+  // velocity tolerance as well
 
-    // configure turn angle PID controllers
-    m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0], DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
-    m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
-    m_anglePIDController.enableContinuousInput(-180.0, 180.0);
-  }
+  // // configure turn angle PID controllers
+  // m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0],
+  // DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
+  // m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into
+  // velocity tolerance as well
+  // m_anglePIDController.enableContinuousInput(-180.0, 180.0);
+  // }
 
   /**
    * @return double
@@ -276,7 +299,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_defaultState = State.TANK_DRIVE;
     m_state = State.TANK_DRIVE;
     // m_driveDifferential.tankDrive(leftY, rightY, true);
-
   }
 
   /**
@@ -384,44 +406,8 @@ public class DriveSubsystem extends ShuffleSubsystem {
     PigeonSubsystem.getInstance().reset();
   }
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
-  public double getHeading() {
-
-    return PigeonSubsystem.getInstance().getAngle();
-    // return Math.IEEEremainder(m_pigeon.getAngle(), 360) *
-    // (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-    // return _pigeon.getRotation2d().getDegrees();
-  }
-
-  public double getRotation() {
-    return PigeonSubsystem.getInstance().getRotation2d().getDegrees();
-  }
-
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
-    return PigeonSubsystem.getInstance().getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-  }
-
-  /**
-   * @param inches
-   */
-  // public void driveDistance(double inches) {
-  // while (Math.abs(getAverageEncoderDistance()) <= inches) {
-  // tankDrive(.1, .1);
-
-  // }
-  // }
-
   public void driveDistance(double distance) {
-    driveDistance(distance, DRIVE_DIST_MAX_OUTPUT);
+    // driveDistance(distance, DRIVE_DIST_MAX_OUTPUT);
   }
 
   public void driveDistance(double distance, double overrideSpeed) {
@@ -452,10 +438,47 @@ public class DriveSubsystem extends ShuffleSubsystem {
   }
 
   /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+
+    return PigeonSubsystem.getInstance().getAngle();
+    // return Math.IEEEremainder(m_pigeon.getAngle(), 360) *
+    // (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    // return _pigeon.getRotation2d().getDegrees();
+  }
+
+  public double getRotation() {
+    return PigeonSubsystem.getInstance().getRotation2d().getDegrees();
+  }
+
+  /**
+   * Returns the turn rate of the robot.
+   *
+   * @return The turn rate of the robot, in degrees per second
+   */
+  public double getTurnRate() {
+    return PigeonSubsystem.getInstance().getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  /**
+   * @param inches
+   *               //
+   */
+  // public void driveDistance(double inches) {
+  // while (Math.abs(getAverageEncoderDistance()) <= inches) {
+  // tankDrive(.1, .1);
+
+  // }
+  // }
+
+  /**
    * @return double
    */
   public double getPitch() {
-    return PigeonSubsystem.getInstance().getPitch() - m_pitchOffset;
+    return PigeonSubsystem.getInstance().getPitch();
   }
 
   /**
@@ -526,6 +549,10 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
   public State getState() {
     return m_state;
+  }
+
+  public void resetPitch() {
+    m_pitchOffset = PigeonSubsystem.getInstance().getPitch();
   }
 
   @Override
@@ -660,12 +687,11 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     SmartDashboard.putString("Drive State", m_state.name());
     SmartDashboard.putNumber("Angle Velocity Error", m_anglePIDController.getVelocityError());
-
+Shuffleboard.getTab("Test").add("Gyro", PigeonSubsystem.getInstance());
   }
 
   @Override
   public void tuningInit() {
-
     PigeonSubsystem.getInstance().outputValues();
 
     SmartDashboard.putNumber("Drive Closed Max Vel", DRIVE_CLOSED_MAX_VEL);
@@ -742,10 +768,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
       m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F);
     }
 
-  }
-
-  public void resetPitch() {
-    m_pitchOffset = PigeonSubsystem.getInstance().getPitch();
   }
 
 }

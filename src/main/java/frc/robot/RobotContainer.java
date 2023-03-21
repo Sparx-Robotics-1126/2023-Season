@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +44,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem m_pigeon;
     private final DriveSubsystem m_robotDrive;
-    private final AcquisitionSubsystem m_robotAcquisition;
+    // private final AcquisitionSubsystem m_robotAcquisition;
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
 
@@ -52,7 +53,6 @@ public class RobotContainer {
     private boolean fullSpeedEnabled;
 
     private boolean isSimulation;
-    private final Timer m_Timer;
 
     private ArrayList<ShuffleSubsystem> m_subsystems;
     private int outputCounter;
@@ -70,7 +70,6 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        m_Timer = new Timer();
         Limelight limeLight = new Limelight();
         limeLight.enableVision();
 
@@ -78,9 +77,9 @@ public class RobotContainer {
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = PigeonSubsystem.getInstance();
 
-        m_robotAcquisition = new AcquisitionSubsystem();
+        // m_robotAcquisition = new AcquisitionSubsystem();
 
-        m_robotDrive = new DriveSubsystem( m_Timer);
+        m_robotDrive = new DriveSubsystem(new Timer() );
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
@@ -89,7 +88,7 @@ public class RobotContainer {
                         m_robotDrive));
 
         configureDriverButtonBindings();
-        configureOperatorButtons();
+        //configureOperatorButtons();
         configureChooser();
         configureShuffleboard();
 
@@ -104,7 +103,7 @@ public class RobotContainer {
         
         subsystems.add(m_robotDrive);
         // subsystems.add(vision);
-        subsystems.add(m_robotAcquisition); 
+       // subsystems.add(m_robotAcquisition); 
     }
 
     /**
@@ -146,37 +145,37 @@ public class RobotContainer {
 
     private void configureOperatorButtons() {
 
-        // Grabber Open
-        m_operatorController.leftTrigger()
-                .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
+        // // Grabber Open
+        // m_operatorController.leftTrigger()
+        //         .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
 
-        // Grabber Closed
-        m_operatorController.rightTrigger()
-                .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
+        // // Grabber Closed
+        // m_operatorController.rightTrigger()
+        //         .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
 
-        // Return To Home
-        m_operatorController.a()
-                .onTrue(new MoveTo(0, 0, m_robotAcquisition));
+        // // Return To Home
+        // m_operatorController.a()
+        //         .onTrue(new MoveTo(0, 0, m_robotAcquisition));
 
-        // Get from Human Shelf
-        m_operatorController.y()
-                .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
+        // // Get from Human Shelf
+        // m_operatorController.y()
+        //         .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
 
-        // Score Mid Cube
-        m_operatorController.x().and(m_operatorController.leftBumper().negate())
-                .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
+        // // Score Mid Cube
+        // m_operatorController.x().and(m_operatorController.leftBumper().negate())
+        //         .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
 
-        // Score Mid Cone
-        m_operatorController.b().and(m_operatorController.leftBumper().negate())
-                .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
+        // // Score Mid Cone
+        // m_operatorController.b().and(m_operatorController.leftBumper().negate())
+        //         .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
 
-        // Score Cube High
-        m_operatorController.x().and(m_operatorController.leftBumper())
-                .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
+        // // Score Cube High
+        // m_operatorController.x().and(m_operatorController.leftBumper())
+        //         .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
 
-        // Score Cone High
-        m_operatorController.b().and(m_operatorController.leftBumper())
-                .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
+        // // Score Cone High
+        // m_operatorController.b().and(m_operatorController.leftBumper())
+        //         .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
 
         // m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
 
@@ -209,7 +208,7 @@ public class RobotContainer {
         _chooser.addOption("Long", () ->  new BalanceLongRobot(m_robotDrive));
 		_chooser.addOption("Short",() -> new BalanceShortRobot(m_robotDrive));
 		_chooser.addOption("Measure", () ->new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
-		_chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
+		// _chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
 		_chooser.addOption("Do Nothing",  () -> new InstantCommand());
 
         SmartDashboard.putData("AUTO CHOICES ", _chooser);
@@ -277,25 +276,11 @@ public class RobotContainer {
         return new BalanceShortRobot(m_robotDrive);
     }
 
-    public Command getScoreCommunityCommand() {
-        return new ScoreCommunity(m_robotDrive, m_robotAcquisition);
-    }
+    // public Command getScoreCommunityCommand() {
+    //     return new ScoreCommunity(m_robotDrive, m_robotAcquisition);
+    // }
 
-    public double getTimerSeconds() {
-        return m_Timer.get();
-    }
-
-    public void startTimer() {
-        m_Timer.start();
-    }
-
-    public void restartTimer() {
-        m_Timer.restart();
-    }
-
-    public void stopTimer() {
-        m_Timer.stop();
-    }
+   
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -330,7 +315,8 @@ public class RobotContainer {
     }
 
     public AcquisitionSubsystem getAcquisition() {
-        return m_robotAcquisition;
+        return null;
+       // return m_robotAcquisition;
     }
 
     private boolean getAllianceColor() {
@@ -351,7 +337,7 @@ public class RobotContainer {
 
     public void displayShuffleboard() {
 
-        if (m_subsystems.size() == 0){
+        if (m_subsystems == null || m_subsystems.size() == 0){
         return;
         }
     
