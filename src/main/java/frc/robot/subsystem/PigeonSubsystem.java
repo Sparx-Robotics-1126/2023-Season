@@ -94,7 +94,7 @@ public class PigeonSubsystem extends SubsystemBase {
      * @return The current pitch reported by the Pigeon.
      */
     public double getPitch() {
-        return _pigeon.getPitch().getValue();
+        return _pigeon.getPitch().getValue()*-1;
     }
 
     /**

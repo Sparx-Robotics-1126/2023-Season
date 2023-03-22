@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Acquisition.MoveTo;
-import frc.robot.commands.Autonomous.Autos;
+// import frc.robot.commands.Autonomous.Autos;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.ScoreCommunity;
@@ -204,9 +204,9 @@ public class RobotContainer {
 
     public void configureChooser(){
 
-        _chooser.setDefaultOption("Short PID", () ->  Autos.balanceChargeStations(m_robotDrive));
+        // _chooser.setDefaultOption("Short PID", () ->  Autos.balanceChargeStations(m_robotDrive));
         _chooser.addOption("Long", () ->  new BalanceLongRobot(m_robotDrive));
-		_chooser.addOption("Short",() -> new BalanceShortRobot(m_robotDrive));
+		_chooser.setDefaultOption("Short",() -> new BalanceShortRobot(m_robotDrive));
 		_chooser.addOption("Measure", () ->new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
 		// _chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
 		_chooser.addOption("Do Nothing",  () -> new InstantCommand());
@@ -259,6 +259,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand(){
+
         return new InstantCommand(() -> m_robotDrive.resetPitch())
                         .andThen(() -> m_robotDrive.setToCoast())
                         .andThen(_chooser.getSelected().getCommand());

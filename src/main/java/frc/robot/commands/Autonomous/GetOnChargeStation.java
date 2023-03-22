@@ -12,19 +12,21 @@ public class GetOnChargeStation  extends CommandBase {
     public GetOnChargeStation(DriveSubsystem drive) {
         _drive =drive;
         addRequirements(drive);
-
+        System.out.println("****GetOnCharge" + _drive.getPitch() + " " + _finalAngle);
     }
 
     @Override
     public void initialize() {
-        double DRIVE_SPEED = AutoConstants.BalanceAuto.DRIVE_SPEED;
-        double driveSpeed = (_reversed ? -1 : 1) * DRIVE_SPEED;
-
-        _drive.arcadeDrive(driveSpeed, 0);
+ 
+        
     }
 
     @Override
     public void execute() {
+        double DRIVE_SPEED = AutoConstants.BalanceAuto.DRIVE_SPEED;
+        double driveSpeed = (_reversed ? -1 : 1) * DRIVE_SPEED;
+        System.out.println("******GetOnCharge Init " + driveSpeed);
+        _drive.arcadeDrive(driveSpeed, 0);
     }
 
     @Override
@@ -34,6 +36,7 @@ public class GetOnChargeStation  extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        System.out.println("******GetOnCharge finish" + _drive.getPitch());
         return (_reversed ? -1 : 1) * _drive.getPitch() > _finalAngle;
     }
 }

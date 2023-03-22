@@ -14,9 +14,10 @@ public class BalanceShortRobot extends SequentialCommandGroup {
      addCommands(new DriveToPitch(drive, .65, 10,false,false ));
      addCommands(new WaitCommand(1));
     //  addCommands(new DriveDistance(drive, .6, .8));
-     addCommands(new DriveToPitch(drive, .38, -.02, false, false));
-     addCommands(new WaitCommand(1));
-     addCommands(new DriveToPitch(drive, .35, 0, true, false).withTimeout(8));
+    addCommands(new BalanceOnChargeStation(drive));
+    //  addCommands(new DriveToPitch(drive, .38, -.02, false, false));
+    //  addCommands(new WaitCommand(1));
+    //  addCommands(new DriveToPitch(drive, .35, 0, true, false).withTimeout(8));
 
    
   }

@@ -105,51 +105,51 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // stop();
     // m_pigeon = pigeon;
 
-    configureMotors();
-    configureEncoders();
-    configurePID();
-    configureDifferentialDrive();
+    // configureMotors();
+    // configureEncoders();
+    // configurePID();
+    // configureDifferentialDrive();
 
-    // m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-    // m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+    m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+    m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
-    // m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-    // m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+    m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+    m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
 
     // configureMotor(m_rightMotor, m_rightMotorSlave);
     // configureMotor(m_leftMotor, m_leftMotorSlave);
     // configurePID();
 
-    // m_leftEncoder = m_leftMotor.getEncoder();
-    // m_rightEncoder = m_rightMotor.getEncoder();
+    m_leftEncoder = m_leftMotor.getEncoder();
+    m_rightEncoder = m_rightMotor.getEncoder();
 
-    // m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    // m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    // m_leftEncoder
-    //     .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
-    // m_rightEncoder
-    //     .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder
+        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+    m_rightEncoder
+        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
 
-    // m_leftEncoder.setPosition(0);
-    // m_rightEncoder.setPosition(0);
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
    
     // configure velocity PID controllers
-    // m_leftPIDController = m_leftMotor.getPIDController();
-    // m_rightPIDController = m_rightMotor.getPIDController();
+    m_leftPIDController = m_leftMotor.getPIDController();
+    m_rightPIDController = m_rightMotor.getPIDController();
 
-    // m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
-    // m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
-    // m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
-    // m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
+    m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
+    m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
+    m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
+    m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
 
     // configure drive distance PID controllers
-    // m_distancePIDController = new PIDController(DRIVE_DIST_PID[0], DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
-    // m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
+    m_distancePIDController = new PIDController(DRIVE_DIST_PID[0], DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
+    m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
 
     // // configure turn angle PID controllers
-    // m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0], DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
-    // m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
-    // m_anglePIDController.enableContinuousInput(-180.0, 180.0);
+    m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0], DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
+    m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
+    m_anglePIDController.enableContinuousInput(-180.0, 180.0);
 
    
     // m_driveDifferential.setDeadband(Constants.DEAD_BAND);
@@ -161,21 +161,22 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     // m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    // m_leftMotor.setInverted(true);
-    // // Burn settings into Spark MAX flash
-    // m_rightMotor.burnFlash();
-    // m_rightMotorSlave.burnFlash();
-    // m_leftMotor.burnFlash();
-    // m_leftMotorSlave.burnFlash();
+    m_leftMotor.setInverted(true);
+    // Burn settings into Spark MAX flash
+    m_rightMotor.burnFlash();
+    m_rightMotorSlave.burnFlash();
+    m_leftMotor.burnFlash();
+    m_leftMotorSlave.burnFlash();
 
-    // m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
+    m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
     // // Set drive deadband and safety
-    // m_driveDifferential.setDeadband(0.05);
-    // m_driveDifferential.setSafetyEnabled(true);
+    m_driveDifferential.setDeadband(0.05);
+    m_driveDifferential.setSafetyEnabled(true);
+    m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
 
-    // m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
-    //     m_rightEncoder.getPosition());
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
+        m_rightEncoder.getPosition());
 
 
     //     // var leftConversionFactor = m_leftMotor.getEncoder().getPositionConversionFactor();
@@ -193,7 +194,9 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // Update the odometry in the periodic block
     m_odometry.update(
         Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
+    
+        SmartDashboard.putString("Drive State", m_state.name());
+        SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
 
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
     SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
@@ -300,10 +303,11 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
         m_rightEncoder.getPosition());
+        m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
 
-    m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
-        Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), m_leftMotor.getEncoder().getPositionConversionFactor(),
-        m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new Rotation2d(0.0)));
+    // m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
+    //     Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), m_leftMotor.getEncoder().getPositionConversionFactor(),
+    //     m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new Rotation2d(0.0)));
   }
 
   /**
@@ -355,7 +359,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_speedRight = rightY;
     m_defaultState = State.TANK_DRIVE;
     m_state = State.TANK_DRIVE;
-    // m_driveDifferential.tankDrive(leftY, rightY, true);
+    m_driveDifferential.tankDrive(leftY, rightY, true);
   }
 
   /**
@@ -501,7 +505,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public double getHeading() {
 
-    return PigeonSubsystem.getInstance().getAngle();
+    return PigeonSubsystem.getInstance().getAngle() ;
     // return Math.IEEEremainder(m_pigeon.getAngle(), 360) *
     // (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     // return _pigeon.getRotation2d().getDegrees();
@@ -535,7 +539,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    * @return double
    */
   public double getPitch() {
-    return PigeonSubsystem.getInstance().getPitch();
+    return PigeonSubsystem.getInstance().getPitch() -m_pitchOffset;
   }
 
   /**
@@ -616,21 +620,21 @@ public class DriveSubsystem extends ShuffleSubsystem {
   public void update() {
     // we use brackets in this switch statement to define a local scope
     switch (m_state) {
-      case TANK_DRIVE: {
-        // double adjustedSpeedForward = reverseEnabled ? -speedForward : speedForward;
-        // adjustedSpeedForward = slowModeEnabled ? adjustedSpeedForward *
-        // DRIVE_SLOW_FORWARD_MULT : adjustedSpeedForward;
-        // double adjustedSpeedTurn = slowModeEnabled ? speedTurn * DRIVE_SLOW_TURN_MULT
-        // : speedTurn;
+      // case TANK_DRIVE: {
+      //   // double adjustedSpeedForward = reverseEnabled ? -speedForward : speedForward;
+      //   // adjustedSpeedForward = slowModeEnabled ? adjustedSpeedForward *
+      //   // DRIVE_SLOW_FORWARD_MULT : adjustedSpeedForward;
+      //   // double adjustedSpeedTurn = slowModeEnabled ? speedTurn * DRIVE_SLOW_TURN_MULT
+      //   // : speedTurn;
 
-        // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(adjustedSpeedForward,
-        // adjustedSpeedTurn);
-        // frontLeftMotor.set(arcadeSpeeds[0]);
-        // frontRightMotor.set(arcadeSpeeds[1]);
-        m_driveDifferential.tankDrive(m_speedLeft, m_speedRight, true);
-        // drivetrain.arcadeDrive(speedForward, speedTurn);
-        break;
-      }
+      //   // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(adjustedSpeedForward,
+      //   // adjustedSpeedTurn);
+      //   // frontLeftMotor.set(arcadeSpeeds[0]);
+      //   // frontRightMotor.set(arcadeSpeeds[1]);
+      //   m_driveDifferential.tankDrive(m_speedLeft, m_speedRight, true);
+      //   // drivetrain.arcadeDrive(speedForward, speedTurn);
+      //   break;
+      // }
       // case TURN_TRACK: {
       // // kinda misleading var names
       // frontLeftMotor.set(speedForward);
@@ -650,7 +654,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
         m_leftPIDController.setReference(wheelSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
         m_rightPIDController.setReference(wheelSpeeds.rightMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
-
+        m_driveDifferential.arcadeDrive(m_arcadeSpeed, 0);
         // for testing output
         // testingTargetLeftSpeed = wheelSpeeds.leftMetersPerSecond;
         // testingTargetRightSpeed = wheelSpeeds.rightMetersPerSecond;
@@ -724,8 +728,8 @@ public class DriveSubsystem extends ShuffleSubsystem {
   }
 
   public void updateOdometry() {
-    m_poseEstimator.update(Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
-        m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    // m_poseEstimator.update(Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
+    //     m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
     // Optional<EstimatedRobotPose> result =
     // vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
