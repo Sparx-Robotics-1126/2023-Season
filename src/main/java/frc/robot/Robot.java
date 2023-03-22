@@ -137,7 +137,8 @@ public class Robot extends TimedRobot {
 		// For safety reasons, apply the drivetrain brakes when the robot 
 		// becomes disabled. Avoids coasting into people. Useful for
 		// demonstrations when someone inexperienced is operating.
-		_robotContainer.applyBrakes();
+		 //don't use.  team doesn't like it
+		// _robotContainer.applyBrakes();
 	}
 
 	/** This function is called once when test mode is enabled. */
@@ -148,6 +149,12 @@ public class Robot extends TimedRobot {
 		// CommandScheduler.getInstance().cancelAll();
 		// Cancels all running commands at the start of test mode.
 		CommandScheduler.getInstance().cancelAll();
+	}
+
+	@Override
+	public void disabledPeriodic() {
+		// TODO Auto-generated method stub
+		super.disabledPeriodic();
 	}
 
 }
