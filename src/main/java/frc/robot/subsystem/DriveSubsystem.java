@@ -120,6 +120,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // configureMotor(m_leftMotor, m_leftMotorSlave);
     // configurePID();
 
+    m_leftMotor.setInverted(true);
     m_leftEncoder = m_leftMotor.getEncoder();
     m_rightEncoder = m_rightMotor.getEncoder();
 
@@ -161,7 +162,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     // m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
 
-    m_leftMotor.setInverted(true);
     // Burn settings into Spark MAX flash
     m_rightMotor.burnFlash();
     m_rightMotorSlave.burnFlash();
@@ -261,6 +261,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_rightEncoder = m_rightMotor.getEncoder();
 
     m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+    m_leftEncoder.setInverted(true);
     m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
     m_leftEncoder
         .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
@@ -673,10 +674,12 @@ public class DriveSubsystem extends ShuffleSubsystem {
           m_angleSetpoint = m_defaultSetpoint;
           break;
         }
-
-        double forwardOutput = m_distancePIDController.calculate(m_leftEncoder.getPosition(), m_distSetpoint);
+var leftPosition  = m_leftEncoder.getPosition() ;
+        double forwardOutput = m_distancePIDController.calculate(leftPosition, m_distSetpoint*-1);
         forwardOutput = MathUtil.clamp(forwardOutput, -DRIVE_DIST_MAX_OUTPUT, DRIVE_DIST_MAX_OUTPUT);
         double turnOutput = (m_angleSetpoint - PigeonSubsystem.getInstance().getAngle()) * DRIVE_DIST_ANGLE_P;
+       
+        System.out.println("*********" + forwardOutput);
 
         m_driveDifferential.arcadeDrive(forwardOutput, turnOutput);
         // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(forwardOutput, turnOutput);

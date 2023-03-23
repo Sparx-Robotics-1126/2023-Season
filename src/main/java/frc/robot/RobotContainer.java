@@ -19,8 +19,11 @@ import frc.robot.commands.Acquisition.MoveTo;
 // import frc.robot.commands.Autonomous.Autos;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
+import frc.robot.commands.Autonomous.LongComm;
 import frc.robot.commands.Autonomous.ScoreCommunity;
+import frc.robot.commands.Autonomous.ShortComm;
 import frc.robot.commands.Drive.DriveDistance;
+import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.DriveMeasurements;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.subsystem.DriveSubsystem;
@@ -209,6 +212,9 @@ public class RobotContainer {
 		_chooser.setDefaultOption("Short",() -> new BalanceShortRobot(m_robotDrive));
 		_chooser.addOption("Measure", () ->new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
 		// _chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
+        _chooser.addOption("NewDistance",()-> new DriveDistanceCmd(m_robotDrive, 1, .75));
+        _chooser.addOption("Short Comm", ()-> new ShortComm(m_robotDrive, getAcquisition()));
+        _chooser.addOption("Long Comm", () -> new LongComm(m_robotDrive, getAcquisition()));
 		_chooser.addOption("Do Nothing",  () -> new InstantCommand());
 
         SmartDashboard.putData("AUTO CHOICES ", _chooser);
