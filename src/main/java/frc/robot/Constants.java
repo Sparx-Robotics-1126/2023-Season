@@ -28,6 +28,8 @@ public final class Constants {
     public static final int XBOX_OPERATOR_CONTROLLER_PORT = 1;
     public static double UPDATE_PERIOD = 0.010; // seconds
 
+    public static final int XBOX_DRIVER_CONTROLLER_PORT1 = 0;
+    
     public static final class DriveConstants {
         // MOTORS
         public static final int DRIVES_RIGHT_MOTOR_1 = 25;
@@ -98,7 +100,8 @@ public final class Constants {
 
         public static final boolean kGyroReversed = false;
 
-        public static final int EndGameSeconds = 105;
+        public static final int EndGameSeconds = 30;
+        public static final int StopRumble = 28;
         public static final double kRelTurnP = .001;
         public static final double kRelTurnI = 0;
         public static final double kRelTurnD = 0;

@@ -211,7 +211,10 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
     public void grabberOpen() {
         grabberSolenoid.set(true);
     }
-
+    public boolean getGrabberState()
+    {
+        return grabberSolenoid.get();
+    }
     /**
      * @return The average Y encoder position in meters.
      */

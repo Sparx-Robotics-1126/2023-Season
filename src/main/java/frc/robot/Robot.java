@@ -60,9 +60,10 @@ public class Robot extends TimedRobot {
 
 		CommandScheduler.getInstance().run();
 		_robotContainer.displayShuffleboard();
-        // if(SmartDashboard.getBoolean("Testing", false)) {
-        //     _robotContainer.tuningPeriodic();
-        // }
+		
+		// if(SmartDashboard.getBoolean("Testing", false)) {
+		// _robotContainer.tuningPeriodic();
+		// }
 		// SmartDashboard.putBoolean("SWITCH", _robotContainer.getSwitch());
 	}
 
@@ -88,7 +89,6 @@ public class Robot extends TimedRobot {
 		System.out.println("********** AUTONOMOUS STARTED ************");
 
 		_robotContainer.reset();
-
 
 		m_autonomousCommand = _robotContainer.getAutonomousCommand();
 
@@ -121,11 +121,16 @@ public class Robot extends TimedRobot {
 		double ly = -_robotContainer.getOperatorController().getLeftY();
 		double ry = -_robotContainer.getOperatorController().getRightY();
 
+		_robotContainer.EndGameRumble();
+		// _robotContainer.EndEndGameRumble();
+
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
-
-		// _robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly, AcquisitionConstants.MANUAL_DEADBAND));
-		// _robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry, AcquisitionConstants.MANUAL_DEADBAND));
+		SmartDashboard.putBoolean("Grabber State", _robotContainer.getGrabberState());
+		// _robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly,
+		// AcquisitionConstants.MANUAL_DEADBAND));
+		// _robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry,
+		// AcquisitionConstants.MANUAL_DEADBAND));
 	}
 
 	/** This function is called once when the robot is disabled. */
@@ -134,10 +139,10 @@ public class Robot extends TimedRobot {
 		System.out.println("********** ROBOT DISABLED ************");
 		// _robotContainer.stopTimer();
 
-		// For safety reasons, apply the drivetrain brakes when the robot 
+		// For safety reasons, apply the drivetrain brakes when the robot
 		// becomes disabled. Avoids coasting into people. Useful for
 		// demonstrations when someone inexperienced is operating.
-		 //don't use.  team doesn't like it
+		// don't use. team doesn't like it
 		// _robotContainer.applyBrakes();
 	}
 

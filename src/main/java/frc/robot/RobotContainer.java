@@ -50,6 +50,7 @@ public class RobotContainer {
     // private final AcquisitionSubsystem m_robotAcquisition;
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
+    private final XboxController m_xboxController;
 
     private boolean slowSpeedEnabled;
     private boolean mediumSpeedEnabled;
@@ -60,12 +61,12 @@ public class RobotContainer {
     private ArrayList<ShuffleSubsystem> m_subsystems;
     private int outputCounter;
     private Notifier updateNotifier;
-    
+
     private ArrayList<ShuffleSubsystem> subsystems;
 
     private interface CommandSupplier {
         Command getCommand();
-}
+    }
 
     private final SendableChooser<CommandSupplier> _chooser = new SendableChooser<>();
 
@@ -79,6 +80,7 @@ public class RobotContainer {
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = PigeonSubsystem.getInstance();
+        m_xboxController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT1);
 
         // m_robotAcquisition = new AcquisitionSubsystem();
 
@@ -91,7 +93,7 @@ public class RobotContainer {
                         m_robotDrive));
 
         configureDriverButtonBindings();
-        //configureOperatorButtons();
+        // configureOperatorButtons();
         configureChooser();
         configureShuffleboard();
 
@@ -100,13 +102,13 @@ public class RobotContainer {
 
         isSimulation = RobotBase.isSimulation();
 
-         
         subsystems = new ArrayList<ShuffleSubsystem>();
         // add each of the subsystems to the arraylist here
-        
+
         subsystems.add(m_robotDrive);
         // subsystems.add(vision);
-       // subsystems.add(m_robotAcquisition); 
+        // subsystems.add(m_robotAcquisition);
+
     }
 
     /**
@@ -119,23 +121,20 @@ public class RobotContainer {
      */
     private void configureDriverButtonBindings() {
         // SmartDashboard.putNumber("MAXSPEED", 0);
-        SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {slowSpeedEnabled, mediumSpeedEnabled, fullSpeedEnabled});
-        
+        // SmartDashboard.putBooleanArray("Speed Toggles", new boolean[]
+        // {slowSpeedEnabled, mediumSpeedEnabled, fullSpeedEnabled});
+
         m_driverController.rightBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_RIGHT_TRIGGER_SPEED))
-                .andThen( new InstantCommand(() -> setSpeedToggles("medium"))))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED))
-                .andThen( new InstantCommand(() -> setSpeedToggles("full"))));
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_RIGHT_TRIGGER_SPEED)))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
         m_driverController.leftBumper()
-                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_LEFT_TRIGGER_SPEED))
-                .andThen( new InstantCommand(() -> setSpeedToggles("slow"))))
-                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED))
-                .andThen( new InstantCommand(() -> setSpeedToggles("full"))));
+                .whileTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_LEFT_TRIGGER_SPEED)))
+                .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED)));
 
         // // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         // m_driverController.b()
-        //         .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
+        // .onTrue(new TurnRight(90, m_robotDrive).withTimeout(20));
 
         m_driverController.y()
                 .toggleOnTrue(new InstantCommand(() -> m_robotDrive.applyBrakesEndGame()));
@@ -143,6 +142,9 @@ public class RobotContainer {
         // new JoystickButton(m_operatorController, Button.kA.value)
         // .onTrue(new MoveTo(m_robotAcquisition, 0, 0.5));
 
+        m_driverController.a()
+                .whileTrue(new InstantCommand(() -> m_xboxController.setRumble(GenericHID.RumbleType.kBothRumble, .5)))
+                .onFalse(new InstantCommand(() -> m_xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0)));
 
     }
 
@@ -150,35 +152,35 @@ public class RobotContainer {
 
         // // Grabber Open
         // m_operatorController.leftTrigger()
-        //         .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
+        // .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
 
         // // Grabber Closed
         // m_operatorController.rightTrigger()
-        //         .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
+        // .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
 
         // // Return To Home
         // m_operatorController.a()
-        //         .onTrue(new MoveTo(0, 0, m_robotAcquisition));
+        // .onTrue(new MoveTo(0, 0, m_robotAcquisition));
 
         // // Get from Human Shelf
         // m_operatorController.y()
-        //         .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
+        // .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
 
         // // Score Mid Cube
         // m_operatorController.x().and(m_operatorController.leftBumper().negate())
-        //         .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
+        // .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
 
         // // Score Mid Cone
         // m_operatorController.b().and(m_operatorController.leftBumper().negate())
-        //         .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
+        // .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
 
         // // Score Cube High
         // m_operatorController.x().and(m_operatorController.leftBumper())
-        //         .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
+        // .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
 
         // // Score Cone High
         // m_operatorController.b().and(m_operatorController.leftBumper())
-        //         .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
+        // .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
 
         // m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
 
@@ -205,17 +207,19 @@ public class RobotContainer {
     // m_robotDrive.tankDrive(left, right);
     // }
 
-    public void configureChooser(){
+    public void configureChooser() {
 
-        // _chooser.setDefaultOption("Short PID", () ->  Autos.balanceChargeStations(m_robotDrive));
-        _chooser.addOption("Long", () ->  new BalanceLongRobot(m_robotDrive));
-		_chooser.setDefaultOption("Short",() -> new BalanceShortRobot(m_robotDrive));
-		_chooser.addOption("Measure", () ->new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
-		// _chooser.addOption("Score and Leave Community", () -> new ScoreCommunity(m_robotDrive, m_robotAcquisition));
-        _chooser.addOption("NewDistance",()-> new DriveDistanceCmd(m_robotDrive, 1, .75));
-        _chooser.addOption("Short Comm", ()-> new ShortComm(m_robotDrive, getAcquisition()));
+        // _chooser.setDefaultOption("Short PID", () ->
+        // Autos.balanceChargeStations(m_robotDrive));
+        _chooser.addOption("Long", () -> new BalanceLongRobot(m_robotDrive));
+        _chooser.setDefaultOption("Short", () -> new BalanceShortRobot(m_robotDrive));
+        _chooser.addOption("Measure", () -> new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
+        // _chooser.addOption("Score and Leave Community", () -> new
+        // ScoreCommunity(m_robotDrive, m_robotAcquisition));
+        _chooser.addOption("NewDistance", () -> new DriveDistanceCmd(m_robotDrive, 1, .75));
+        _chooser.addOption("Short Comm", () -> new ShortComm(m_robotDrive, getAcquisition()));
         _chooser.addOption("Long Comm", () -> new LongComm(m_robotDrive, getAcquisition()));
-		_chooser.addOption("Do Nothing",  () -> new InstantCommand());
+        _chooser.addOption("Do Nothing", () -> new InstantCommand());
 
         SmartDashboard.putData("AUTO CHOICES ", _chooser);
     }
@@ -223,8 +227,8 @@ public class RobotContainer {
     public void configureShuffleboard() {
         // Field Side
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
-       // SmartDashboard.putBoolean("Testing", false);
-        //getting the auto values for score, cargo, and charge
+        // SmartDashboard.putBoolean("Testing", false);
+        // getting the auto values for score, cargo, and charge
         // SmartDashboard.putBoolean("1st Auto Score", firstScore);
         // SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
         // SmartDashboard.putBoolean("Auto Get Cargo", cargo);
@@ -236,26 +240,22 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Hit and Run", false);
 
         SmartDashboard.putBoolean("Reset Auto Viewer", false);
-        
+
     }
 
-
-    private void setSpeedToggles(String speed){
+    private void setSpeedToggles(String speed) {
         slowSpeedEnabled = false;
         mediumSpeedEnabled = false;
         fullSpeedEnabled = false;
 
-        switch(speed){
-            case "slow":
-            {
+        switch (speed) {
+            case "slow": {
                 slowSpeedEnabled = true;
             }
-            case "medium":
-            {
+            case "medium": {
                 mediumSpeedEnabled = true;
             }
-            case "full":
-            {
+            case "full": {
                 fullSpeedEnabled = true;
             }
             default: {
@@ -264,11 +264,11 @@ public class RobotContainer {
         }
     }
 
-    public Command getAutonomousCommand(){
+    public Command getAutonomousCommand() {
 
         return new InstantCommand(() -> m_robotDrive.resetPitch())
-                        .andThen(() -> m_robotDrive.setToCoast())
-                        .andThen(_chooser.getSelected().getCommand());
+                .andThen(() -> m_robotDrive.setToCoast())
+                .andThen(_chooser.getSelected().getCommand());
     }
 
     public double getPitch() {
@@ -284,10 +284,12 @@ public class RobotContainer {
     }
 
     // public Command getScoreCommunityCommand() {
-    //     return new ScoreCommunity(m_robotDrive, m_robotAcquisition);
+    // return new ScoreCommunity(m_robotDrive, m_robotAcquisition);
     // }
-
-   
+    public boolean getGrabberState() {
+        return false;
+        // return m_robotAcquisition.getGrabberState();
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -323,45 +325,75 @@ public class RobotContainer {
 
     public AcquisitionSubsystem getAcquisition() {
         return null;
-       // return m_robotAcquisition;
+        // return m_robotAcquisition;
     }
 
     private boolean getAllianceColor() {
         return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
     }
 
-/**
+    private static long t = System.currentTimeMillis() + 2000;
+
+    public void EndGameRumble() {
+        
+     if (DriverStation.getMatchTime() < 28) {
+          return;
+
+     }
+
+    
+
+        if(DriverStation.getMatchTime() < DriveConstants.EndGameSeconds ) {
+           
+           while (System.currentTimeMillis() < t ){
+            m_xboxController.setRumble(GenericHID.RumbleType.kLeftRumble, .5);
+            m_xboxController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
+            System.out.println("Rumble started"); 
+           }
+
+        } 
+    }
+
+    // public void EndEndGameRumble() {
+    //     if(DriverStation.getMatchTime() > DriveConstants.StopRumble ) {
+    //         m_xboxController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
+    //         m_xboxController.setRumble(GenericHID.RumbleType.kRightRumble,0);
+    //         System.out.println("Rumble stopped");
+    //     }
+    // }
+
+    /**
      * Update all of the subsystems
      * This is run in a separate loop at a faster rate to:
      * a) update subsystems faster
-     * b) prevent packet delay from driver station from delaying response from our robot
+     * b) prevent packet delay from driver station from delaying response from our
+     * robot
      */
     private void update() {
-        for(ShuffleSubsystem subsystem : subsystems) {
+        for (ShuffleSubsystem subsystem : subsystems) {
             subsystem.update();
         }
     }
 
     public void displayShuffleboard() {
 
-        if (m_subsystems == null || m_subsystems.size() == 0){
-        return;
+        if (m_subsystems == null || m_subsystems.size() == 0) {
+            return;
         }
-    
 
-    if(outputCounter % 3 == 0) {
-        m_subsystems.get(outputCounter / 3).displayShuffleboard();
-    }
+        if (outputCounter % 3 == 0) {
+            m_subsystems.get(outputCounter / 3).displayShuffleboard();
+        }
 
-    PigeonSubsystem.getInstance().outputValues();
-    tuningPeriodic();
+        PigeonSubsystem.getInstance().outputValues();
+        tuningPeriodic();
 
-    outputCounter = (outputCounter + 1) % (m_subsystems.size() * 3);
+        outputCounter = (outputCounter + 1) % (m_subsystems.size() * 3);
 
     }
 
     private void tuningPeriodic() {
-        if(outputCounter % 3 == 0) {
+        if (outputCounter % 3 == 0) {
             m_subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
@@ -371,34 +403,35 @@ public class RobotContainer {
         }
 
         // if (updateTraj) { // change the trajectory drawn
-        //     // generateTrajedies.incrementOutputCounter();
-        //     Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
-        //     if (traj != null)
-        //         drivetrain.drawTrajectory(traj);
+        // // generateTrajedies.incrementOutputCounter();
+        // Trajectory traj =
+        // generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View
+        // Trajectory Pos", 0));
+        // if (traj != null)
+        // drivetrain.drawTrajectory(traj);
         // }
 
         // if (updateTraj && checkIfUpdate()) {
-        //     DriverStation.reportWarning("Updating Auto", cargo);
-        //     updateAutoChoosers();
+        // DriverStation.reportWarning("Updating Auto", cargo);
+        // updateAutoChoosers();
 
-        //     generateTrajectories = new GenerateTrajectories(
-        //         drivetrain,
-        //         charge,
-        //         firstScore,
-        //         secondScore,
-        //         cargo,
-        //         estimatedCurrentPose2d(),
-        //         threePiece,
-        //         leaveTarmac,
-        //         hitAndRun
-        //     );
+        // generateTrajectories = new GenerateTrajectories(
+        // drivetrain,
+        // charge,
+        // firstScore,
+        // secondScore,
+        // cargo,
+        // estimatedCurrentPose2d(),
+        // threePiece,
+        // leaveTarmac,
+        // hitAndRun
+        // );
 
-        //     SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+        // SmartDashboard.putNumber("View Trajectory Pos",
+        // generateTrajectories.getLastTrajectoryIndex());
 
-        //     putTrajectoryTime();
-        //     resetDashboard();
+        // putTrajectoryTime();
+        // resetDashboard();
         // }
     }
-
-
 }

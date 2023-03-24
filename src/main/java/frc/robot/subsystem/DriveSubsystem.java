@@ -1,10 +1,12 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
@@ -29,6 +31,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.DriveConstants.*;
+
+import java.sql.Driver;
 
 public class DriveSubsystem extends ShuffleSubsystem {
 
@@ -80,6 +84,10 @@ public class DriveSubsystem extends ShuffleSubsystem {
   private final double m_defaultSetpoint = -1.257;
 
   private double m_pitchOffset = 0;
+
+  private boolean slowSpeedEnabled;
+  private boolean mediumSpeedEnabled;
+  private boolean fullSpeedEnabled;
 
   public enum State {
     TANK_DRIVE,
@@ -133,7 +141,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
-   
+
     // configure velocity PID controllers
     m_leftPIDController = m_leftMotor.getPIDController();
     m_rightPIDController = m_rightMotor.getPIDController();
@@ -152,7 +160,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
     m_anglePIDController.enableContinuousInput(-180.0, 180.0);
 
-   
     // m_driveDifferential.setDeadband(Constants.DEAD_BAND);
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
@@ -178,13 +185,16 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
         m_rightEncoder.getPosition());
 
-
-    //     // var leftConversionFactor = m_leftMotor.getEncoder().getPositionConversionFactor();
-    //     // var rightConversionFactor = m_rightMotor.getEncoder().getPositionConversionFactor();
+    // // var leftConversionFactor =
+    // m_leftMotor.getEncoder().getPositionConversionFactor();
+    // // var rightConversionFactor =
+    // m_rightMotor.getEncoder().getPositionConversionFactor();
     // // var test = m_leftMotor.getEncoder().getPositionConversionFactor();
     // m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
-    //     Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), m_leftMotor.getEncoder().getPositionConversionFactor(),
-    //     m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new Rotation2d(0.0)));
+    // Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
+    // m_leftMotor.getEncoder().getPositionConversionFactor(),
+    // m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new
+    // Rotation2d(0.0)));
 
     m_brakesOn = false;
     m_pathTimer = new Timer();
@@ -194,9 +204,9 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // Update the odometry in the periodic block
     m_odometry.update(
         Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
-    
-        SmartDashboard.putString("Drive State", m_state.name());
-        SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
+
+    SmartDashboard.putString("Drive State", m_state.name());
+    SmartDashboard.putNumber("ROBOT_ANGLE", getHeading());
 
     SmartDashboard.putNumber("LEFT DIST", m_leftEncoder.getPosition());
     SmartDashboard.putNumber("RIGHT DIST", m_rightEncoder.getPosition());
@@ -213,6 +223,12 @@ public class DriveSubsystem extends ShuffleSubsystem {
     SmartDashboard.putBoolean("Brakes", m_brakesOn);
 
     PigeonSubsystem.getInstance().outputValues();
+
+    SmartDashboard.putNumber("Game Time", DriverStation.getMatchTime());
+
+    SmartDashboard.putBoolean("Slow Enabled", slowSpeedEnabled);
+    SmartDashboard.putBoolean("Medium Enabled", mediumSpeedEnabled);
+    SmartDashboard.putBoolean("Full Enabled", fullSpeedEnabled);
   }
 
   /**
@@ -295,7 +311,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
     m_anglePIDController.enableContinuousInput(-180.0, 180.0);
   }
 
-  private void configureDifferentialDrive(){
+  private void configureDifferentialDrive() {
     m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
     // Set drive deadband and safety
@@ -304,11 +320,13 @@ public class DriveSubsystem extends ShuffleSubsystem {
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
         m_rightEncoder.getPosition());
-        m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
+    m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
 
     // m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
-    //     Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()), m_leftMotor.getEncoder().getPositionConversionFactor(),
-    //     m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new Rotation2d(0.0)));
+    // Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
+    // m_leftMotor.getEncoder().getPositionConversionFactor(),
+    // m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new
+    // Rotation2d(0.0)));
   }
 
   /**
@@ -461,6 +479,20 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public void setMaxOutput(double maxOutput) {
     m_driveDifferential.setMaxOutput(maxOutput);
+    slowSpeedEnabled = false;
+    mediumSpeedEnabled = false;
+    fullSpeedEnabled = false;
+
+    if (DriveConstants.MAX_RIGHT_TRIGGER_SPEED == maxOutput) {
+      slowSpeedEnabled = true;
+      return;
+    }
+    if (DriveConstants.MAX_LEFT_TRIGGER_SPEED == maxOutput) {
+      mediumSpeedEnabled = true;
+      return;
+    }
+    fullSpeedEnabled = true;
+
   }
 
   /** Zeroes the heading of the robot. */
@@ -506,7 +538,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public double getHeading() {
 
-    return PigeonSubsystem.getInstance().getAngle() ;
+    return PigeonSubsystem.getInstance().getAngle();
     // return Math.IEEEremainder(m_pigeon.getAngle(), 360) *
     // (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     // return _pigeon.getRotation2d().getDegrees();
@@ -540,7 +572,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    * @return double
    */
   public double getPitch() {
-    return PigeonSubsystem.getInstance().getPitch() -m_pitchOffset;
+    return PigeonSubsystem.getInstance().getPitch() - m_pitchOffset;
   }
 
   /**
@@ -573,7 +605,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public void applyBrakesEndGame() {
 
-    if (DriverStation.getMatchTime()< DriveConstants.EndGameSeconds) {
+    if (DriverStation.getMatchTime() < DriveConstants.EndGameSeconds) {
       if (m_brakesOn) {
         setToCoast();
       } else {
@@ -581,6 +613,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
       }
     }
   }
+ 
 
   public boolean applyBrakes() {
 
@@ -622,19 +655,21 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // we use brackets in this switch statement to define a local scope
     switch (m_state) {
       // case TANK_DRIVE: {
-      //   // double adjustedSpeedForward = reverseEnabled ? -speedForward : speedForward;
-      //   // adjustedSpeedForward = slowModeEnabled ? adjustedSpeedForward *
-      //   // DRIVE_SLOW_FORWARD_MULT : adjustedSpeedForward;
-      //   // double adjustedSpeedTurn = slowModeEnabled ? speedTurn * DRIVE_SLOW_TURN_MULT
-      //   // : speedTurn;
+      // // double adjustedSpeedForward = reverseEnabled ? -speedForward :
+      // speedForward;
+      // // adjustedSpeedForward = slowModeEnabled ? adjustedSpeedForward *
+      // // DRIVE_SLOW_FORWARD_MULT : adjustedSpeedForward;
+      // // double adjustedSpeedTurn = slowModeEnabled ? speedTurn *
+      // DRIVE_SLOW_TURN_MULT
+      // // : speedTurn;
 
-      //   // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(adjustedSpeedForward,
-      //   // adjustedSpeedTurn);
-      //   // frontLeftMotor.set(arcadeSpeeds[0]);
-      //   // frontRightMotor.set(arcadeSpeeds[1]);
-      //   m_driveDifferential.tankDrive(m_speedLeft, m_speedRight, true);
-      //   // drivetrain.arcadeDrive(speedForward, speedTurn);
-      //   break;
+      // // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(adjustedSpeedForward,
+      // // adjustedSpeedTurn);
+      // // frontLeftMotor.set(arcadeSpeeds[0]);
+      // // frontRightMotor.set(arcadeSpeeds[1]);
+      // m_driveDifferential.tankDrive(m_speedLeft, m_speedRight, true);
+      // // drivetrain.arcadeDrive(speedForward, speedTurn);
+      // break;
       // }
       // case TURN_TRACK: {
       // // kinda misleading var names
@@ -674,11 +709,11 @@ public class DriveSubsystem extends ShuffleSubsystem {
           m_angleSetpoint = m_defaultSetpoint;
           break;
         }
-var leftPosition  = m_leftEncoder.getPosition() ;
-        double forwardOutput = m_distancePIDController.calculate(leftPosition, m_distSetpoint*-1);
+        var leftPosition = m_leftEncoder.getPosition();
+        double forwardOutput = m_distancePIDController.calculate(leftPosition, m_distSetpoint * -1);
         forwardOutput = MathUtil.clamp(forwardOutput, -DRIVE_DIST_MAX_OUTPUT, DRIVE_DIST_MAX_OUTPUT);
         double turnOutput = (m_angleSetpoint - PigeonSubsystem.getInstance().getAngle()) * DRIVE_DIST_ANGLE_P;
-       
+
         System.out.println("*********" + forwardOutput);
 
         m_driveDifferential.arcadeDrive(forwardOutput, turnOutput);
@@ -732,7 +767,7 @@ var leftPosition  = m_leftEncoder.getPosition() ;
 
   public void updateOdometry() {
     // m_poseEstimator.update(Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
-    //     m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    // m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
     // Optional<EstimatedRobotPose> result =
     // vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
