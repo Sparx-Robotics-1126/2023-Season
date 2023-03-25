@@ -112,6 +112,8 @@ public final class Constants {
 
         public static final double kRelTurnToleranceDeg = 1;
         public static final double kRelTurnRateToleranceDegPerS = 3; // degrees per second
+
+        public static final boolean BRAKE_ON_DISABLE = false;
     }
 
     public static final class AcquisitionConstants {
