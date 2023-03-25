@@ -210,8 +210,8 @@
           },
           "0,0": {
             "size": [
-              1,
-              1
+              2,
+              2
             ],
             "content": {
               "_type": "Boolean Box",

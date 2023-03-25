@@ -117,7 +117,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             // We don't have a power command, but are just returning from one.
             // Set the X setpoint to the current position so we can resume PID
             // and hold our current position.
-            xMoveTo(getXPos());
+            xMoveTo(0);
             prevXPower = 0;
             xUsePID = true;
         } else {
@@ -131,7 +131,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             yOut += yPower;
             prevYPower = yPower;
         } else if (prevYPower != 0) {
-            yMoveTo(getYPos());
+            yMoveTo(0);
             prevYPower = 0;
             yUsePID = true;
         } else {

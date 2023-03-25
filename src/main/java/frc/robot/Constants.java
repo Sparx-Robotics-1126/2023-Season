@@ -244,9 +244,9 @@ public final class Constants {
             public static final double DISTANCE_TO_CLOSER_CENTER = 0.4;
             public static final double GET_CLOSER_TO_CENTER_TIMEOUT = 2;
 
-            public static final double MAX_SPEED = 0.5;
+            public static final double MAX_SPEED = 0.4;
 
-            public static final double KP = 0.05;
+            public static final double KP = 0.033;
             public static final double KI = 0;
             public static final double KD = 0.003;
 
