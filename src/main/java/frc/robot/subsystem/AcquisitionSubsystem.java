@@ -10,11 +10,15 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
 
@@ -23,12 +27,11 @@ import static frc.robot.Constants.AcquisitionConstants.*;
 public class AcquisitionSubsystem extends ShuffleSubsystem {
     // Motors for extenders/reach (X) and elevations (Y)
     private TalonSRX xMotor;
-    private TalonSRX yMotor;
+    private CANSparkMax yMotor;
 
     // Motor encoders
     private Encoder xEncoder;
-    private Encoder yEncoderLeft;
-    private Encoder yEncoderRight;
+    private RelativeEncoder yEncoder;
 
     // Limit switches
     private DigitalInput xLimit;
@@ -50,11 +53,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
 
     public AcquisitionSubsystem() {
         xMotor = new WPI_TalonSRX(X_MOTOR);
-        yMotor = new WPI_TalonSRX(Y_LEFT_MOTOR);
-        TalonSRX yMotorSlave = new WPI_TalonSRX(Y_RIGHT_MOTOR);
-
-        yMotorSlave.setInverted(InvertType.OpposeMaster);
-        yMotorSlave.follow(yMotor);
+        yMotor = new CANSparkMax(Y_MOTOR, MotorType.kBrushless);
 
         TalonSRXConfiguration xConfig = new TalonSRXConfiguration();
 
@@ -62,27 +61,21 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
         xConfig.peakCurrentLimit = Constants.MAX_CURRENT;
         xConfig.peakOutputForward = X_MAX_MOTOR_POWER;
         xConfig.peakOutputReverse = -X_MAX_MOTOR_POWER;
+        
+        xMotor.configAllSettings(xConfig);
+        xMotor.setNeutralMode(NeutralMode.Coast);
 
-        TalonSRXConfiguration yConfig = new TalonSRXConfiguration();
-
-        yConfig.voltageCompSaturation = Constants.NOMINAL_VOLTAGE;
-        yConfig.peakCurrentLimit = Constants.MAX_CURRENT;
-        yConfig.peakOutputForward = Y_MAX_MOTOR_POWER;
-        yConfig.peakOutputReverse = -Y_MAX_MOTOR_POWER;
-
-        configureMotors(xConfig, xMotor);
-        configureMotors(yConfig, yMotorSlave, yMotor);
+        yMotor.restoreFactoryDefaults();
+        yMotor.setIdleMode(IdleMode.kCoast);
+        yMotor.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
+        yMotor.setSmartCurrentLimit(Constants.MAX_CURRENT);
 
         // Encoders
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
-        yEncoderLeft = new Encoder(Y_LEFT_ENCODER_A, Y_LEFT_ENCODER_B);
-        yEncoderRight = new Encoder(Y_RIGHT_ENCODER_A, Y_RIGHT_ENCODER_B);
-
-        yEncoderRight.setReverseDirection(true);
+        yEncoder = yMotor.getEncoder();
 
         xEncoder.setDistancePerPulse(X_PULSES_TO_METERS);
-        yEncoderLeft.setDistancePerPulse(Y_PULSES_TO_METERS);
-        yEncoderRight.setDistancePerPulse(Y_PULSES_TO_METERS);
+        yEncoder.setPositionConversionFactor(Y_PULSES_TO_METERS);
 
         // Limit switches
         xLimit = new DigitalInput(X_LIMIT);
@@ -166,13 +159,12 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             xMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
 
         if (yLimit.get() && yOut <= 0) {
-            yEncoderLeft.reset();
-            yEncoderRight.reset();
-            yMotor.set(ControlMode.PercentOutput, 0);
+            yEncoder.setPosition(0);
+            yMotor.set(0);
         } else if (getYPos() < Y_MAX)
-            yMotor.set(ControlMode.PercentOutput, yOut);
+            yMotor.set(yOut);
         else
-            yMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
+            yMotor.set(-RETURN_HOME_POWER);
 
         SmartDashboard.putNumber("yPower", yPower);
         SmartDashboard.putNumber("xPower", xPower);
@@ -185,13 +177,6 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
 
         SmartDashboard.putBoolean("X_LIMIT", xLimit.get());
         SmartDashboard.putBoolean("Y_LIMIT", yLimit.get());
-    }
-
-    private static void configureMotors(TalonSRXConfiguration config, TalonSRX... controllers) {
-        for (TalonSRX controller : controllers) {
-            controller.configAllSettings(config);
-            controller.setNeutralMode(NeutralMode.Coast);
-        }
     }
 
     public void grabberClose() {
@@ -209,8 +194,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
      * @return The average Y encoder position in meters.
      */
     public double getYPos() {
-        return (yEncoderLeft.getDistance()
-                + yEncoderRight.getDistance()) / 2;
+        return yEncoder.getPosition();
     }
 
     /**

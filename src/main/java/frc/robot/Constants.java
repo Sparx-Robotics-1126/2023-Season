@@ -116,8 +116,7 @@ public final class Constants {
 
     public static final class AcquisitionConstants {
         public static final int X_MOTOR = 9;
-        public static final int Y_LEFT_MOTOR = 10;
-        public static final int Y_RIGHT_MOTOR = 7;
+        public static final int Y_MOTOR = 11;
 
         public static final int COMPRESSOR = 0;
         public static final int SOLENOID = 0;
@@ -127,10 +126,6 @@ public final class Constants {
 
         public static final int X_ENCODER_A = 23;
         public static final int X_ENCODER_B = 22;
-        public static final int Y_LEFT_ENCODER_A = 13;
-        public static final int Y_LEFT_ENCODER_B = 12;
-        public static final int Y_RIGHT_ENCODER_A = 25;
-        public static final int Y_RIGHT_ENCODER_B = 24;
 
         public static  double X_MOTOR_P = 0;
         public static  double X_MOTOR_I = 0;
@@ -153,7 +148,7 @@ public final class Constants {
 
         // TODO: remeasure these values.
         public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
-        public static final double Y_PULSES_TO_METERS = 1.0 / 1002.75;
+        public static final double Y_PULSES_TO_METERS = 1.0 / 1;
 
         public static final double MANUAL_DEADBAND = 0.1;
     }
