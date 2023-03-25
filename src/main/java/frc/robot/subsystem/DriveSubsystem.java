@@ -17,20 +17,17 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.DriveConstants.*;
 
-import java.sql.Driver;
 
 public class DriveSubsystem extends ShuffleSubsystem {
 
@@ -54,7 +51,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
   private PIDController m_distancePIDController;
   private PIDController m_anglePIDController;
 
-  private TrapezoidProfile m_distanceProfile;
+ 
   // private RamseteController ramseteController;
   // private Trajectory m_trajectory;
   private Timer m_pathTimer; // measures how far along we are on our current profile / trajectory
@@ -69,7 +66,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
   // WPI_Pigeon2(Constants.Pigeon2ID);
 
   private DifferentialDriveKinematics m_driveKinematics;
-  private DifferentialDrivePoseEstimator m_poseEstimator;
+
 
   private DifferentialDriveOdometry m_odometry;
   private Boolean m_brakesOn;
@@ -98,8 +95,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
     // TRAJECTORY
   }
 
-  private double m_speedLeft; // used for tank drive
-  private double m_speedRight; // used for tank drive
+ 
   private double m_arcadeSpeed;
   private double m_turnAngle;
 
@@ -252,80 +248,80 @@ public class DriveSubsystem extends ShuffleSubsystem {
     }
   }
 
-  private void configureMotors() {
-    m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
-    m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
+  // private void configureMotors() {
+  //   m_rightMotor = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_1, MotorType.kBrushless);
+  //   m_rightMotorSlave = new CANSparkMax(DriveConstants.DRIVES_RIGHT_MOTOR_2, MotorType.kBrushless);
 
-    m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
-    m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
+  //   m_leftMotor = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_1, MotorType.kBrushless);
+  //   m_leftMotorSlave = new CANSparkMax(DriveConstants.DRIVES_LEFT_MOTOR_2, MotorType.kBrushless);
 
-    configureMotor(m_rightMotor, m_rightMotorSlave);
-    configureMotor(m_leftMotor, m_leftMotorSlave);
+  //   configureMotor(m_rightMotor, m_rightMotorSlave);
+  //   configureMotor(m_leftMotor, m_leftMotorSlave);
 
-    m_leftMotor.setInverted(true);
-    // Burn settings into Spark MAX flash
-    m_rightMotor.burnFlash();
-    m_rightMotorSlave.burnFlash();
-    m_leftMotor.burnFlash();
-    m_leftMotorSlave.burnFlash();
-  }
+  //   m_leftMotor.setInverted(true);
+  //   // Burn settings into Spark MAX flash
+  //   m_rightMotor.burnFlash();
+  //   m_rightMotorSlave.burnFlash();
+  //   m_leftMotor.burnFlash();
+  //   m_leftMotorSlave.burnFlash();
+  // }
 
-  private void configureEncoders() {
-    m_leftEncoder = m_leftMotor.getEncoder();
-    m_rightEncoder = m_rightMotor.getEncoder();
+  // private void configureEncoders() {
+  //   m_leftEncoder = m_leftMotor.getEncoder();
+  //   m_rightEncoder = m_rightMotor.getEncoder();
 
-    m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    m_leftEncoder.setInverted(true);
-    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
-    m_leftEncoder
-        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
-    m_rightEncoder
-        .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+  //   m_rightEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+  //   m_leftEncoder.setInverted(true);
+  //   m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistanceConversionFactor);
+  //   m_leftEncoder
+  //       .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
+  //   m_rightEncoder
+  //       .setVelocityConversionFactor(Math.PI * DriveConstants.kWheelDiameterMeters / DriveConstants.kGearRatio / 60.0);
 
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
-  }
+  //   m_leftEncoder.setPosition(0);
+  //   m_rightEncoder.setPosition(0);
+  // }
 
-  // configure all PID settings on the motors
-  private void configurePID() {
-    // configure velocity PID controllers
-    m_leftPIDController = m_leftMotor.getPIDController();
-    m_rightPIDController = m_rightMotor.getPIDController();
+  // // configure all PID settings on the motors
+  // private void configurePID() {
+  //   // configure velocity PID controllers
+  //   m_leftPIDController = m_leftMotor.getPIDController();
+  //   m_rightPIDController = m_rightMotor.getPIDController();
 
-    m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
-    m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
-    m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
-    m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
+  //   m_leftPIDController.setP(DRIVE_VEL_LEFT_P, DRIVE_VEL_SLOT);
+  //   m_leftPIDController.setFF(DRIVE_VEL_LEFT_F, DRIVE_VEL_SLOT);
+  //   m_rightPIDController.setP(DRIVE_VEL_RIGHT_P, DRIVE_VEL_SLOT);
+  //   m_rightPIDController.setFF(DRIVE_VEL_RIGHT_F, DRIVE_VEL_SLOT);
 
-    // configure drive distance PID controllers
-    m_distancePIDController = new PIDController(DRIVE_DIST_PID[0],
-        DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
-    m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
+  //   // configure drive distance PID controllers
+  //   m_distancePIDController = new PIDController(DRIVE_DIST_PID[0],
+  //       DRIVE_DIST_PID[1], DRIVE_DIST_PID[2], UPDATE_PERIOD);
+  //   m_distancePIDController.setTolerance(DRIVE_DIST_TOLERANCE); // TODO Look into velocity tolerance as well
 
-    // configure turn angle PID controllers
-    m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0],
-        DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
-    m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
-    m_anglePIDController.enableContinuousInput(-180.0, 180.0);
-  }
+  //   // configure turn angle PID controllers
+  //   m_anglePIDController = new PIDController(DRIVE_ANGLE_PID[0],
+  //       DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2], UPDATE_PERIOD);
+  //   m_anglePIDController.setTolerance(DRIVE_ANGLE_TOLERANCE); // TODO Look into velocity tolerance as well
+  //   m_anglePIDController.enableContinuousInput(-180.0, 180.0);
+  // }
 
-  private void configureDifferentialDrive() {
-    m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
+  // private void configureDifferentialDrive() {
+  //   m_driveDifferential = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
-    // Set drive deadband and safety
-    m_driveDifferential.setDeadband(0.05);
-    m_driveDifferential.setSafetyEnabled(true);
+  //   // Set drive deadband and safety
+  //   m_driveDifferential.setDeadband(0.05);
+  //   m_driveDifferential.setSafetyEnabled(true);
 
-    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
-        m_rightEncoder.getPosition());
-    m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
+  //   m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(),
+  //       m_rightEncoder.getPosition());
+  //   m_driveKinematics = new DifferentialDriveKinematics(kTrackWidthMeters);
 
     // m_poseEstimator = new DifferentialDrivePoseEstimator(m_driveKinematics,
     // Rotation2d.fromDegrees(-PigeonSubsystem.getInstance().getAngle()),
     // m_leftMotor.getEncoder().getPositionConversionFactor(),
     // m_rightMotor.getEncoder().getPositionConversionFactor(), new Pose2d(0, 0, new
     // Rotation2d(0.0)));
-  }
+    // }
 
   /**
    * @return double
@@ -372,8 +368,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
    */
   public void tankDrive(double leftY, double rightY) {
 
-    m_speedLeft = leftY;
-    m_speedRight = rightY;
+   
     m_defaultState = State.TANK_DRIVE;
     m_state = State.TANK_DRIVE;
     m_driveDifferential.tankDrive(leftY, rightY, true);
@@ -406,7 +401,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
   }
 
   public void reset() {
-    m_distanceProfile = null;
+   
     // m_trajectory = null;
     m_pathTimer.stop();
     m_pathTimer.reset();
@@ -636,7 +631,6 @@ public class DriveSubsystem extends ShuffleSubsystem {
   public void endPID() {
     m_distSetpoint = m_defaultSetpoint;
     m_angleSetpoint = m_defaultSetpoint;
-    m_distanceProfile = null;
     m_state = m_defaultState;
   }
 

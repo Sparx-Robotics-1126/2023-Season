@@ -5,10 +5,9 @@ import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.subsystem.AcquisitionSubsystem;
 import frc.robot.subsystem.DriveSubsystem;
 
-public class ShortComm extends SequentialCommandGroup {
-   
-    public ShortComm(DriveSubsystem drive, AcquisitionSubsystem acquisitions) {
+public class ReverseLongComm extends SequentialCommandGroup {
+    public ReverseLongComm(DriveSubsystem drives, AcquisitionSubsystem acquisition) {
         
-        addCommands(new DriveDistanceCmd(drive, 2.5, .75));
+        addCommands(new DriveDistanceCmd(drives, -8.83, -.75));
     }
 }

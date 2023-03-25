@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.Timer;
 // import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,7 +19,6 @@ import frc.robot.commands.Acquisition.MoveTo;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.LongComm;
-import frc.robot.commands.Autonomous.ScoreCommunity;
 import frc.robot.commands.Autonomous.ShortComm;
 import frc.robot.commands.Drive.DriveDistance;
 import frc.robot.commands.Drive.DriveDistanceCmd;
@@ -93,7 +91,7 @@ public class RobotContainer {
                         m_robotDrive));
 
         configureDriverButtonBindings();
-        // configureOperatorButtons();
+        configureOperatorButtons();
         configureChooser();
         configureShuffleboard();
 
@@ -329,7 +327,6 @@ public class RobotContainer {
         return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
     }
 
-    private static long t = System.currentTimeMillis() + 2000;
 
     public void EndGameRumble() {
         

@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Constants.AcquisitionConstants;
 // import frc.robot.Constants.ChooserOptions;
-import frc.robot.subsystem.PigeonSubsystem;
 
 /**
  * The main controlling class of the Robot. Controls all subsystems via
@@ -122,7 +120,6 @@ public class Robot extends TimedRobot {
 		double ry = -_robotContainer.getOperatorController().getRightY();
 
 		_robotContainer.EndGameRumble();
-		// _robotContainer.EndEndGameRumble();
 
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
