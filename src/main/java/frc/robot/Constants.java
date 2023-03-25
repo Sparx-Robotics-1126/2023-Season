@@ -21,7 +21,7 @@ public final class Constants {
      */
     //
     public static final double NOMINAL_VOLTAGE = 12;
-    public static final int MAX_CURRENT = 40;
+    public static final int MAX_CURRENT = 80;
     public static final double DEAD_BAND = .5;
     public static final int Pigeon2ID = 4;
     public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
@@ -117,7 +117,7 @@ public final class Constants {
     }
 
     public static final class AcquisitionConstants {
-        public static final int X_MOTOR = 9;
+        public static final int X_MOTOR = 7;
         public static final int Y_MOTOR = 11;
 
         public static final int COMPRESSOR = 0;
@@ -138,19 +138,18 @@ public final class Constants {
         public static  double Y_MOTOR_D = 0;
 
         public static  double X_MAX = 1.1938;
-        public static  double Y_MAX = 0.69215;
+        public static  double Y_MAX = 0.923;
         public static final double POSITION_EPSILON_METERS = 0.01;
 
-        public static final double RETURN_HOME_POWER = 0.8;
+        public static final double RETURN_HOME_POWER = 1;
         public static final double LIMIT_TENSION_POWER = 0.2;
 
         public static  double X_MAX_MOTOR_POWER = 0.5;
-        public static  double Y_MAX_MOTOR_POWER = 0;
+        public static  double Y_MAX_MOTOR_POWER = 0.6;
         public static  double Y_FEEDFORWARD = 0;// 0.4;
 
-        // TODO: remeasure these values.
         public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
-        public static final double Y_PULSES_TO_METERS = 1.0 / 1;
+        public static final double Y_PULSES_TO_METERS = 1.0 / (5.071422576904297 * (100 / 12.7));
 
         public static final double MANUAL_DEADBAND = 0.1;
     }
@@ -160,11 +159,11 @@ public final class Constants {
      */
     public static final class FieldConstants {
         private static final double computeXOffset(double distance) {
-            return distance + MIN_EXTENSION_FRONT + X_OFFSET;
+            return distance + EXTENSION_FRONT + X_OFFSET;
         }
 
         private static final double computeYOffset(double height) {
-            return height - REACH_MOUNT_POINT_HEIGHT + Y_OFFSET;
+            return height - REACH_HEIGHT + Y_OFFSET;
         }
 
         private static final double SHELF_HEIGHT = 0.95;
@@ -183,13 +182,13 @@ public final class Constants {
         private static final double MID_CUBE_DISTANCE = 0.58;
 
         /**
-         * The distance from the floor to the mount point of reach.
+         * The distance from the floor to the center of the grabber at elevations' lowest position.
          */
-        private static final double REACH_MOUNT_POINT_HEIGHT = 0.6858;
+        private static final double REACH_HEIGHT = 0.6858;
         /**
          * The distance from the minimum extension of reach to the front of the robot.
          */
-        private static final double MIN_EXTENSION_FRONT = 0;
+        private static final double EXTENSION_FRONT = 0;
 
         /**
          * The distance added to all y values.
