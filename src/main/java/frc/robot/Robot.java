@@ -127,10 +127,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("LEFT_Y", ly);
 		SmartDashboard.putNumber("RIGHT_Y", ry);
 		SmartDashboard.putBoolean("Grabber State", _robotContainer.getGrabberState());
-		// _robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly,
-		// AcquisitionConstants.MANUAL_DEADBAND));
-		// _robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry,
-		// AcquisitionConstants.MANUAL_DEADBAND));
+		
+		_robotContainer.getAcquisition().setXPower(MathUtil.applyDeadband(ly,
+		AcquisitionConstants.MANUAL_DEADBAND));
+		_robotContainer.getAcquisition().setYPower(MathUtil.applyDeadband(ry,
+		AcquisitionConstants.MANUAL_DEADBAND));
 	}
 
 	/** This function is called once when the robot is disabled. */

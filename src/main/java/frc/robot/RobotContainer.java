@@ -47,7 +47,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final PigeonSubsystem m_pigeon;
     private final DriveSubsystem m_robotDrive;
-    // private final AcquisitionSubsystem m_robotAcquisition;
+    private final AcquisitionSubsystem m_robotAcquisition;
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
   
@@ -82,7 +82,7 @@ public class RobotContainer {
       
        
 
-        // m_robotAcquisition = new AcquisitionSubsystem();
+        m_robotAcquisition = new AcquisitionSubsystem();
 
         m_robotDrive = new DriveSubsystem();
         m_robotDrive.setMaxOutput(DriveConstants.MAX_DRIVE_SPEED);
@@ -149,38 +149,38 @@ public class RobotContainer {
     private void configureOperatorButtons() {
 
         // // Grabber Open
-        // m_operatorController.leftTrigger()
-        // .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
+        m_operatorController.leftTrigger()
+        .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberOpen()));
 
         // // Grabber Closed
-        // m_operatorController.rightTrigger()
-        // .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
+        m_operatorController.rightTrigger()
+        .onTrue(new InstantCommand(() -> m_robotAcquisition.grabberClose()));
 
         // // Return To Home
-        // m_operatorController.a()
-        // .onTrue(new MoveTo(0, 0, m_robotAcquisition));
+        m_operatorController.a()
+        .onTrue(new MoveTo(0, 0, m_robotAcquisition));
 
         // // Get from Human Shelf
-        // m_operatorController.y()
-        // .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
+        m_operatorController.y()
+        .onTrue(new MoveTo(SHELF_X, SHELF_Y, m_robotAcquisition));
 
         // // Score Mid Cube
-        // m_operatorController.x().and(m_operatorController.leftBumper().negate())
-        // .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
+        m_operatorController.x().and(m_operatorController.leftBumper().negate())
+        .onTrue(new MoveTo(MID_CUBE_X, MID_CUBE_Y, m_robotAcquisition));
 
         // // Score Mid Cone
-        // m_operatorController.b().and(m_operatorController.leftBumper().negate())
-        // .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
+        m_operatorController.b().and(m_operatorController.leftBumper().negate())
+        .onTrue(new MoveTo(MID_CONE_X, MID_CONE_Y, m_robotAcquisition));
 
         // // Score Cube High
-        // m_operatorController.x().and(m_operatorController.leftBumper())
-        // .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
+        m_operatorController.x().and(m_operatorController.leftBumper())
+        .onTrue(new MoveTo(HIGH_CUBE_X, HIGH_CUBE_Y, m_robotAcquisition));
 
         // // Score Cone High
-        // m_operatorController.b().and(m_operatorController.leftBumper())
-        // .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
+        m_operatorController.b().and(m_operatorController.leftBumper())
+        .onTrue(new MoveTo(HIGH_CONE_X, HIGH_CONE_Y, m_robotAcquisition));
 
-        // m_operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
+       //operatorController.a(m_controllerEventLoop).and(m_operatorController.b(m_controllerEventLoop));
 
         /*
          * Need 6 buttons:
@@ -342,9 +342,8 @@ public class RobotContainer {
            
         //    while (System.currentTimeMillis() < t )
             m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
-            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
-           
-            
+            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);  
+        
         } else {
             m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
             m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
