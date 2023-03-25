@@ -21,7 +21,7 @@ public final class Constants {
      */
     //
     public static final double NOMINAL_VOLTAGE = 12;
-    public static final int MAX_CURRENT = 80;// 40; //might need to be 40, testing with 80
+    public static final int MAX_CURRENT = 40;
     public static final double DEAD_BAND = .5;
     public static final int Pigeon2ID = 4;
     public static final int XBOX_DRIVER_CONTROLLER_PORT = 0;
