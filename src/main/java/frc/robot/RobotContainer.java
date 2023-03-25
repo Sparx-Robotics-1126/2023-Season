@@ -74,8 +74,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        Limelight limeLight = new Limelight();
-        limeLight.enableVision();
+        Limelight limelight = new Limelight();
 
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);

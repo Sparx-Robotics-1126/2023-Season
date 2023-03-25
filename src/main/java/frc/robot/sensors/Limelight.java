@@ -4,75 +4,85 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import static frc.robot.Constants.LimelightConstants.*;
 
-public class Limelight 
-{
-	final double CAMERA_ANGLE = 13.35;
-	final double ROBOT_HEIGHT = 37.5;
-	final double TARGET_HEIGHT = 90; // 83.25  89.5
-
-	final int VIEWPORT_X_SIZE = 320;
-
+public class Limelight {
 	NetworkTableEntry tx;
 	NetworkTableEntry tv;
 	NetworkTableEntry ty;
+
 	NetworkTableEntry ledMode;
 	NetworkTableEntry camMode;
 	
-	public Limelight() 
-	{
-		//SmartDashboard.putNumber("Camera Angle", CAMERA_ANGLE);
+	public Limelight() {
 		NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-		tv = table.getEntry("tv"); //tells whether or not a target is present; 1 for a target, 0 for none.
 
-		//Screen coordinates of the target.
+		// 1 if a target is present, or 0 if not.
+		tv = table.getEntry("tv");
+
+		// The X offset of the target in degrees from the crosshair.
 		tx = table.getEntry("tx");
+
+		// The Y offset of the target in degrees from the crosshair.
 		ty = table.getEntry("ty");
 
 		ledMode = table.getEntry("ledMode");
 		camMode = table.getEntry("camMode");
-		camMode.setValue(1);
 
-		
+		setForTargeting(USE_FOR_TARGETING);
+		setLED(LED_ON_DEFAULT);
+	}
+
+	public double getCameraHeight() {
+		// Add any necessary robot-specific dynamic offsets here (e.g. system elevates the limelight).
+		return CAMERA_MIN_FLOOR_HEIGHT;
+	}
+
+	public double getCameraPitch() {
+		// Add any necessary robot-specific dynamic offsets here (e.g. system tilts the limelight up and down).
+		return CAMERA_INITIAL_PITCH;
+	}
+
+	public double getXAngle() {
+		return getXCrosshairAngle();
+	}
+
+	public double getYAngle() {
+		return getCameraPitch() + getYCrosshairAngle();
+	}
+
+	public double getYOffset(double targetFloorHeight) {
+		return targetFloorHeight - getCameraHeight();
 	}
 	
-	public double getDistanceFromTarget()
-	{
-		double a2 = ty.getDouble(0);
-		double distance = (TARGET_HEIGHT - ROBOT_HEIGHT) / Math.tan(Math.toRadians(CAMERA_ANGLE + a2));
-		return distance;
+	public double getHorizontalDistance(double targetFloorHeight) {
+		return getDistance(targetFloorHeight) 
+			* Math.tan(Math.toRadians(getXAngle()));
 	}
 
-	public double getTargetHeight()
-	{
-		return ty.getDouble(0);
+	public double getDistance(double targetFloorHeight) {
+		return getYOffset(targetFloorHeight)
+			/ Math.tan(Math.toRadians(getYAngle()));
 	}
 
-	public double getHorizontalPixelsFromTarget()
-	{
-		return tx.getDouble(0) - (VIEWPORT_X_SIZE / 2);
+	public long getXCrosshairAngle() {
+		return tx.getInteger(0);
 	}
 
-	public double getHorizontalDegreesFromTarget()
-	{
-		return getHorizontalPixelsFromTarget() * SmartDashboard.getNumber("PIXELS_CONSTANT", 0);
+	public long getYCrosshairAngle() {
+		return ty.getInteger(0);
 	}
 	
-	public boolean getLock() 
-	{
-		if (tv.getDouble(0) > 0) 
-			return true;
-		
-		return false;
+	public boolean hasLock() {
+		return tv.getInteger(0) > 0;
 	}
-	public void enableVision(){
-		ledMode.setNumber(0);
-		camMode.setValue(1);
+
+	public void setForTargeting(boolean enable) {
+		int camModeNum = enable ? 0 : 1;
+		camMode.setNumber(camModeNum);
 	}
 	
-	public void enable(boolean enable) 
-	{
+	public void setLED(boolean enable) {
 		int ledModeNum = enable ? 3 : 1;
 		ledMode.setNumber(ledModeNum);
 	}
