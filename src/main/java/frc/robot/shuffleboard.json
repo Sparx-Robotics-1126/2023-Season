@@ -24,7 +24,7 @@
               "_showGlyph": false
             }
           },
-          "0,11": {
+          "0,12": {
             "size": [
               2,
               2
@@ -37,7 +37,7 @@
               "_showGlyph": false
             }
           },
-          "2,11": {
+          "2,12": {
             "size": [
               2,
               2
@@ -50,7 +50,7 @@
               "_showGlyph": false
             }
           },
-          "0,9": {
+          "0,10": {
             "size": [
               4,
               2
@@ -63,7 +63,7 @@
               "_showGlyph": false
             }
           },
-          "4,4": {
+          "4,5": {
             "size": [
               3,
               3
@@ -79,7 +79,7 @@
               "Visuals/Show value": true
             }
           },
-          "4,7": {
+          "4,8": {
             "size": [
               3,
               3
@@ -95,7 +95,7 @@
               "Visuals/Show value": true
             }
           },
-          "0,4": {
+          "0,5": {
             "size": [
               2,
               5
@@ -113,7 +113,7 @@
               "Visuals/Number of tick marks": 5
             }
           },
-          "2,4": {
+          "2,5": {
             "size": [
               2,
               5
@@ -131,7 +131,7 @@
               "Visuals/Number of tick marks": 5
             }
           },
-          "0,13": {
+          "0,14": {
             "size": [
               1,
               1
@@ -144,10 +144,10 @@
               "_showGlyph": false
             }
           },
-          "2,13": {
+          "2,14": {
             "size": [
-              1,
-              1
+              2,
+              2
             ],
             "content": {
               "_type": "Text View",
@@ -157,7 +157,7 @@
               "_showGlyph": false
             }
           },
-          "7,4": {
+          "7,5": {
             "size": [
               7,
               6
@@ -174,7 +174,7 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "14,4": {
+          "14,5": {
             "size": [
               2,
               6
@@ -193,7 +193,7 @@
               "Visuals/Orientation": "VERTICAL"
             }
           },
-          "0,2": {
+          "0,3": {
             "size": [
               3,
               2
@@ -206,63 +206,6 @@
               "_showGlyph": false,
               "Colors/Color when true": "#FF0000FF",
               "Colors/Color when false": "#00FF00FF"
-            }
-          },
-          "16,0": {
-            "size": [
-              23,
-              14
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://limelight",
-              "_title": "limelight",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
-          "4,10": {
-            "size": [
-              12,
-              3
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_title": "Acq",
-              "_glyph": 149,
-              "_showGlyph": false,
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/LEFT_Y",
-                  "_title": "LEFT_Y",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/RIGHT_Y",
-                  "_title": "RIGHT_Y",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Drive State",
-                  "_title": "Drive State",
-                  "_glyph": 148,
-                  "_showGlyph": false
-                }
-              ]
             }
           },
           "0,0": {
@@ -280,7 +223,7 @@
               "Colors/Color when false": "#0000FFFF"
             }
           },
-          "4,2": {
+          "4,3": {
             "size": [
               3,
               2
@@ -295,7 +238,7 @@
               "Colors/Color when false": "#FFFFFFFF"
             }
           },
-          "7,2": {
+          "7,3": {
             "size": [
               3,
               2
@@ -310,7 +253,7 @@
               "Colors/Color when false": "#FFFFFFFF"
             }
           },
-          "10,2": {
+          "10,3": {
             "size": [
               3,
               2
@@ -323,6 +266,83 @@
               "_showGlyph": false,
               "Colors/Color when true": "#00FF00FF",
               "Colors/Color when false": "#FFFFFFFF"
+            }
+          },
+          "4,12": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/X_POS",
+              "_title": "X_POS",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,12": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Y_LIMIT",
+              "_title": "Y_LIMIT",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,12": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/X_LIMIT",
+              "_title": "X_LIMIT",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,12": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Y_POS",
+              "_title": "Y_POS",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,0": {
+            "size": [
+              21,
+              15
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
