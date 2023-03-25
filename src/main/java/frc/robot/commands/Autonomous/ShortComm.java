@@ -9,6 +9,6 @@ public class ShortComm extends SequentialCommandGroup {
    
     public ShortComm(DriveSubsystem drive, AcquisitionSubsystem acquisitions) {
         
-        addCommands(new DriveDistanceCmd(drive, 3.31, .75));
+        addCommands(new DriveDistanceCmd(drive, 2.5, .75));
     }
 }

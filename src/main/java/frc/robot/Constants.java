@@ -28,7 +28,7 @@ public final class Constants {
     public static final int XBOX_OPERATOR_CONTROLLER_PORT = 1;
     public static double UPDATE_PERIOD = 0.010; // seconds
 
-    public static final int XBOX_DRIVER_CONTROLLER_PORT1 = 0;
+
     
     public static final class DriveConstants {
         // MOTORS

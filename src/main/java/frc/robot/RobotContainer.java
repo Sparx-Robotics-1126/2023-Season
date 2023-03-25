@@ -50,7 +50,7 @@ public class RobotContainer {
     // private final AcquisitionSubsystem m_robotAcquisition;
     private final CommandXboxController m_driverController;
     private final CommandXboxController m_operatorController;
-    private final XboxController m_xboxController;
+  
 
     private boolean slowSpeedEnabled;
     private boolean mediumSpeedEnabled;
@@ -79,7 +79,8 @@ public class RobotContainer {
         m_driverController = new CommandXboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT);
         m_operatorController = new CommandXboxController(Constants.XBOX_OPERATOR_CONTROLLER_PORT);
         m_pigeon = PigeonSubsystem.getInstance();
-        m_xboxController = new XboxController(Constants.XBOX_DRIVER_CONTROLLER_PORT1);
+      
+       
 
         // m_robotAcquisition = new AcquisitionSubsystem();
 
@@ -141,9 +142,7 @@ public class RobotContainer {
         // new JoystickButton(m_operatorController, Button.kA.value)
         // .onTrue(new MoveTo(m_robotAcquisition, 0, 0.5));
 
-        m_driverController.a()
-                .whileTrue(new InstantCommand(() -> m_xboxController.setRumble(GenericHID.RumbleType.kBothRumble, .5)))
-                .onFalse(new InstantCommand(() -> m_xboxController.setRumble(GenericHID.RumbleType.kBothRumble, 0)));
+
 
     }
 
@@ -335,23 +334,25 @@ public class RobotContainer {
 
     public void EndGameRumble() {
         
-     if (DriverStation.getMatchTime() < 28) {
-          return;
+    //  if (DriverStation.getMatchTime() < 28) {
+    //       return;
 
-     }
-
-    
-
-        if(DriverStation.getMatchTime() < DriveConstants.EndGameSeconds ) {
+    //  }
+        if(DriverStation.getMatchTime() < DriveConstants.EndGameSeconds && DriverStation.getMatchTime() > DriveConstants.StopRumble) {
            
-           while (System.currentTimeMillis() < t ){
-            m_xboxController.setRumble(GenericHID.RumbleType.kLeftRumble, .5);
-            m_xboxController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-            System.out.println("Rumble started"); 
-           }
+        //    while (System.currentTimeMillis() < t )
+            m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+           
+            
+        } else {
+            m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+            
+        }
 
-        } 
-    }
+    } 
+    
 
     // public void EndEndGameRumble() {
     //     if(DriverStation.getMatchTime() > DriveConstants.StopRumble ) {

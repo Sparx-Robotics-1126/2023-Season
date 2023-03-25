@@ -9,6 +9,6 @@ public class LongComm extends SequentialCommandGroup {
    
     public LongComm(DriveSubsystem drives, AcquisitionSubsystem Acquisitions) {
 
-        addCommands(new DriveDistanceCmd(drives, 4.7, .75));
+        addCommands(new DriveDistanceCmd(drives, 8.83, .75));
     }
 }
