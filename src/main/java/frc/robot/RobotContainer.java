@@ -322,8 +322,7 @@ public class RobotContainer {
     }
 
     public AcquisitionSubsystem getAcquisition() {
-        return null;
-        // return m_robotAcquisition;
+        return m_robotAcquisition;
     }
 
     private boolean getAllianceColor() {
