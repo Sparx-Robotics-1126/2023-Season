@@ -68,7 +68,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
         yMotor.restoreFactoryDefaults();
         yMotor.setIdleMode(IdleMode.kCoast);
         yMotor.enableVoltageCompensation(Constants.NOMINAL_VOLTAGE);
-        yMotor.setSmartCurrentLimit(Constants.MAX_CURRENT);
+        yMotor.setSmartCurrentLimit((int) Math.round(Constants.MAX_CURRENT * Y_MAX_MOTOR_POWER));
 
         // Encoders
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
@@ -165,10 +165,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             yMotor.set(yOut);
         else
             yMotor.set(-RETURN_HOME_POWER);
-
-        SmartDashboard.putNumber("yPower", yPower);
-        SmartDashboard.putNumber("xPower", xPower);
-
+        
         SmartDashboard.putNumber("yOut", yOut);
         SmartDashboard.putNumber("xOut", xOut);
 
