@@ -103,7 +103,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
 
     @Override
     public void periodic() {
-        double xOut = 0;
+        double xOut = X_FEEDFORWARD;
         double yOut = Y_FEEDFORWARD;
 
         boolean xUsePID = false;
@@ -174,6 +174,9 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
 
         SmartDashboard.putBoolean("X_LIMIT", xLimit.get());
         SmartDashboard.putBoolean("Y_LIMIT", yLimit.get());
+
+        SmartDashboard.putNumber("Y_SETPOINT", yController.getSetpoint());
+        SmartDashboard.putNumber("X_SETPOINT", xController.getSetpoint());
     }
 
     public void grabberClose() {

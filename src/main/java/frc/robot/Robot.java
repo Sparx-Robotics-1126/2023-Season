@@ -137,10 +137,14 @@ public class Robot extends TimedRobot {
 		System.out.println("********** ROBOT DISABLED ************");
 		// _robotContainer.stopTimer();
 
+		// Return to home when we become disabled to reset the
+		// integrator.
+		_robotContainer.getAcquisition().xMoveTo(0);
+		_robotContainer.getAcquisition().yMoveTo(0);
+
 		// For safety reasons, apply the drivetrain brakes when the robot
 		// becomes disabled. Avoids coasting into people. Useful for
 		// demonstrations when someone inexperienced is operating.
-
 		if (Constants.DriveConstants.BRAKE_ON_DISABLE)
 	        _robotContainer.applyBrakes();
 	}

@@ -129,27 +129,28 @@ public final class Constants {
         public static final int X_ENCODER_A = 23;
         public static final int X_ENCODER_B = 22;
 
-        public static  double X_MOTOR_P = 0;
-        public static  double X_MOTOR_I = 0;
+        public static  double X_MOTOR_P = 0.3;
+        public static  double X_MOTOR_I = 0.3;
         public static  double X_MOTOR_D = 0;
 
-        public static  double Y_MOTOR_P = 0;
-        public static  double Y_MOTOR_I = 0;
+        public static  double Y_MOTOR_P = 0.8;
+        public static  double Y_MOTOR_I = 0.2;
         public static  double Y_MOTOR_D = 0;
 
-        public static  double X_MAX = 1.1938;
-        public static  double Y_MAX = 9999999;//0.923;
+        public static  double X_MAX = 1.47;
+        public static  double Y_MAX = 1.08;
         public static final double POSITION_EPSILON_METERS = 0.01;
 
         public static final double RETURN_HOME_POWER = 1;
         public static final double X_TENSION_POWER = 0.2;
 
-        public static  double X_MAX_MOTOR_POWER = 0.5;
+        public static  double X_MAX_MOTOR_POWER = 0.9;
         public static  double Y_MAX_MOTOR_POWER = 0.6;
-        public static  double Y_FEEDFORWARD = 0;// 0.4;
+        public static  double X_FEEDFORWARD = 0.12;
+        public static  double Y_FEEDFORWARD = 0.03;
 
-        public static final double X_METERS_PER_PULSE = 1.0 / 734.5;
-        public static final double Y_METERS_PER_PULSE = 1.0 / 1;//(21.666561126708984 * (100 / 60));
+        public static final double X_METERS_PER_PULSE = 0.7 / 436.5;
+        public static final double Y_METERS_PER_PULSE = 0.6 / 21.38085174560547;
 
         public static final double MANUAL_DEADBAND = 0.1;
     }
@@ -184,7 +185,7 @@ public final class Constants {
         /**
          * The distance from the floor to the center of the grabber at elevations' lowest position.
          */
-        private static final double REACH_HEIGHT = 0.6858;
+        private static final double REACH_HEIGHT = 0.34;
         /**
          * The distance from the minimum extension of reach to the front of the robot.
          */
@@ -193,11 +194,11 @@ public final class Constants {
         /**
          * The distance added to all y values.
          */
-        private static final double Y_OFFSET = 0.1;
+        private static final double Y_OFFSET = 0.22;
         /**
          * The distance added to all x values.
          */
-        private static final double X_OFFSET = 0.1;
+        private static final double X_OFFSET = 0.33;
 
         public static final double SHELF_Y = computeYOffset(SHELF_HEIGHT);
         public static final double SHELF_X = computeXOffset(SHELF_DISTANCE);

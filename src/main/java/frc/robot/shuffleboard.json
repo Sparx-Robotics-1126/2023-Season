@@ -281,7 +281,7 @@
               "_showGlyph": false
             }
           },
-          "13,12": {
+          "14,13": {
             "size": [
               3,
               3
@@ -296,7 +296,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "10,12": {
+          "10,13": {
             "size": [
               3,
               3
@@ -344,6 +344,58 @@
               "imageWidth": -1,
               "imageHeight": -1
             }
+          },
+          "15,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/yOut",
+              "_title": "SmartDashboard/yOut",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/xOut",
+              "_title": "SmartDashboard/xOut",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,11": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/X_SETPOINT",
+              "_title": "SmartDashboard/X_SETPOINT",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,11": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Y_SETPOINT",
+              "_title": "SmartDashboard/Y_SETPOINT",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -351,8 +403,8 @@
   ],
   "windowGeometry": {
     "x": -8.0,
-    "y": 4.0,
+    "y": -8.0,
     "width": 1936.0,
-    "height": 841.0
+    "height": 1048.0
   }
 }
