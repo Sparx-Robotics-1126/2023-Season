@@ -138,7 +138,7 @@ public final class Constants {
         public static  double Y_MOTOR_D = 0;
 
         public static  double X_MAX = 1.1938;
-        public static  double Y_MAX = 0.923;
+        public static  double Y_MAX = 9999999;//0.923;
         public static final double POSITION_EPSILON_METERS = 0.01;
 
         public static final double RETURN_HOME_POWER = 1;
@@ -149,7 +149,7 @@ public final class Constants {
         public static  double Y_FEEDFORWARD = 0;// 0.4;
 
         public static final double X_METERS_PER_PULSE = 1.0 / 734.5;
-        public static final double Y_METERS_PER_PULSE = 1.0 / (21.666561126708984 * (100 / 60));
+        public static final double Y_METERS_PER_PULSE = 1.0 / 1;//(21.666561126708984 * (100 / 60));
 
         public static final double MANUAL_DEADBAND = 0.1;
     }
