@@ -142,14 +142,14 @@ public final class Constants {
         public static final double POSITION_EPSILON_METERS = 0.01;
 
         public static final double RETURN_HOME_POWER = 1;
-        public static final double LIMIT_TENSION_POWER = 0.2;
+        public static final double X_TENSION_POWER = 0.2;
 
         public static  double X_MAX_MOTOR_POWER = 0.5;
         public static  double Y_MAX_MOTOR_POWER = 0.6;
         public static  double Y_FEEDFORWARD = 0;// 0.4;
 
-        public static final double X_PULSES_TO_METERS = 1.0 / 734.5;
-        public static final double Y_PULSES_TO_METERS = 1.0 / (5.071422576904297 * (100 / 12.7));
+        public static final double X_METERS_PER_PULSE = 1.0 / 734.5;
+        public static final double Y_METERS_PER_PULSE = 1.0 / (21.666561126708984 * (100 / 60));
 
         public static final double MANUAL_DEADBAND = 0.1;
     }

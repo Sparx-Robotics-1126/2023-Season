@@ -74,8 +74,8 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
         xEncoder = new Encoder(X_ENCODER_A, X_ENCODER_B);
         yEncoder = yMotor.getEncoder();
 
-        xEncoder.setDistancePerPulse(X_PULSES_TO_METERS);
-        yEncoder.setPositionConversionFactor(Y_PULSES_TO_METERS);
+        xEncoder.setDistancePerPulse(X_METERS_PER_PULSE);
+        yEncoder.setPositionConversionFactor(Y_METERS_PER_PULSE);
 
         // Limit switches
         xLimit = new DigitalInput(X_LIMIT);
@@ -117,7 +117,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             // We don't have a power command, but are just returning from one.
             // Set the X setpoint to the current position so we can resume PID
             // and hold our current position.
-            xMoveTo(0);
+            xMoveTo(getXPos());
             prevXPower = 0;
             xUsePID = true;
         } else {
@@ -131,7 +131,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
             yOut += yPower;
             prevYPower = yPower;
         } else if (prevYPower != 0) {
-            yMoveTo(0);
+            yMoveTo(getYPos());
             prevYPower = 0;
             yUsePID = true;
         } else {
@@ -152,7 +152,7 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
 
         if (xLimit.get() && xOut <= 0) {
             xEncoder.reset();
-            xMotor.set(ControlMode.PercentOutput, -LIMIT_TENSION_POWER);
+            xMotor.set(ControlMode.PercentOutput, -X_TENSION_POWER);
         } else if (getXPos() < X_MAX)
             xMotor.set(ControlMode.PercentOutput, xOut);
         else
