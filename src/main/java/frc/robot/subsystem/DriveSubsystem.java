@@ -706,7 +706,7 @@ public class DriveSubsystem extends ShuffleSubsystem {
         forwardOutput = MathUtil.clamp(forwardOutput, -DRIVE_DIST_MAX_OUTPUT, DRIVE_DIST_MAX_OUTPUT);
         double turnOutput = (m_angleSetpoint - PigeonSubsystem.getInstance().getAngle()) * DRIVE_DIST_ANGLE_P;
 
-        System.out.println("*********" + forwardOutput);
+        // System.out.println("*********" + forwardOutput);
 
         m_driveDifferential.arcadeDrive(forwardOutput, turnOutput);
         // double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(forwardOutput, turnOutput);

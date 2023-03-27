@@ -13,8 +13,8 @@
         "tiles": {
           "2,0": {
             "size": [
-              14,
-              2
+              15,
+              3
             ],
             "content": {
               "_type": "Split Button Chooser",
@@ -159,8 +159,8 @@
           },
           "7,5": {
             "size": [
-              7,
-              6
+              5,
+              5
             ],
             "content": {
               "_type": "Gyro",
@@ -174,10 +174,10 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "14,5": {
+          "12,5": {
             "size": [
               2,
-              6
+              5
             ],
             "content": {
               "_type": "Number Bar",
@@ -195,7 +195,7 @@
           },
           "0,3": {
             "size": [
-              3,
+              4,
               2
             ],
             "content": {
@@ -281,10 +281,10 @@
               "_showGlyph": false
             }
           },
-          "14,13": {
+          "14,5": {
             "size": [
               3,
-              3
+              2
             ],
             "content": {
               "_type": "Boolean Box",
@@ -296,10 +296,10 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "10,13": {
+          "14,7": {
             "size": [
               3,
-              3
+              2
             ],
             "content": {
               "_type": "Boolean Box",
@@ -326,8 +326,8 @@
           },
           "17,0": {
             "size": [
-              21,
-              15
+              14,
+              11
             ],
             "content": {
               "_type": "Camera Stream",
@@ -371,7 +371,7 @@
               "_showGlyph": false
             }
           },
-          "11,11": {
+          "7,10": {
             "size": [
               3,
               2
@@ -384,7 +384,7 @@
               "_showGlyph": false
             }
           },
-          "14,11": {
+          "10,10": {
             "size": [
               3,
               2
@@ -402,9 +402,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -8.0,
-    "y": -8.0,
-    "width": 1936.0,
-    "height": 1048.0
+    "x": -17.600000381469727,
+    "y": 0.0,
+    "width": 1550.4000244140625,
+    "height": 878.4000244140625
   }
 }
