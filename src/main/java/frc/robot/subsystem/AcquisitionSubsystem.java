@@ -153,18 +153,18 @@ public class AcquisitionSubsystem extends ShuffleSubsystem {
         if (xLimit.get() && xOut <= 0) {
             xEncoder.reset();
             xMotor.set(ControlMode.PercentOutput, -X_TENSION_POWER);
-        } else if (getXPos() < X_MAX)
-            xMotor.set(ControlMode.PercentOutput, xOut);
+        } else if (getXPos() >= X_MAX && xOut >= 0)
+            xMotor.set(ControlMode.PercentOutput, 0);
         else
-            xMotor.set(ControlMode.PercentOutput, -RETURN_HOME_POWER);
+            xMotor.set(ControlMode.PercentOutput, xOut);
 
         if (yLimit.get() && yOut <= 0) {
             yEncoder.setPosition(0);
             yMotor.set(0);
-        } else if (getYPos() < Y_MAX)
-            yMotor.set(yOut);
+        } else if (getYPos() >= Y_MAX && yOut >= 0)
+            yMotor.set(0);
         else
-            yMotor.set(-RETURN_HOME_POWER);
+            yMotor.set(yOut);
         
         SmartDashboard.putNumber("yOut", yOut);
         SmartDashboard.putNumber("xOut", xOut);
