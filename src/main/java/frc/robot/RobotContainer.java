@@ -19,7 +19,7 @@ import frc.robot.commands.Acquisition.MoveTo;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.LongComm;
-import frc.robot.commands.Autonomous.ReverseLongBalance;
+import frc.robot.commands.Autonomous.ReverseHighBalance;
 import frc.robot.commands.Autonomous.ReverseShortBalance;
 import frc.robot.commands.Autonomous.ReverseShortComm;
 import frc.robot.commands.Autonomous.ShortComm;
@@ -221,8 +221,9 @@ public class RobotContainer {
         _chooser.addOption("Do Nothing", () -> new InstantCommand());
         _chooser.addOption("RShort",  () -> new ReverseShortComm(m_robotDrive, m_robotAcquisition) );
         _chooser.addOption("R Mid Balance",  () -> new ReverseShortBalance(m_robotDrive, m_robotAcquisition) );
-        _chooser.addOption("R High Balance",  () -> new ReverseLongBalance(m_robotDrive, m_robotAcquisition) );
-        SmartDashboard.putData("AUTO CHOICES ", _chooser);
+        _chooser.addOption("R High Balance",  () -> new ReverseHighBalance(m_robotDrive, m_robotAcquisition) );
+        _chooser.addOption("R Mid Long Balance", () -> new ReverseHighBalance(m_robotDrive, m_robotAcquisition));
+        SmartDashboard.putData("AUTO CHOICES ", _chooser); 
     }
 
     public void configureShuffleboard() {
