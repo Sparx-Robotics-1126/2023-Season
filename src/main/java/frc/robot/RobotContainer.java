@@ -19,6 +19,7 @@ import frc.robot.commands.Acquisition.MoveTo;
 import frc.robot.commands.Autonomous.BalanceLongRobot;
 import frc.robot.commands.Autonomous.BalanceShortRobot;
 import frc.robot.commands.Autonomous.LongComm;
+import frc.robot.commands.Autonomous.ReverseShortBalance;
 import frc.robot.commands.Autonomous.ReverseShortComm;
 import frc.robot.commands.Autonomous.ShortComm;
 import frc.robot.commands.Drive.DriveDistance;
@@ -218,7 +219,7 @@ public class RobotContainer {
         _chooser.addOption("Long Comm", () -> new LongComm(m_robotDrive, getAcquisition()));
         _chooser.addOption("Do Nothing", () -> new InstantCommand());
         _chooser.addOption("RShort",  () -> new ReverseShortComm(m_robotDrive, m_robotAcquisition) );
-
+        _chooser.addOption("R Short Balance",  () -> new ReverseShortBalance(m_robotDrive, m_robotAcquisition) );
         SmartDashboard.putData("AUTO CHOICES ", _chooser);
     }
 
