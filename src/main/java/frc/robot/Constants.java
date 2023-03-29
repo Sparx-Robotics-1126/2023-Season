@@ -179,7 +179,7 @@ public final class Constants {
         private static final double HIGH_CUBE_HEIGHT = 0.9;
         private static final double HIGH_CUBE_DISTANCE = 1.5;
 
-        private static final double MID_CUBE_HEIGHT = 0.6;
+        private static final double MID_CUBE_HEIGHT = 0.65;
         private static final double MID_CUBE_DISTANCE = 0.58;
 
         /**
