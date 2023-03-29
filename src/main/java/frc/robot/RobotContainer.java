@@ -211,16 +211,18 @@ public class RobotContainer {
 
         // _chooser.setDefaultOption("Short PID", () ->
         // Autos.balanceChargeStations(m_robotDrive));
-        _chooser.addOption("Long", () -> new BalanceLongRobot(m_robotDrive));
-        _chooser.setDefaultOption("Short", () -> new BalanceShortRobot(m_robotDrive));
-        _chooser.addOption("Measure", () -> new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
+        
+        // _chooser.addOption("Long", () -> new BalanceLongRobot(m_robotDrive));
+        // _chooser.setDefaultOption("Short", () -> new BalanceShortRobot(m_robotDrive));
+        // _chooser.addOption("Measure", () -> new DriveDistance(m_robotDrive, 6, .4).withTimeout(6));
         // _chooser.addOption("Score and Leave Community", () -> new
         // ScoreCommunity(m_robotDrive, m_robotAcquisition));
+        
+        _chooser.addOption("Do Nothing", () -> new InstantCommand());
         _chooser.addOption("NewDistance", () -> new DriveDistanceCmd(m_robotDrive, 1, .75));
         _chooser.addOption("Short Comm", () -> new ShortComm(m_robotDrive, getAcquisition()));
         _chooser.addOption("Long Comm", () -> new LongComm(m_robotDrive, getAcquisition()));
-        _chooser.addOption("Do Nothing", () -> new InstantCommand());
-        _chooser.addOption("RShort",  () -> new ReverseShortComm(m_robotDrive, m_robotAcquisition) );
+        _chooser.addOption("R Short",  () -> new ReverseShortComm(m_robotDrive, m_robotAcquisition) );
         _chooser.addOption("R Mid Balance",  () -> new ReverseShortBalance(m_robotDrive, m_robotAcquisition) );
         _chooser.addOption("R High Balance",  () -> new ReverseHighBalance(m_robotDrive, m_robotAcquisition) );
         _chooser.addOption("R Mid Long Balance", () -> new ReverseLongMid(m_robotDrive, m_robotAcquisition));
