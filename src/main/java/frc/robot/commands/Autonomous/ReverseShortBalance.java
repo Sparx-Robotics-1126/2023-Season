@@ -23,7 +23,7 @@ public class ReverseShortBalance extends SequentialCommandGroup{
         addCommands(new MoveTo(0, 0, acquisition));
          addCommands(new WaitCommand(1));
         addCommands(new InstantCommand(() -> acquisition.grabberClose()));
-        // addCommands(new MoveTo(0, 0, acquisition));
+        addCommands(new MoveTo(0, 0, acquisition));
 
 
         addCommands(new DriveToPitch(drive, .65, -10,true ,true));

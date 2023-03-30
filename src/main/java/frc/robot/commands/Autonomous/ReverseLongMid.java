@@ -26,10 +26,10 @@ public class ReverseLongMid extends SequentialCommandGroup{
         //Drives Backwards over charge station, balances
         addCommands(new DriveToPitch(drive, 0.5, -10, true, true));
     // // drive until ramp starts going down
-        addCommands(new DriveDistance(drive, -1.251, .5));
-        addCommands(new WaitCommand(.5));
+        addCommands(new DriveDistance(drive, -1.38, .5));
+        addCommands(new WaitCommand(.8));
     // drive backwards for distance hopefully on ramp
-        addCommands(new DriveToPitch(drive, .65, 10, false, false));
+        addCommands(new DriveToPitch(drive, .5, 10, false, false));
         addCommands(new WaitCommand(.5));
         addCommands(new DriveDistance(drive, .35, .5));
         addCommands(new BalanceOnChargeStation(drive));

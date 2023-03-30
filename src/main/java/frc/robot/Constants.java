@@ -248,7 +248,7 @@ public final class Constants {
             public static final double MAX_SPEED = 0.4;
 
 
-            public static final double KP = 0.031;
+            public static final double KP = 0.029;
             public static final double KI = 0;
             public static final double KD = 0.003;
 
