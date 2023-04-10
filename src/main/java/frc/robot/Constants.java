@@ -37,9 +37,9 @@ public final class Constants {
         public static final int DRIVES_LEFT_MOTOR_1 = 24;
         public static final int DRIVES_LEFT_MOTOR_2 = 26;
 
-        public static final double MAX_DRIVE_SPEED = 1;
+        public static final double MAX_DRIVE_SPEED = 0.5; //1
         public static final double MAX_LEFT_TRIGGER_SPEED = 0.25;
-        public static final double MAX_RIGHT_TRIGGER_SPEED = .1;
+        public static final double MAX_RIGHT_TRIGGER_SPEED = 1; //.1
         public static final double kTurnFriction = 0.3;
 
         public static final int kEncoderCPR = 1024;
@@ -145,7 +145,7 @@ public final class Constants {
         public static final double X_TENSION_POWER = 0.2;
 
         public static  double X_MAX_MOTOR_POWER = 0.9;
-        public static  double Y_MAX_MOTOR_POWER = 0.6;
+        public static  double Y_MAX_MOTOR_POWER = 0.6; //Elevations power
         public static  double X_FEEDFORWARD = 0.12;
         public static  double Y_FEEDFORWARD = 0.03;
 
@@ -167,7 +167,7 @@ public final class Constants {
             return height - REACH_HEIGHT + Y_OFFSET;
         }
 
-        private static final double SHELF_HEIGHT = 0.95;
+        private static final double SHELF_HEIGHT = 0.9;
         private static final double SHELF_DISTANCE = 0.165;
 
         private static final double HIGH_CONE_HEIGHT = 1.17;
@@ -176,7 +176,7 @@ public final class Constants {
         private static final double MID_CONE_HEIGHT = 0.87;
         private static final double MID_CONE_DISTANCE = 0.58;
 
-        private static final double HIGH_CUBE_HEIGHT = 0.9;
+        private static final double HIGH_CUBE_HEIGHT = 1.1;
         private static final double HIGH_CUBE_DISTANCE = 1.5;
 
         private static final double MID_CUBE_HEIGHT = 0.65;
@@ -236,7 +236,7 @@ public final class Constants {
         public static final int kPitchTimeoutSeconds = 5;
 
         public static final class BalanceAuto {
-            public static final double DRIVE_SPEED = 0.75;
+            public static final double DRIVE_SPEED = 0.75; 
             public static final double FINAL_ANGLE = 10;
             public static final double TIMEOUT_SECONDS = 4.5;
 

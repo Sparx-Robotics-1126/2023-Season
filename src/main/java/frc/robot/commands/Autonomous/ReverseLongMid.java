@@ -17,20 +17,20 @@ public class ReverseLongMid extends SequentialCommandGroup{
         
         //Places Cube in Mid Node
         addCommands(new MoveTo( MID_CUBE_X, MID_CUBE_Y, acquisition));
-        addCommands(new WaitCommand(3));
+        addCommands(new WaitCommand(2.5));
         addCommands(new InstantCommand(() -> acquisition.grabberOpen()));
         addCommands(new MoveTo(0, 0, acquisition));
-        addCommands(new WaitCommand(1));
+        addCommands(new WaitCommand(.5));
         addCommands(new InstantCommand(() -> acquisition.grabberClose()));
 
         //Drives Backwards over charge station, balances
-        addCommands(new DriveToPitch(drive, 0.5, -10, true, true));
+        addCommands(new DriveToPitch(drive, 0.6, -10, true, true));
     // // drive until ramp starts going down
         addCommands(new DriveDistance(drive, -1.38, .5));
         addCommands(new WaitCommand(.8));
     // drive backwards for distance hopefully on ramp
-        addCommands(new DriveToPitch(drive, .5, 10, false, false));
-        addCommands(new WaitCommand(.5));
+        addCommands(new DriveToPitch(drive, .55, 10, false, false));
+        // addCommands(new WaitCommand(.25));
         addCommands(new DriveDistance(drive, .35, .5));
         addCommands(new BalanceOnChargeStation(drive));
 
